@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Ticket</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="../static/style.css" />
+    <style>
+        .sbmtbtn {
+    width: 100%;
+    margin: 0 auto;
+    text-align: center;
+    margin: 30px 0;
+}
+    </style>
+  </head>
+  <body>
+      
+       <header>
+         <div class="container-fluid">
+              <a href="index.html" class="logout_bnt_section">
+              Logout <img src="../static/logout.png" alt="logout" class="logout_header_img">
+          </a>
+         </div>
+      </header>
+      
+    <div class="main_home_section_ticket">
+      <!-- Start top section part 1-->
+      <div class="container">
+        <div class="row">
+          <div class="col-md-12">
+            <div class="section_ticket_section">
+              <div class="ticket_section_header">
+                <h4>Ticket</h4>
+                <button>X</button>
+              </div>
+              <!-- ticket_section_header -->
+              <div class="ticket_section_body">
+                <form>
+                  <fieldset>
+                    <legend>Data:</legend>
+                    <div class="row">
+                      <div class="col-md-4 mb-3">
+                        <div class="row">
+                          <label class="col-md-5"> Client </label>
+                          <div class="col-md-7">
+                            <select name="" id="">
+                              <option></option>
+                            </select>
+                          </div>
+                        </div>
+                      </div>
+                      <!-- 1 -->
+                      <div class="col-md-4 mb-3">
+                        <div class="row">
+                          <label class="col-md-5"> Mix ID # </label>
+                          <div class="col-md-7">
+                            <input type="text" />
+                          </div>
+                        </div>
+                      </div>
+                      <!-- 2 -->
+                      <div class="col-md-4 mb-3">
+                        <div class="row">
+                          <label class="col-md-5"> Ticket Number </label>
+                          <div class="col-md-7">
+                            <input type="text" />
+                          </div>
+                        </div>
+                      </div>
+                      <!-- 3 -->
+                      <div class="col-md-4 mb-3">
+                        <div class="row">
+                          <label class="col-md-5"> Site Address </label>
+                          <div class="col-md-7">
+                            <input type="text" />
+                          </div>
+                        </div>
+                      </div>
+                      <!-- 4 -->
+                      <div class="col-md-4 mb-3">
+                        <div class="row">
+                          <label class="col-md-5"> Load No. </label>
+                          <div class="col-md-7">
+                            <input type="text" />
+                          </div>
+                        </div>
+                      </div>
+                      <!-- 5 -->
+                      <div class="col-md-4 mb-3">
+                        <div class="row">
+                          <label class="col-md-5">
+                            Nominal Size of Agg (mm)
+                          </label>
+                          <div class="col-md-7">
+                            <input type="text" />
+                          </div>
+                        </div>
+                      </div>
+                      <!-- 6 -->
+                      <div class="col-md-4 mb-3">
+                        <div class="row">
+                          <label class="col-md-5">
+                            Structure & Gridlines
+                          </label>
+                          <div class="col-md-7">
+                            <input type="text" />
+                          </div>
+                        </div>
+                      </div>
+                      <!-- 7 -->
+                      <div class="col-md-4 mb-3">
+                        <div class="row">
+                          <label class="col-md-5"> Specified Slump (mm) </label>
+                          <div class="col-md-7">
+                            <input type="text" />
+                          </div>
+                        </div>
+                      </div>
+                      <!-- 8 -->
+                      <div class="col-md-4 mb-3">
+                        <div class="row">
+                          <label class="col-md-5"> Concrete Supplier </label>
+                          <div class="col-md-7">
+                            <input type="text" />
+                          </div>
+                        </div>
+                      </div>
+                      <!-- 9 -->
+                      <div class="col-md-4 mb-3">
+                        <div class="row">
+                          <label class="col-md-5"> Time of Charge </label>
+                          <div class="col-md-7">
+                            <input type="text" />
+                          </div>
+                        </div>
+                      </div>
+                      <!-- 10 -->
+                      <div class="col-md-4 mb-3">
+                        <div class="row">
+                          <label class="col-md-5">
+                            Subclient / Contractor
+                          </label>
+                          <div class="col-md-7">
+                            <input type="text" />
+                          </div>
+                        </div>
+                      </div>
+                      <!-- 11 -->
+                      <div class="col-md-4 mb-3">
+                        <div class="row">
+                          <label class="col-md-5"> Measured Slump (mm) </label>
+                          <div class="col-md-7">
+                            <input type="text" />
+                          </div>
+                        </div>
+                      </div>
+                      <!-- 12 -->
+                      <div class="col-md-4 mb-3">
+                        <div class="row">
+                          <label class="col-md-5"> Specified Air (%) </label>
+                          <div class="col-md-7">
+                            <input type="text" />
+                          </div>
+                        </div>
+                      </div>
+                      <!-- 13 -->
+                      <div class="col-md-4 mb-3">
+                        <div class="row">
+                          <label class="col-md-5"> Casting Time </label>
+                          <div class="col-md-7">
+                            <input type="text" />
+                          </div>
+                        </div>
+                      </div>
+                      <!-- 14 -->
+                      <div class="col-md-4 mb-3">
+                        <div class="row">
+                          <label class="col-md-5">
+                            Specified Strength MPa (28 Days)
+                          </label>
+                          <div class="col-md-7">
+                            <input type="text" />
+                          </div>
+                        </div>
+                      </div>
+                      <!-- 15 -->
+                      <div class="col-md-4 mb-3">
+                        <div class="row">
+                          <label class="col-md-5">
+                            Type of Mold (ie 4x8)
+                          </label>
+                          <div class="col-md-7">
+                            <input type="text" />
+                          </div>
+                        </div>
+                      </div>
+                      <!-- 16 -->
+                      <div class="col-md-4 mb-3">
+                        <div class="row">
+                          <label class="col-md-5"> Measured Air (%) </label>
+                          <div class="col-md-7">
+                            <input type="text" />
+                          </div>
+                        </div>
+                      </div>
+                      <!-- 17 -->
+                      <div class="col-md-4 mb-3">
+                        <div class="row">
+                          <label class="col-md-5"> Concrete Temp (°C) </label>
+                          <div class="col-md-7">
+                            <input type="text" />
+                          </div>
+                        </div>
+                      </div>
+                      <!-- 18 -->
+                      <div class="col-md-4 mb-3">
+                        <div class="row">
+                          <label class="col-md-5"> Casted By </label>
+                          <div class="col-md-7">
+                            <input type="text" />
+                          </div>
+                        </div>
+                      </div>
+                      <!-- 19 -->
+                      <div class="col-md-4 mb-3">
+                        <div class="row">
+                          <label class="col-md-5"> Truck No </label>
+                          <div class="col-md-7">
+                            <input type="text" />
+                          </div>
+                        </div>
+                      </div>
+                      <!-- 20 -->
+                      <div class="col-md-4 mb-3">
+                        <div class="row">
+                          <label class="col-md-5"> Ambient Temp (°C) </label>
+                          <div class="col-md-7">
+                            <input type="text" />
+                          </div>
+                        </div>
+                      </div>
+                      <!-- 21 -->
+                      <div class="col-md-4 mb-3">
+                        <div class="row">
+                          <label class="col-md-5">
+                            Initial Curing Temperature (°C)</label
+                          >
+                          <div class="col-md-4">
+                            <input
+                              type="number"
+                              placeholder="Min"
+                              minlength="5"
+                            />
+                          </div>
+                          <div class="col-md-3">
+                            <input
+                              type="number"
+                              placeholder="Max"
+                              maxlength="10"
+                            />
+                          </div>
+                        </div>
+                      </div>
+                      <!-- 22 -->
+                    </div>
+                    <!-- end input row -->
+                    <div class="row mt-3 mb-3">
+                      <div class="col-md-6 text-start">
+                        <img
+                          src="../static/footer_icons.png"
+                          class="foot_icons"
+                          alt="img"
+                        />
+                      </div>
+                      <div class="col-md-6 text-end">
+                        <button
+                          type="submit"
+                          class="cancel_reset_entry0120 background_btn_1"
+                        >
+                          Reset
+                        </button>
+                        <!-- <button
+                          type="submit"
+                          class="cancel_reset_entry0120 background_btn_2"
+                        >
+                          Cancel Entry
+                        </button> -->
+                      </div>
+                    </div>
+                  </fieldset>
+                </form>
+              </div>
+              <!-- ticket_section_body -->
+            </div>
+            <!-- end ticket section-->
+          </div>
+        </div>
+      </div>
+      <!-- End top section part 1-->
+      <br />
+      <!-- Start Notes 3 -->
+      <div class="container">
+        <div class="row">
+          <div class="col-md-7">
+            <div class="section_ticket_section">
+              <div class="ticket_section_header">
+                <h4>Cylinder Quantities</h4>
+                <button>X</button>
+              </div>
+              <!-- ticket_section_header -->
+              <div class="ticket_section_body" id="set_ction_mobile_listy_number231321">
+                <form>
+                  <fieldset>
+                    <legend>Number of Cylinders</legend>
+                    <div class="row">
+                      <div class="col-md-9">
+                        <div class="table-responsive">
+                            <table>
+                                
+                                <tr class="table_ticket_bottom_head">
+                                  <th>Designation</th>
+                                  <th>Quantity</th>
+                                  <th>Time</th>
+                                  <th>Early Break</th>
+                                </tr>
+                                <!-- A -->
+                                <tr class="table_ticket_bottom_body">
+                                  <td>
+                                    <p class="designation_title_a">A</p>
+                                  </td>
+                                  <td>
+                                    <div class="custom_input_selectA">
+                                      <select required class="input_custom001">
+                                        <option selected>0</option>
+                                        <option>7</option>
+                                        <option>14</option>
+                                        <option>28</option>
+                                        <option>56</option>
+                                      </select>
+                                      <input type="text" class="input_custom002" />
+                                    </div>
+                                  </td>
+                                  <td>
+                                    <input type="time" name="" id="" class="time_settings_list_ticket" />
+                                  </td>
+                                  <td>
+                                    <input
+                                      type="checkbox"
+                                      class="checkox_input_255"
+                                      id="openSetA"
+                                    />
+                                  </td>
+                                </tr>
+                                <!-- A-->
+                                <!-- B -->
+                                <tr class="table_ticket_bottom_body">
+                                  <td>
+                                    <p class="designation_title_a">B</p>
+                                  </td>
+                                  <td>
+                                    <div class="custom_input_selectB">
+                                      <select required class="input_custom001">
+                                         <option selected>0</option>
+                                        <option>7</option>
+                                        <option>14</option>
+                                        <option>28</option>
+                                        <option>56</option>
+                                      </select>
+                                      <input type="text" class="input_custom002" />
+                                    </div>
+                                  </td>
+                                  <td>
+                                    <input type="time" name="" id="" class="time_settings_list_ticket"/>
+                                  </td>
+                                  <td>
+                                    <input
+                                      type="checkbox"
+                                      class="checkox_input_255"
+                                      id="openSetB"
+                                    />
+                                  </td>
+                                </tr>
+                                <!-- B -->
+                                <!-- C -->
+                                <tr class="table_ticket_bottom_body">
+                                  <td>
+                                    <p class="designation_title_a">C</p>
+                                  </td>
+                                  <td>
+                                    <div class="custom_input_selectC">
+                                      <select required class="input_custom001">
+                                        <option selected>0</option>
+                                        <option>7</option>
+                                        <option>14</option>
+                                        <option>28</option>
+                                        <option>56</option>
+                                      </select>
+                                      <input type="text" class="input_custom002" />
+                                    </div>
+                                  </td>
+                                  <td>
+                                    <input type="time" name="" id="" class="time_settings_list_ticket" />
+                                  </td>
+                                  <td>
+                                    <input
+                                      type="checkbox"
+                                      class="checkox_input_255"
+                                      id="openSetC"
+                                    />
+                                  </td>
+                                </tr>
+                                <!-- C -->
+                                <!-- D -->
+                                <tr class="table_ticket_bottom_body">
+                                  <td>
+                                    <p class="designation_title_a">D</p>
+                                  </td>
+                                  <td>
+                                    <div class="custom_input_selectD">
+                                      <select required class="input_custom001">
+                                        <option selected>0</option>
+                                        <option>7</option>
+                                        <option>14</option>
+                                        <option>28</option>
+                                        <option>56</option>
+                                      </select>
+                                      <input type="text" class="input_custom002" />
+                                    </div>
+                                  </td>
+                                  <td>
+                                    <input type="time" name="" id="" class="time_settings_list_ticket" />
+                                  </td>
+                                  <td>
+                                    <input
+                                      type="checkbox"
+                                      class="checkox_input_255"
+                                      id="openSetD"
+                                    />
+                                  </td>
+                                </tr>
+                                <!-- D -->
+                                <!-- E -->
+                                <tr class="table_ticket_bottom_body">
+                                  <td>
+                                    <p class="designation_title_a">E</p>
+                                  </td>
+                                  <td>
+                                    <div class="custom_input_selectE">
+                                      <select required class="input_custom001">
+                                         <option selected>0</option>
+                                        <option>7</option>
+                                        <option>14</option>
+                                        <option>28</option>
+                                        <option>56</option>
+                                      </select>
+                                      <input type="text" class="input_custom002" />
+                                    </div>
+                                  </td>
+                                  <td>
+                                    <input type="time" name="" id="" class="time_settings_list_ticket" />
+                                  </td>
+                                  <td>
+                                    <input
+                                      type="checkbox"
+                                      class="checkox_input_255"
+                                      id="openSetE"
+                                    />
+                                  </td>
+                                </tr>
+                                <!-- E -->
+                                <!-- F -->
+                                <tr class="table_ticket_bottom_body">
+                                  <td>
+                                    <p class="designation_title_a">F</p>
+                                  </td>
+                                  <td>
+                                    <div class="custom_input_selectF">
+                                      <select required class="input_custom001">
+                                        <option selected>0</option>
+                                        <option>7</option>
+                                        <option>14</option>
+                                        <option>28</option>
+                                        <option>56</option>
+                                      </select>
+                                      <input type="text" class="input_custom002" />
+                                    </div>
+                                  </td>
+                                  <td>
+                                    <input type="time" name="" id="" class="time_settings_list_ticket" />
+                                  </td>
+                                  <td>
+                                    <input
+                                      type="checkbox"
+                                      class="checkox_input_255"
+                                      id="openSetF"
+                                    />
+                                  </td>
+                                </tr>
+                                <!-- F -->
+                            </table>
+                        </div>
+                      </div>
+                      <!-- left -->
+                      <div class="col-md-3 mt-5">
+                        <p class="right_peragraph_section564879876465">
+                          Please Check if you sould like to submit a note with
+                          this entry
+                          <input
+                            type="checkbox"
+                            id="checkbox_input_entry"
+                            required
+                          />
+                        </p>
+                        <button
+                          type="submit"
+                          class="sendnotes_btn_resect_ticket0022135465465"
+                        >
+                          Reset
+                        </button>
+                      </div>
+                    </div>
+                  </fieldset>
+                </form>
+                <div class="footer_Sectoin_area_list0003">
+                  <img src="../static/footer_icons.png" class="foot_icons" alt="img" />
+                </div>
+              </div>
+              <!-- ticket_section_body -->
+            </div>
+            <!-- end ticket section-->
+          </div>
+          <div class="col-md-5">
+            <div class="section_ticket_section section_ticket_sectionR">
+              <div class="ticket_section_header">
+                <h4>Notes</h4>
+                <button>X</button>
+              </div>
+              <!-- ticket_section_header -->
+              <div class="ticket_section_body bottom_section_gray001">
+                <form>
+                  <fieldset>
+                    <legend>Send Note</legend>
+                    <div class="row">
+                      <div class="col-md-12 mb-3">
+                        <div class="row">
+                          <label class="col-md-12"> Notes </label>
+                          <div class="col-md-12">
+                            <textarea
+                              class="notes_text_area__text001"
+                            ></textarea>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-12 text-center mb-3">
+                       
+                        <button
+                          type="submit"
+                          class="sendnotes_btn_resect_ticket002"
+                        >
+                          Reset
+                        </button>
+                      </div>
+                    </div>
+                  </fieldset>
+                </form>
+                
+                <div class="footer_Sectoin_area_list0003">
+                  <img src="../static/footer_icons.png" class="foot_icons" alt="img" />
+                </div>
+              </div>
+              <!-- ticket_section_body -->
+            </div>
+            <!-- end ticket section-->
+           
+             
+          </div>
+          
+             <div class="sbmtbtn"> 
+            <button
+                          type="submit"
+                          class="sendnotes_btn_resect_ticket00_submit001"
+                        >
+                          Submit Ticket
+                        </button>
+                        </div>
+                  
+        </div>
+      </div>
+      <!-- End Notes 3 -->
+    </div>
+   
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script>
+      $(document).ready(function () {
+        $("#openSetA").click(function () {
+          $(".custom_input_selectA").toggleClass("mainOpen");
+        });
+        $("#openSetB").click(function () {
+          $(".custom_input_selectB").toggleClass("mainOpen");
+        });
+        $("#openSetC").click(function () {
+          $(".custom_input_selectC").toggleClass("mainOpen");
+        });
+        $("#openSetD").click(function () {
+          $(".custom_input_selectD").toggleClass("mainOpen");
+        });
+        $("#openSetE").click(function () {
+          $(".custom_input_selectE").toggleClass("mainOpen");
+        });
+        $("#openSetF").click(function () {
+          $(".custom_input_selectF").toggleClass("mainOpen");
+        });
+        $("#checkbox_input_entry").click(function () {
+          $(".section_ticket_sectionR").toggleClass("mainOpenRight");
+        });
+      });
+    </script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2"
+      crossorigin="anonymous"
+    ></script>
+  </body>
+</html>

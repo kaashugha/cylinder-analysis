@@ -1,0 +1,629 @@
+@import url("https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,wght@0,200;0,300;0,400;0,600;0,700;0,800;0,900;1,200;1,300;1,400;1,600;1,700;1,800;1,900&display=swap");
+
+* {
+  margin: 0;
+  padding: 0;
+  font-family: "Nunito Sans", sans-serif;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: "Nunito Sans", sans-serif;
+}
+
+header {
+	width: 100%;
+	display: block;
+	background: #e3e3e3;
+	padding: 5px 0;
+	text-align: right;
+	margin-bottom: 30px;
+}
+
+.logout_header_img {
+	width: 25px;
+	transform: rotate(180deg);
+	margin: 0 0px 0 5px;
+	display: inline-block;
+	vertical-align: middle;
+}
+
+.logout_bnt_section, .logout_bnt_section:hover {
+	display: inline-block;
+	margin: 0;
+	color: #FFF;
+	text-decoration: none;
+	text-transform: uppercase;
+	background: red;
+	padding: 10px 20px;
+	border-radius: 5px;
+}
+
+.main_home_section {
+  width: 100%;
+  display: block;
+  padding: 20px 0;
+}
+
+.home_btn_listing_left {
+  width: 100%;
+  display: block;
+  margin: 0;
+  padding: 5px 0 0 0;
+  list-style: none;
+}
+
+.home_btn_listing_left li {
+  display: block;
+  margin: 0 0 0 0;
+}
+
+.home_btn_listing_left li a {
+  display: inline-block;
+  padding: 22px 30px;
+  min-width: 330px;
+  border-radius: 5px;
+  margin: 0 0 25px 0;
+  font-size: 18px;
+  text-decoration: none;
+  color: #fff;
+  background: #0d6efd;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  transition: 0.5s;
+}
+
+.home_btn_listing_left li a:hover {
+  display: inline-block;
+  padding: 22px 30px;
+  min-width: 330px;
+  border-radius: 5px;
+  margin: 0 0 25px 0;
+  font-size: 18px;
+  text-decoration: none;
+  color: #fff;
+  background: #033f99;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  transition: 0.5s;
+}
+
+/* Ticket Page */
+
+.main_home_section_ticket {
+  width: 100%;
+  display: block;
+  padding: 5px 0 0;
+}
+
+.section_ticket_section {
+  width: 100%;
+  display: block;
+  border: 1px solid #0d6efd;
+  border-radius: 10px;
+}
+
+.ticket_section_header {
+  width: 100%;
+  display: block;
+  background: #0d6efd;
+  position: relative;
+  padding: 13px 10px;
+  border-radius: 7px 7px 0px 0px;
+}
+
+.ticket_section_header button {
+  position: absolute;
+  right: 10px;
+  top: 0;
+  background: no-repeat;
+  border: none;
+  outline: none;
+  padding: 6px;
+  font-size: 30px;
+  color: #fff;
+  display: none;
+}
+
+.ticket_section_header h4 {
+  display: inline-block;
+  margin: 0;
+  color: #fff;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-weight: 700;
+}
+
+.ticket_section_body {
+  width: 100%;
+  display: block;
+  padding: 10px 10px 10px;
+}
+
+.ticket_section_body input {
+  width: 100%;
+  display: block;
+  padding: 9px;
+  border-radius: 5px;
+  border: 1px solid gray;
+  outline: none;
+}
+
+.ticket_section_body select {
+  width: 100%;
+  display: block;
+  padding: 9px 0px 9px 9px;
+  border-radius: 5px;
+  border: 1px solid gray;
+  outline: none;
+}
+
+.input_custom001 {
+	width: 60px !important;
+}
+
+.input_custom002 {
+	width: 60px !important;
+}
+
+.ticket_section_body label {
+  font-weight: 500;
+  font-size: 16px;
+  text-transform: none;
+}
+
+.table_ticket_bottom_body {
+	border-bottom: 1px solid #e3e3e3;
+}
+
+.table_ticket_bottom_body td {
+	padding: 8px 2px !important;
+}
+
+.table_ticket_bottom_head {
+	border-bottom: 1px solid #e3e3e3;
+}
+
+.table_ticket_bottom_head th {
+	padding: 8px 2px !important;
+}
+
+.cancel_reset_entry0120 {
+  padding: 15px 40px;
+  display: inline-block;
+  margin: 0 0 0 20px;
+  min-width: 150px;
+  border: none;
+  background: initial;
+  outline: none;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: #fff;
+}
+
+.background_btn_1 {
+  background: #00ffff;
+  color: #000;
+  border-radius: 5px;
+}
+
+.background_btn_2 {
+  background: red;
+}
+
+.background_btn_3 {
+  background: #029209;
+}
+
+.SAFFA_engineering_inc_peragraph0 {
+  display: inline-block;
+  padding: 10px 30px;
+  margin: 0;
+  font-size: 18px;
+  font-weight: 600;
+  background: #f1f1f1;
+  border-radius: 5px;
+  text-align: left;
+}
+
+fieldset {
+  min-width: 0;
+  padding: 25px 10px 0px;
+  margin: 20px 0 0 0;
+  border: 1px solid gray;
+  border-radius: 10px;
+  position: relative;
+}
+
+legend {
+  position: absolute;
+  left: 10px;
+  top: -14px;
+  background: #fff;
+  display: inline-block;
+  width: auto;
+  padding: 0 5px;
+  color: #0d6efd;
+  text-transform: uppercase;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.cylinder_analysis_table_btn001 {
+  padding: 12px 40px;
+  display: inline-block;
+  margin: 20px 0 0 5px;
+  min-width: 150px;
+  border: none;
+  outline: none;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: #fff;
+  border-radius: 5px;
+}
+
+.result_data_cylinder_analysis_table td {
+  min-width: 150px;
+}
+
+.result_data_cylinder_analysis_table th {
+  padding: 10px 0;
+}
+
+.result_data_cylinder_analysis_table tr {
+  border-bottom: 1px solid #80808030;
+  cursor: pointer;
+}
+
+table {
+  width: 100%;
+}
+
+.create_data_cylinder_analysis_table tr {
+  border-bottom: 1px solid #80808030;
+  cursor: pointer;
+}
+
+.create_data_cylinder_analysis_table th,
+.create_data_cylinder_analysis_table td {
+  padding: 5px 0;
+}
+
+.generate_report_middle_section_add {
+  display: inline-block;
+  margin: 30px 0 10px;
+  padding: 13px 50px;
+  font-size: 18px;
+  text-transform: uppercase;
+  font-weight: 600;
+  letter-spacing: 1px;
+}
+
+.cylinder_brecking_img001 {
+  width: 100%;
+}
+
+.footer_Sectoin_area_list0003 {
+  display: block;
+  margin: 6px 0 0 0;
+}
+
+.foot_icons {
+  display: block;
+  width: auto;
+}
+
+.notes_text_area__text001 {
+  width: 100%;
+  display: block;
+  min-height: 150px;
+  border: 1px solid gray;
+  border-radius: 10px;
+  outline: none;
+  padding: 10px;
+}
+
+.sendnotes_btn_resect_ticket001 {
+  background: #00ffff;
+  border: none;
+  padding: 12px 40px;
+  border-radius: 5px;
+  margin: 0 5px 0;
+}
+
+.sendnotes_btn_resect_ticket002 {
+  background: #ff8000;
+  border: none;
+  padding: 12px 40px;
+  border-radius: 5px;
+  margin: 0 5px 0;
+}
+
+.designation_title_a {
+  margin: 0;
+  display: block;
+  text-align: center;
+  padding: 10px;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.checkox_input_255 {
+  display: block;
+  margin: 10px auto 0;
+  width: 20px;
+  height: 20px;
+}
+
+.right_peragraph_section564879876465 {
+  width: 100%;
+  display: block;
+  position: relative;
+  padding: 0 0px 0 0;
+  margin: 0 0 30px 0;
+}
+
+#checkbox_input_entry {
+  width: 20px;
+  height: 20px;
+  position: unset;
+  right: 5px;
+  top: 5px;
+  margin: 10px 0 0 0;
+}
+
+.sendnotes_btn_resect_ticket0022135465465 {
+  background: #00ffff;
+  border: none;
+  padding: 12px 0;
+  border-radius: 5px;
+  margin: 0 5px 0;
+  width: 98%;
+}
+
+.custom_input_selectA .input_custom002,
+.custom_input_selectB .input_custom002,
+.custom_input_selectC .input_custom002,
+.custom_input_selectD .input_custom002,
+.custom_input_selectE .input_custom002,
+.custom_input_selectF .input_custom002 {
+  display: none;
+  transition: 0.5s;
+}
+
+.custom_input_selectA.mainOpen .input_custom002,
+.custom_input_selectB.mainOpen .input_custom002,
+.custom_input_selectC.mainOpen .input_custom002,
+.custom_input_selectD.mainOpen .input_custom002,
+.custom_input_selectE.mainOpen .input_custom002,
+.custom_input_selectF.mainOpen .input_custom002 {
+  display: block;
+  transition: 0.5s;
+}
+
+.custom_input_selectA.mainOpen .input_custom001,
+.custom_input_selectB.mainOpen .input_custom001,
+.custom_input_selectC.mainOpen .input_custom001,
+.custom_input_selectD.mainOpen .input_custom001,
+.custom_input_selectE.mainOpen .input_custom001,
+.custom_input_selectF.mainOpen .input_custom001 {
+  display: none;
+  transition: 0.5s;
+}
+
+.sendnotes_btn_resect_ticket00_submit001 {
+  background: #088804;
+  border: none;
+  padding: 12px 40px;
+  border-radius: 5px;
+  margin: 0 5px 0;
+  color: #fff;
+}
+
+.bottom_section_gray001 {
+  background: #e3e3e3;
+  border-radius: 0 0 10px 10px;
+}
+
+.bottom_section_gray001 legend {
+  background: #e3e3e3;
+}
+
+
+/* Start Login Page */
+
+.login_section_main_home_aera {
+  background: #000;
+  border-radius: 25px;
+  padding: 0px;
+}
+
+.left_login_img_img {
+  width: 100%;
+  border-radius: 22px 0px 0px 22px;
+  display: block;
+}
+
+.right_login_section_right {
+  width: 100%;
+  display: block;
+  padding: 70px 30px 60px 20px;
+  color: #FFF;
+}
+
+#exampleFormControlInput1 {
+  padding: 10px;
+  border-radius: 5px;
+  display: block;
+  height: 50px;
+}
+
+.submit-form-btn-list01 {
+  width: 100%;
+  display: block;
+  height: 55px;
+  margin: 40px 0 0 0;
+  border-radius: 5px;
+  background: #084298;
+  color: #FFF;
+  font-size: 18px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  border: none;
+}
+
+.login_details_heading_sent020 {
+  text-transform: uppercase;
+  font-weight: 600;
+  letter-spacing: 1px;
+}
+
+.left_area_section_area_002_left {
+  width: 100%;
+  display: block;
+  background: url("./lrft_login.png");
+  background-repeat: no-repeat;
+  background-size: cover;
+  height: 100%;
+  border-radius: 22px 0 0 22px;
+}
+
+.login_main_section {
+  width: 100%;
+  display: block;
+  padding: 40px 0;
+}
+
+.table-responsive-custom {
+  overflow: scroll;
+  height: 250px;
+}
+
+.section_ticket_sectionR {
+  display: none;
+  transition: 0.5s;
+}
+
+.mainOpenRight {
+  display: block;
+  transition: 0.5s;;
+}
+
+.rowOpen {
+  background: gainsboro;
+  transition: 0.5s;
+}
+
+.rowOpenCreate {
+  background: gainsboro;
+  transition: 0.5s;
+}
+
+
+/* End Login Page */
+
+@media only screen and (max-width: 992px) {
+  .mobile_display_none {
+    display: none;
+  }
+
+    .right_login_section_right {
+      width: 100%;
+      display: block;
+      padding: 70px 20px 60px 0px;
+      color: #FFF;
+    }
+}
+
+@media only screen and (max-width: 768px) {
+    
+.designation_title_a {
+	margin: 0;
+	display: block;
+	text-align: center;
+	padding: 5px 0px;
+	font-size: 15px;
+	font-weight: 700;
+}    
+
+.table_ticket_bottom_head th {
+	padding: 8px 2px !important;
+	font-size: 14px;
+}
+
+.right_login_section_right {
+    width: 100%;
+    display: block;
+    padding: 50px 30px 40px 30px;
+    color: #FFF;
+  }
+
+  .login_main_section {
+      width: 100%;
+      display: block;
+      padding: 20px 0;
+    }
+
+.main_home_section {
+    width: 100%;
+    display: block;
+    padding: 20px 0;
+  }
+
+  .mobile_display_none {
+    display: none;
+  }
+
+  .cylinder_analysis_table_btn001 {
+    padding: 12px 40px;
+    display: block;
+    margin: 0px 0 0 0px;
+    min-width: 150px;
+    border: none;
+    outline: none;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: #fff;
+    border-radius: 5px;
+  }
+
+  .generate_report_middle_section_add {
+    display: inline-block;
+    margin: 30px 0 10px;
+    padding: 13px 10px;
+    font-size: 18px;
+    text-transform: uppercase;
+    font-weight: 600;
+    letter-spacing: 1px;
+  }
+
+  .cancel_reset_entry0120 {
+    padding: 14px 36px;
+    display: inline-block;
+    margin: 0 0 0 0px;
+    min-width: auto;
+    border: none;
+    background: initial;
+    outline: none;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: #fff;
+  }
+
+  .for_mobile_analysis_settings10 {
+    padding: 12px 40px;
+    display: block;
+    margin: 0px 0 10px 0px;
+    min-width: 100%;
+  }
+  
+  header {
+	width: 100%;
+	display: block;
+	background: #e3e3e3;
+	padding: 5px 0;
+	text-align: right;
+	margin-bottom: 20px;
+}
+}

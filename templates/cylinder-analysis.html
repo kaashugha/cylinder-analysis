@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Cylinder Analysis</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="../static/style.css" />
+  </head>
+  <body>
+      
+       <header>
+         <div class="container-fluid">
+              <a href="index.html" class="logout_bnt_section">
+              Logout <img src="../static/logout.png" alt="logout" class="logout_header_img">
+          </a>
+         </div>
+      </header>
+      
+    <div class="main_home_section_ticket">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-12">
+            <div class="section_ticket_section">
+              <div class="ticket_section_header">
+                <h4>Cylinder Analysis</h4>
+                <button>X</button>
+              </div>
+              <!-- ticket_section_header -->
+              <div class="ticket_section_body">
+                <form>
+                  <fieldset>
+                    <legend>Enter Details</legend>
+                    <div class="row">
+                      <div class="col-md-6 mb-3">
+                        <div class="row">
+                          <label class="col-md-5"> Batch ID </label>
+                          <div class="col-md-7">
+                            <select>
+                              <option></option>
+                            </select>
+                          </div>
+                        </div>
+                      </div>
+                      <!-- 1 -->
+                      <div class="col-md-6 mb-3">
+                        <div class="row">
+                          <label class="col-md-5"> SAFFA Designation </label>
+                          <div class="col-md-7">
+                            <select>
+                              <option></option>
+                            </select>
+                          </div>
+                        </div>
+                      </div>
+                      <!-- 2 -->
+                      <div class="col-md-6 mb-3">
+                        <div class="row">
+                          <label class="col-md-5"> Employee ID </label>
+                          <div class="col-md-7">
+                            <select>
+                              <option></option>
+                            </select>
+                          </div>
+                        </div>
+                      </div>
+                      <!-- 3 -->
+                      <div class="col-md-6 mb-3">
+                        <div class="row">
+                          <label class="col-md-5"> Weight (gr) </label>
+                          <div class="col-md-7">
+                            <input type="text" />
+                          </div>
+                        </div>
+                      </div>
+                      <!-- 4 -->
+                      <div class="col-md-6 mb-3">
+                        <div class="row">
+                          <label class="col-md-5"> Height (0.1 mm) </label>
+                          <div class="col-md-7">
+                            <input type="text" />
+                          </div>
+                        </div>
+                      </div>
+                      <!-- 5 -->
+                      <div class="col-md-6 mb-3">
+                        <div class="row">
+                          <label class="col-md-5"> Diameter (0.1 mm) </label>
+                          <div class="col-md-7">
+                            <input type="text" />
+                          </div>
+                        </div>
+                      </div>
+                      <!-- 6 -->
+                      <div class="col-md-12 mb-3 text-end">
+                        <div class="row">
+                          <div class="col-md-12">
+                            <button
+                              type="submit"
+                              class="cancel_reset_entry0120 background_btn_3"
+                            >
+                              Save
+                            </button>
+                            <button
+                              type="submit"
+                              class="cancel_reset_entry0120 background_btn_1"
+                            >
+                              Reset
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                      <!-- 7 -->
+                    </div>
+                    <!-- end input row -->
+                  </fieldset>
+                </form>
+                <form>
+                  <fieldset>
+                    <legend>Enter Details</legend>
+                    <div class="row mb-2">
+                      <div class="col-md-2 mb-3">
+                        <div class="row">
+                          <label class="col-md-12"> Search By </label>
+                          <div class="col-md-12">
+                            <select>
+                              <option></option>
+                            </select>
+                          </div>
+                        </div>
+                      </div>
+                      <!-- 1 -->
+                      <div class="col-md-2 mb-3">
+                        <div class="row">
+                          <label class="col-md-12"> Search Value </label>
+                          <div class="col-md-12">
+                            <input type="text" name="batch" />
+                          </div>
+                        </div>
+                      </div>
+                      <!-- 2 -->
+                      <div class="col-md-2 mb-3">
+                        <div class="row">
+                          <label class="col-md-12" style="opacity: 0">
+                            Search Value
+                          </label>
+                          <div class="col-md-12">
+                            <input
+                              type="button"
+                              name="batch"
+                              value="Search"
+                              class="btn btn-info border-0"
+                            />
+                          </div>
+                        </div>
+                      </div>
+                      <!-- 3 -->
+                      <div class="col-md-6 mb-3 text-end">
+                        <div class="row">
+                          <div class="col-md-12">
+                            <button
+                              type="submit"
+                              class="cylinder_analysis_table_btn001 bg-warning for_mobile_analysis_settings10"
+                            >
+                              Edit
+                            </button>
+                            <button
+                              type="submit"
+                              class="cylinder_analysis_table_btn001 bg-danger for_mobile_analysis_settings10"
+                            >
+                              Delete
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                      <!-- 4 -->
+                    </div>
+                    <!-- End Filer-->
+                    <div class="result_data_cylinder_analysis_table">
+                      <div class="row">
+                        <div class="table-responsive-custom">
+                          <table>
+                            <tr>
+                              <th>Row #</th>
+                              <th>Batch ID</th>
+                              <th>SAFFA Designation</th>
+                              <th>Employee ID</th>
+                              <th>Cylinder ID</th>
+                              <th>Date (dd-mm-yyyy)</th>
+                              <th>Weight (gr)</th>
+                              <th>Height (0.1 mm)</th>
+                              <th>Diameter (0.1 mm)</th>
+                              <th>Density (kg/m^3)</th>
+                              <th>Notes</th>
+                            </tr>
+                            <tr class="rowMai1">
+                              <td>1</td>
+                              <td>21-0600001</td>
+                              <td>21-0600001A-7D-1</td>
+                              <td>2</td>
+                              <td>82945541</td>
+                              <td>07-06-2021</td>
+                              <td>3826</td>
+                              <td>201.9</td>
+                              <td>101.8</td>
+                              <td>2328.22</td>
+                              <td>Dicrete 32 Mpa C2 2mm</td>
+                            </tr>
+                            <tr class="rowMai2">
+                              <td>2</td>
+                              <td>21-0600001</td>
+                              <td>21-0600001A-7D-1</td>
+                              <td>2</td>
+                              <td>82945541</td>
+                              <td>07-06-2021</td>
+                              <td>3826</td>
+                              <td>201.9</td>
+                              <td>101.8</td>
+                              <td>2328.22</td>
+                              <td>Dicrete 32 Mpa C2 2mm</td>
+                            </tr>
+                            <tr class="rowMai3">
+                              <td>3</td>
+                              <td>21-0600001</td>
+                              <td>21-0600001A-7D-1</td>
+                              <td>2</td>
+                              <td>82945541</td>
+                              <td>07-06-2021</td>
+                              <td>3826</td>
+                              <td>201.9</td>
+                              <td>101.8</td>
+                              <td>2328.22</td>
+                              <td>Dicrete 32 Mpa C2 2mm</td>
+                            </tr>
+                            <tr class="rowMai4">
+                              <td>4</td>
+                              <td>21-0600001</td>
+                              <td>21-0600001A-7D-1</td>
+                              <td>2</td>
+                              <td>82945541</td>
+                              <td>07-06-2021</td>
+                              <td>3826</td>
+                              <td>201.9</td>
+                              <td>101.8</td>
+                              <td>2328.22</td>
+                              <td>Dicrete 32 Mpa C2 2mm</td>
+                            </tr>
+                            <tr class="rowMai5">
+                              <td>5</td>
+                              <td>21-0600001</td>
+                              <td>21-0600001A-7D-1</td>
+                              <td>2</td>
+                              <td>82945541</td>
+                              <td>07-06-2021</td>
+                              <td>3826</td>
+                              <td>201.9</td>
+                              <td>101.8</td>
+                              <td>2328.22</td>
+                              <td>Dicrete 32 Mpa C2 2mm</td>
+                            </tr>
+                            <tr class="rowMai6">
+                              <td>6</td>
+                              <td>21-0600001</td>
+                              <td>21-0600001A-7D-1</td>
+                              <td>2</td>
+                              <td>82945541</td>
+                              <td>07-06-2021</td>
+                              <td>3826</td>
+                              <td>201.9</td>
+                              <td>101.8</td>
+                              <td>2328.22</td>
+                              <td>Dicrete 32 Mpa C2 2mm</td>
+                            </tr>
+                            <tr class="rowMai7">
+                              <td>7</td>
+                              <td>21-0600001</td>
+                              <td>21-0600001A-7D-1</td>
+                              <td>2</td>
+                              <td>82945541</td>
+                              <td>07-06-2021</td>
+                              <td>3826</td>
+                              <td>201.9</td>
+                              <td>101.8</td>
+                              <td>2328.22</td>
+                              <td>Dicrete 32 Mpa C2 2mm</td>
+                            </tr>
+                            <tr class="rowMai8">
+                              <td>8</td>
+                              <td>21-0600001</td>
+                              <td>21-0600001A-7D-1</td>
+                              <td>2</td>
+                              <td>82945541</td>
+                              <td>07-06-2021</td>
+                              <td>3826</td>
+                              <td>201.9</td>
+                              <td>101.8</td>
+                              <td>2328.22</td>
+                              <td>Dicrete 32 Mpa C2 2mm</td>
+                            </tr>
+                            <tr class="rowMai9">
+                              <td>9</td>
+                              <td>21-0600001</td>
+                              <td>21-0600001A-7D-1</td>
+                              <td>2</td>
+                              <td>82945541</td>
+                              <td>07-06-2021</td>
+                              <td>3826</td>
+                              <td>201.9</td>
+                              <td>101.8</td>
+                              <td>2328.22</td>
+                              <td>Dicrete 32 Mpa C2 2mm</td>
+                            </tr>
+                          </table>
+                        </div>
+                      </div>
+                    </div>
+                  </fieldset>
+                </form>
+                <div class="footer_Sectoin_area_list0003">
+                  <img src="../static/footer_icons.png" class="foot_icons" alt="img" />
+                </div>
+              </div>
+              <!-- ticket_section_body -->
+            </div>
+            <!-- end ticket section-->
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script>
+      $(document).ready(function () {
+        $(".rowMai1").click(function () {
+          $(".rowMai1").toggleClass("rowOpen");
+        });
+        //1
+        $(".rowMai2").click(function () {
+          $(".rowMai2").toggleClass("rowOpen");
+        });
+        //2
+        $(".rowMai3").click(function () {
+          $(".rowMai3").toggleClass("rowOpen");
+        });
+        //3
+        $(".rowMai4").click(function () {
+          $(".rowMai4").toggleClass("rowOpen");
+        });
+        //4
+        $(".rowMai5").click(function () {
+          $(".rowMai5").toggleClass("rowOpen");
+        });
+        //5
+        $(".rowMai6").click(function () {
+          $(".rowMai6").toggleClass("rowOpen");
+        });
+        //6
+        $(".rowMai7").click(function () {
+          $(".rowMai7").toggleClass("rowOpen");
+        });
+        //7
+        $(".rowMai8").click(function () {
+          $(".rowMai8").toggleClass("rowOpen");
+        });
+        //8
+        $(".rowMai9").click(function () {
+          $(".rowMai9").toggleClass("rowOpen");
+        });
+        //9
+        $(".rowMai10").click(function () {
+          $(".rowMai10").toggleClass("rowOpen");
+        });
+        //10
+      });
+    </script>
+
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2"
+      crossorigin="anonymous"
+    ></script>
+  </body>
+</html>
