@@ -1,69 +1,21 @@
 from flask import Flask, redirect, render_template, request, session, url_for
 from flask_sqlalchemy import SQLAlchemy
 from datetime import timedelta
-import pymysql
-import secrets
-
-
+from flaskext.mysql import MySQL
+ 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:temppass@localhost/cylinders'
-app.config['SECRET_KEY'] = "arrrrrrimasecretkeyarrrrrrrrr"
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
+app.config['MYSQL_HOST'] = 'localhost'
+app.config['MYSQL_USER'] = 'root'
+app.config['MYSQL_PASSWORD'] = ''
+app.config['MYSQL_DB'] = 'flask'
 app.permanent_session_lifetime = timedelta(days=14)
 
-db = SQLAlchemy(app)
+db = MySQL(app)
 
-class users(db.Model):
-    _id = db.Column("id", db.Integer, primary_key=True)
-    username = db.Column(db.String(20))
+crs = db.connection.cursor()
 
-    def __init__(self, username):
-        self.username = username
-
-# class ticket(db.Model):
-#     _batch_id = db.Column("Batch ID", db.String, primary_key=True)
-#     username = db.Column(db.String(20))
-#     notes
-#     client_name
-#     site_add
-#     struct_grid
-#     charge_time
-#     spec_air
-#     mold_type
-#     cast_by
-#     temp_min
-#     temp_max
-#     mix_id
-#     load_no
-#     spec_slump
-#     subclient_contractor
-#     cast_time
-#     measured_air
-#     truck_no
-#     ticket_no
-#     size_agg
-#     conc_supp
-#     meas_slump
-#     spec_str
-#     conc_temp
-#     amb_temp
-    
-
-    def __init__(self, _batch_id):
-        self._batch_id = _batch_id
-
-class cylinder(db.Model):
-    _SID = db.Column("SAFFA ID", db.String, primary_key=True)
-    batch_id = db.Column(db.String(20))
-    height
-    weight
-    dia
-    comp_str
-    frac_type
-
-
-    def __init__(self, _SID):
-        self._SID = _SID
+crs.close()
 
 @app.route("/", methods=["POST", "GET"])
 def index():
@@ -137,4 +89,4 @@ def logout():
 
 if __name__ == '__main__':
     db.create_all()
-    app.run(debug=True)
+    app.run(debug=True, host='localhost', port=5000)
