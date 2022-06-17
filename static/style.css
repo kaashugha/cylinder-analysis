@@ -29,6 +29,14 @@ header {
 	vertical-align: middle;
 }
 
+.login_header_img {
+	width: 25px;
+	transform: rotate(180deg);
+	margin: 0 0px 0 5px;
+	display: inline-block;
+	vertical-align: middle;
+}
+
 .logout_bnt_section, .logout_bnt_section:hover {
 	display: inline-block;
 	margin: 0;
@@ -36,6 +44,17 @@ header {
 	text-decoration: none;
 	text-transform: uppercase;
 	background: red;
+	padding: 10px 20px;
+	border-radius: 5px;
+}
+
+.login_bnt_section, .login_bnt_section:hover {
+	display: inline-block;
+	margin: 0;
+	color: #FFF;
+	text-decoration: none;
+	text-transform: uppercase;
+	background: green;
 	padding: 10px 20px;
 	border-radius: 5px;
 }
@@ -164,7 +183,7 @@ header {
 }
 
 .input_custom002 {
-	width: 60px !important;
+	width: 100px !important;
 }
 
 .ticket_section_body label {

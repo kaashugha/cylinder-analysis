@@ -31,7 +31,7 @@
                 <div class="col-md-6">
                   <div class="right_login_section_right">
                     <h3 class="login_details_heading_sent020 mb-5">
-                      Login
+                      Register
                     </h3>
                     {% with messages = get_flashed_messages() %}
                       {% if messages %}
@@ -43,14 +43,15 @@
                     <form method="POST">
                       <div class="mb-4">
                         <label for="exampleFormControlInput1" class="form-label"
-                          >SAFFA Username</label
+                          >New Employee Registration</label
                         >
                         <input
                           type="text"
                           class="form-control"
                           id="exampleFormControlInput1"
-                          name="username"
+                          name="newuser"
                           placeholder="Username"
+                          required
                         />
                       </div>
                       <div class="mb-4">
@@ -58,19 +59,20 @@
                           for="exampleFormControlInput2"
                           class="form-label"
                         >
-                          Password
+                          New Password
                         </label>
                         <input
-                          type="password"
+                          type="text"
                           class="form-control"
                           id="exampleFormControlInput1"
-                          name="password"
-                          placeholder="*********"
+                          name="newpass"
+                          placeholder="Password"
+                          required
                         />
                       </div>
                       <div class="mb-4">
                         <button type="submit" class="submit-form-btn-list01">
-                          Sign In
+                          Register
                         </button>
                       </div>
                     </form>
