@@ -79,8 +79,9 @@ def view():
 
 @app.route("/ticket/", methods=['GET', 'POST'])
 def ticket():
+    
     if request.method == "POST":
-        client = request.form["client"]
+        client = request.form["client"][2:-3]
         mix = request.form["mix"]
         ticket = request.form["ticket"]
         address = request.form["address"]
@@ -104,17 +105,77 @@ def ticket():
         min_temp = request.form["min_temp"]
         max_temp = request.form["max_temp"]
 
-        crs.execute("INSERT INTO ticket (_batch_id) VALUES (%s)", (client,))
+        d1 = request.form["d1"]
+        d2 = request.form["d2"]
+        d3 = request.form["d3"]
+        d4 = request.form["d4"]
+        d5 = request.form["d5"]
+        d6 = request.form["d6"]
+
+        q1 = request.form["q1"]
+        q2 = request.form["q2"]
+        q3 = request.form["q3"]
+        q4 = request.form["q4"]
+        q5 = request.form["q5"]
+        q6 = request.form["q6"]
+
+        # note = request.form["note"]
+        note = "note is a GREAT SUCCESS"
+        batch = "testbatch2"
+        username = "admin"
+
+        # crs.execute("INSERT INTO user (_username, password) VALUES (%s, %s)", (user, hash_password))
+
+
+        crs.execute("""INSERT INTO ticket (_batch_id, username, notes, client_name, mix_id, ticket_no, site_add, load_no, agg_size, struct_grid, spec_slump, 
+                    conc_supp, charge_time, subclient_cont, meas_slump, spec_air, cast_time, spec_str, mould_type, meas_air, conc_temp, cast_by, 
+                    truck_no, amb_temp, temp_min, temp_max) VALUES
+                    (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)""", 
+                    (batch, username, note, client, mix, ticket, address, load, agg, gridlines, spec_sl, conc_sup, toc, subclient, meas_sl, spec_air, 
+                    cast_time, spec_str, mould, meas_air, conc_temp, cast_by, truck_no, amb_temp, min_temp, max_temp))
+        db.commit()
+
+        return f"<h1>GREAT SUCCESS { client }</h1>"
     else:
-        return render_template('ticket.html')
+        crs.execute("SELECT * FROM client")
+        return render_template('ticket.html', value=crs.fetchall())
 
 @app.route("/drop-off/")
 def dropoff():
     return render_template('drop-off.html')
 
+
 @app.route("/cylinder-analysis/")
 def cyla():
-    return render_template('cylinder-analysis.html')
+    if request.method == "POST":
+        # d1 = request.form["d1"]
+        # d2 = request.form["d2"]
+        # d3 = request.form["d3"]
+        # d4 = request.form["d4"]
+        # d5 = request.form["d5"]
+        # d6 = request.form["d6"]
+
+        # q1 = request.form["q1"]
+        # q2 = request.form["q2"]
+        # q3 = request.form["q3"]
+        # q4 = request.form["q4"]
+        # q5 = request.form["q5"]
+        # q6 = request.form["q6"]
+
+        # crs.execute("INSERT INTO user (_username, password) VALUES (%s, %s)", (user, hash_password))
+
+        # crs.execute("INSERT INTO ticket (_batch_id, mix, ticket, address, load, agg, gridlines, spec_sl, "
+        # "conc_sup, toc, subclient, meas_sl, spec_air, cast_time, spec_str, mould, meas_air, conc_temp, cast_by, "
+        # "truck_no, amb_temp, min_temp, max_temp) VALUES"
+        # "(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)", 
+        # (batch_id, mix, ticket, address, load, agg, gridlines, spec_sl, conc_sup, toc, subclient, meas_sl, spec_air, 
+        # cast_time, spec_str, mould, meas_air, conc_temp, cast_by, truck_no, amb_temp, min_temp, max_temp))
+        # db.commit
+
+
+        return f"<h1>hello</h1>"
+    else:
+        return render_template('cylinder-analysis.html')
 
 @app.route("/cylinder-breaking/")
 def cylb():
@@ -129,6 +190,13 @@ def logout():
     session.pop("user", None)
     return redirect(url_for("login"))
 
+@app.route("/test/", methods=["GET", "POST"])
+def test():
+    if request.method == "POST":
+        tex1 = request.form["testdd"]
+        return f"<h1>{ tex1 }</h1>"
+    else:
+        return render_template('test.html')
 
 if __name__ == '__main__':
     db.create_all()

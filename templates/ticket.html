@@ -21,7 +21,6 @@
     </style>
   </head>
   <body>
-      
        <header>
          <div class="container-fluid">
               <a href="index.html" class="logout_bnt_section">
@@ -50,8 +49,12 @@
                         <div class="row">
                           <label class="col-md-5"> Client </label>
                           <div class="col-md-7">
+                            <!-- <input type="text" name="client" id="" name="batch_id"> -->
                             <select name="client" id="">
-                              <option></option>
+                              {% for client in value %} -->
+                                <option value={{client}}>{{ client[0] }}</option>
+                              {% endfor %}
+                                <!-- <option value="clients">{{ clients }}</option> -->
                             </select>
                           </div>
                         </div>
@@ -61,7 +64,7 @@
                         <div class="row">
                           <label class="col-md-5"> Mix ID # </label>
                           <div class="col-md-7">
-                            <input type="text" name="mix"/>
+                            <input type="text" maxlength="20" name="mix" required/>
                           </div>
                         </div>
                       </div>
@@ -70,7 +73,7 @@
                         <div class="row">
                           <label class="col-md-5"> Ticket Number </label>
                           <div class="col-md-7">
-                            <input type="text" name="ticket"/>
+                            <input type="text" maxlength="15" name="ticket" required/>
                           </div>
                         </div>
                       </div>
@@ -79,7 +82,7 @@
                         <div class="row">
                           <label class="col-md-5"> Site Address </label>
                           <div class="col-md-7">
-                            <input type="text" name="address"/>
+                            <input type="text" maxlength="150" name="address" required/>
                           </div>
                         </div>
                       </div>
@@ -88,7 +91,7 @@
                         <div class="row">
                           <label class="col-md-5"> Load No. </label>
                           <div class="col-md-7">
-                            <input type="text" name="load"/>
+                            <input type="number" min="0" maxlength="4" name="load" required/>
                           </div>
                         </div>
                       </div>
@@ -99,7 +102,7 @@
                             Nominal Size of Agg (mm)
                           </label>
                           <div class="col-md-7">
-                            <input type="text" name="agg"/>
+                            <input type="number" min="0" maxlength="4" name="agg" required/>
                           </div>
                         </div>
                       </div>
@@ -110,7 +113,7 @@
                             Structure & Gridlines
                           </label>
                           <div class="col-md-7">
-                            <input type="text" name="gridlines"/>
+                            <input type="text" maxlength="150" name="gridlines" required/>
                           </div>
                         </div>
                       </div>
@@ -119,7 +122,7 @@
                         <div class="row">
                           <label class="col-md-5"> Specified Slump (mm) </label>
                           <div class="col-md-7">
-                            <input type="text" name="spec_sl"/>
+                            <input type="text" maxlength="7" name="spec_sl" required/>
                           </div>
                         </div>
                       </div>
@@ -128,7 +131,7 @@
                         <div class="row">
                           <label class="col-md-5"> Concrete Supplier </label>
                           <div class="col-md-7">
-                            <input type="text" name="conc_sup"/>
+                            <input type="text" maxlength="50" name="conc_sup" required/>
                           </div>
                         </div>
                       </div>
@@ -137,7 +140,7 @@
                         <div class="row">
                           <label class="col-md-5"> Time of Charge </label>
                           <div class="col-md-7">
-                            <input type="text" name="toc"/>
+                            <input type="time" name="toc" required/>
                           </div>
                         </div>
                       </div>
@@ -148,7 +151,7 @@
                             Subclient / Contractor
                           </label>
                           <div class="col-md-7">
-                            <input type="text" name="subclient"/>
+                            <input type="text" maxlength="50" name="subclient" required/>
                           </div>
                         </div>
                       </div>
@@ -157,7 +160,7 @@
                         <div class="row">
                           <label class="col-md-5"> Measured Slump (mm) </label>
                           <div class="col-md-7">
-                            <input type="text" name="meas_sl"/>
+                            <input type="number" min="0" max="200" name="meas_sl" required/>
                           </div>
                         </div>
                       </div>
@@ -166,7 +169,7 @@
                         <div class="row">
                           <label class="col-md-5"> Specified Air (%) </label>
                           <div class="col-md-7">
-                            <input type="text" name="spec_air"/>
+                            <input type="text" maxlength="5" name="spec_air" required/>
                           </div>
                         </div>
                       </div>
@@ -175,7 +178,7 @@
                         <div class="row">
                           <label class="col-md-5"> Casting Time </label>
                           <div class="col-md-7">
-                            <input type="text" name="cast_time"/>
+                            <input type="time" name="cast_time" required/>
                           </div>
                         </div>
                       </div>
@@ -186,7 +189,7 @@
                             Specified Strength MPa (28 Days)
                           </label>
                           <div class="col-md-7">
-                            <input type="text" name="spec_str"/>
+                            <input type="text" maxlength="10" name="spec_str" required/>
                           </div>
                         </div>
                       </div>
@@ -197,7 +200,7 @@
                             Type of Mould (ie 4x8)
                           </label>
                           <div class="col-md-7">
-                            <input type="text" name="mould"/>
+                            <input type="text" maxlength="9" name="mould" required/>
                           </div>
                         </div>
                       </div>
@@ -206,7 +209,7 @@
                         <div class="row">
                           <label class="col-md-5"> Measured Air (%) </label>
                           <div class="col-md-7">
-                            <input type="text" name="meas_air"/>
+                            <input type="text" maxlength="4" name="meas_air" required/>
                           </div>
                         </div>
                       </div>
@@ -215,7 +218,7 @@
                         <div class="row">
                           <label class="col-md-5"> Concrete Temp (°C) </label>
                           <div class="col-md-7">
-                            <input type="text" name="conc_temp"/>
+                            <input type="number" min="0" max="50" step="0.1" name="conc_temp" required/>
                           </div>
                         </div>
                       </div>
@@ -224,7 +227,7 @@
                         <div class="row">
                           <label class="col-md-5"> Casted By </label>
                           <div class="col-md-7">
-                            <input type="text" name="cast_by"/>
+                            <input type="text" maxlength="25" name="cast_by" required/>
                           </div>
                         </div>
                       </div>
@@ -233,7 +236,7 @@
                         <div class="row">
                           <label class="col-md-5"> Truck No </label>
                           <div class="col-md-7">
-                            <input type="text" name="truck_no"/>
+                            <input type="number" name="truck_no" required/>
                           </div>
                         </div>
                       </div>
@@ -242,7 +245,7 @@
                         <div class="row">
                           <label class="col-md-5"> Ambient Temp (°C) </label>
                           <div class="col-md-7">
-                            <input type="text" name="amb_temp"/>
+                            <input type="number" max="60" step="0.1" name="amb_temp" required/>
                           </div>
                         </div>
                       </div>
@@ -257,7 +260,10 @@
                               type="number"
                               placeholder="Min"
                               name="min_temp"
-                              minlength="5"
+                              min="0"
+                              max="50"
+                              step="0.1"
+                              required
                             />
                           </div>
                           <div class="col-md-3">
@@ -265,7 +271,10 @@
                               type="number"
                               placeholder="Max"
                               name="max_temp"
-                              maxlength="10"
+                              min="0"
+                              max="50"
+                              step="0.1"
+                              required
                             />
                           </div>
                         </div>
@@ -297,7 +306,6 @@
                       </div>
                     </div>
                   </fieldset>
-                </form>
               </div>
               <!-- ticket_section_body -->
             </div>
@@ -318,7 +326,6 @@
               </div>
               <!-- ticket_section_header -->
               <div class="ticket_section_body" id="set_ction_mobile_listy_number231321">
-                <form>
                   <fieldset>
                     <legend>Number of Cylinders</legend>
                     <div class="row">
@@ -339,7 +346,7 @@
                                   </td>
                                   <td>
                                     <div class="custom_input_selectA">
-                                      <select required class="input_custom001">
+                                      <select name="d1" required class="input_custom001">
                                         <option selected>0</option>
                                         <option>7</option>
                                         <option>14</option>
@@ -350,7 +357,7 @@
                                     </div>
                                   </td>
                                   <td>
-                                    <input type="text" name="" id="" class="input_custom002" />
+                                    <input type="text" name="q1" id="" class="input_custom002" />
                                   </td>
                                   <td>
                                     <input
@@ -368,7 +375,7 @@
                                   </td>
                                   <td>
                                     <div class="custom_input_selectB">
-                                      <select required class="input_custom001">
+                                      <select name="d2" required class="input_custom001">
                                          <option selected>0</option>
                                         <option>7</option>
                                         <option>14</option>
@@ -379,7 +386,7 @@
                                     </div>
                                   </td>
                                   <td>
-                                    <input type="text" name="" id="" class="input_custom002" />
+                                    <input type="text" name="q2" id="" class="input_custom002" />
                                   </td>
                                   <td>
                                     <input
@@ -397,7 +404,7 @@
                                   </td>
                                   <td>
                                     <div class="custom_input_selectC">
-                                      <select required class="input_custom001">
+                                      <select name="d3" required class="input_custom001">
                                         <option selected>0</option>
                                         <option>7</option>
                                         <option>14</option>
@@ -408,7 +415,7 @@
                                     </div>
                                   </td>
                                   <td>
-                                    <input type="text" name="" id="" class="input_custom002" />
+                                    <input type="text" name="q3" id="" class="input_custom002" />
                                   </td>
                                   <td>
                                     <input
@@ -426,7 +433,7 @@
                                   </td>
                                   <td>
                                     <div class="custom_input_selectD">
-                                      <select required class="input_custom001">
+                                      <select name="d4" required class="input_custom001">
                                         <option selected>0</option>
                                         <option>7</option>
                                         <option>14</option>
@@ -437,7 +444,7 @@
                                     </div>
                                   </td>
                                   <td>
-                                    <input type="text" name="" id="" class="input_custom002" />
+                                    <input type="text" name="q4" id="" class="input_custom002" />
                                   </td>
                                   <td>
                                     <input
@@ -455,7 +462,7 @@
                                   </td>
                                   <td>
                                     <div class="custom_input_selectE">
-                                      <select required class="input_custom001">
+                                      <select name="d5" required class="input_custom001">
                                          <option selected>0</option>
                                         <option>7</option>
                                         <option>14</option>
@@ -466,7 +473,7 @@
                                     </div>
                                   </td>
                                   <td>
-                                    <input type="text" name="" id="" class="input_custom002" />
+                                    <input type="text" name="q5" id="" class="input_custom002" />
                                   </td>
                                   <td>
                                     <input
@@ -484,7 +491,7 @@
                                   </td>
                                   <td>
                                     <div class="custom_input_selectF">
-                                      <select required class="input_custom001">
+                                      <select name="d6" required class="input_custom001">
                                         <option selected>0</option>
                                         <option>7</option>
                                         <option>14</option>
@@ -495,7 +502,7 @@
                                     </div>
                                   </td>
                                   <td>
-                                    <input type="text" name="" id="" class="input_custom002" />
+                                    <input type="text" name="q6" id="" class="input_custom002" />
                                   </td>
                                   <td>
                                     <input
@@ -517,7 +524,7 @@
                           <input
                             type="checkbox"
                             id="checkbox_input_entry"
-                            required
+                            name="note"
                           />
                         </p>
                         <button
@@ -529,7 +536,6 @@
                       </div>
                     </div>
                   </fieldset>
-                </form>
                 <div class="footer_Sectoin_area_list0003">
                   <img src="../static/footer_icons.png" class="foot_icons" alt="img" />
                 </div>
@@ -546,7 +552,6 @@
               </div>
               <!-- ticket_section_header -->
               <div class="ticket_section_body bottom_section_gray001">
-                <form>
                   <fieldset>
                     <legend>Send Note</legend>
                     <div class="row">
@@ -571,7 +576,7 @@
                       </div>
                     </div>
                   </fieldset>
-                </form>
+                
                 
                 <div class="footer_Sectoin_area_list0003">
                   <img src="../static/footer_icons.png" class="foot_icons" alt="img" />
@@ -597,7 +602,7 @@
       </div>
       <!-- End Notes 3 -->
     </div>
-   
+                </form>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script>
       $(document).ready(function () {
