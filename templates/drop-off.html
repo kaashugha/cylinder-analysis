@@ -33,7 +33,7 @@
               </div>
               <!-- ticket_section_header -->
               <div class="ticket_section_body">
-                <form>
+                <form method="POST">
                   <fieldset>
                     <legend>Batch Temperatures</legend>
                     <div class="row">
@@ -41,8 +41,10 @@
                         <div class="row">
                           <label class="col-md-5"> Batch ID </label>
                           <div class="col-md-7">
-                            <select required>
-                              <option></option>
+                            <select name="drop_id" required>
+                              {% for client in drop %} -->
+                                <option value={{client}}>{{ client[0] }}</option>
+                              {% endfor %}
                             </select>
                           </div>
                         </div>

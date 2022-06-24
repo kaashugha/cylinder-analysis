@@ -1,3 +1,4 @@
+import datetime
 from logging import warning
 from flask import Flask, flash, get_flashed_messages, redirect, render_template, request, session, url_for
 from flask_sqlalchemy import SQLAlchemy
@@ -81,6 +82,35 @@ def view():
 def ticket():
     
     if request.method == "POST":
+
+        day = datetime.date.today().strftime("%d")
+        cur_day = datetime.date.today().strftime("%y")
+        cur_mo = datetime.date.today().strftime("%m")
+
+        crs.execute("""SELECT _ref_no FROM REF""")
+        increment = crs.fetchone()[0]
+
+        crs.execute("""SELECT ticket_timestamp
+                    FROM ticket
+                    GROUP by ticket_timestamp
+                    ORDER BY max(ticket_timestamp)
+                    LIMIT 1""")
+
+        month_online = str(crs.fetchone()[0])[5:-12]
+
+        if int(cur_mo) > int(month_online):
+            crs.execute("""UPDATE REF
+                        SET _ref_no = 1""")
+            db.commit()
+        else:
+            crs.execute("""UPDATE REF
+                        SET _ref_no = _ref_no + 1""")
+            db.commit()
+
+
+        
+        bid = cur_day + "-" + cur_mo + str(increment).zfill(5)
+
         client = request.form["client"][2:-3]
         mix = request.form["mix"]
         ticket = request.form["ticket"]
@@ -121,7 +151,7 @@ def ticket():
 
         # note = request.form["note"]
         note = "note is a GREAT SUCCESS"
-        batch = "testbatch2"
+        batch = "testbatc1"
         username = "admin"
 
         # crs.execute("INSERT INTO user (_username, password) VALUES (%s, %s)", (user, hash_password))
@@ -131,18 +161,29 @@ def ticket():
                     conc_supp, charge_time, subclient_cont, meas_slump, spec_air, cast_time, spec_str, mould_type, meas_air, conc_temp, cast_by, 
                     truck_no, amb_temp, temp_min, temp_max) VALUES
                     (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)""", 
-                    (batch, username, note, client, mix, ticket, address, load, agg, gridlines, spec_sl, conc_sup, toc, subclient, meas_sl, spec_air, 
+                    (bid, username, note, client, mix, ticket, address, load, agg, gridlines, spec_sl, conc_sup, toc, subclient, meas_sl, spec_air, 
                     cast_time, spec_str, mould, meas_air, conc_temp, cast_by, truck_no, amb_temp, min_temp, max_temp))
         db.commit()
 
-        return f"<h1>GREAT SUCCESS { client }</h1>"
+        return f"<h1>GREAT SUCCESS { cur_mo } and online mo: { month_online }</h1>"
     else:
         crs.execute("SELECT * FROM client")
         return render_template('ticket.html', value=crs.fetchall())
 
-@app.route("/drop-off/")
+@app.route("/drop-off/", methods=["GET", "POST"])
 def dropoff():
-    return render_template('drop-off.html')
+    if request.method == "POST":
+        drop_id = request.form["drop_id"][2:-3]
+
+        crs.execute("""UPDATE ticket  
+                    SET dropoff_timestamp = CURRENT_TIMESTAMP
+                    WHERE _batch_id = (%s)
+                    """, (drop_id,))
+        db.commit()
+        return f"GOOD SUCCESS { drop_id }"
+    else:
+        crs.execute("SELECT _batch_id FROM ticket ORDER BY ticket_timestamp DESC")
+        return render_template('drop-off.html', drop=crs.fetchall())
 
 
 @app.route("/cylinder-analysis/")
