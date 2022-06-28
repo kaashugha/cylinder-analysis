@@ -370,11 +370,11 @@
                                         <option>28</option>
                                         <option>56</option>
                                       </select>
-                                      <input type="text" name="eb2" id="eb2" class="input_custom002x" disabled required/>
+                                      <input type="text" name="eb2" id="eb2" class="input_custom002x" disabled/>
                                     </div>
                                   </td>
                                   <td>
-                                    <input type="text" name="q2" id="q2" class="input_custom002" onkeydown="enabletxt('d2', 'eb2', 'q2')"/>
+                                    <input type="text" name="q2" id="q2" class="input_custom002" />
                                   </td>
                                   <td>
                                     <input
@@ -400,11 +400,11 @@
                                         <option>28</option>
                                         <option>56</option>
                                       </select>
-                                      <input type="text" name="eb3" id="eb3" class="input_custom002x" disabled required/>
+                                      <input type="text" name="eb3" id="eb3" class="input_custom002x" disabled/>
                                     </div>
                                   </td>
                                   <td>
-                                    <input type="text" name="q3" id="" class="input_custom002" />
+                                    <input type="text" name="q3" id="q3" class="input_custom002" />
                                   </td>
                                   <td>
                                     <input
@@ -430,11 +430,11 @@
                                         <option>28</option>
                                         <option>56</option>
                                       </select>
-                                      <input type="text" name="eb4" id="eb4" class="input_custom002x" disabled required/>
+                                      <input type="text" name="eb4" id="eb4" class="input_custom002x" disabled/>
                                     </div>
                                   </td>
                                   <td>
-                                    <input type="text" name="q4" id="" class="input_custom002" />
+                                    <input type="text" name="q4" id="q4" class="input_custom002" />
                                   </td>
                                   <td>
                                     <input
@@ -460,11 +460,11 @@
                                         <option>28</option>
                                         <option>56</option>
                                       </select>
-                                      <input type="text" name="eb5" id="eb5" class="input_custom002x" disabled required/>
+                                      <input type="text" name="eb5" id="eb5" class="input_custom002x" disabled/>
                                     </div>
                                   </td>
                                   <td>
-                                    <input type="text" name="q5" id="" class="input_custom002" />
+                                    <input type="text" name="q5" id="q5" class="input_custom002" />
                                   </td>
                                   <td>
                                     <input
@@ -490,11 +490,11 @@
                                         <option>28</option>
                                         <option>56</option>
                                       </select>
-                                      <input type="text" name="eb6" id="eb6" class="input_custom002x" disabled required/>
+                                      <input type="text" name="eb6" id="eb6" class="input_custom002x" disabled/>
                                     </div>
                                   </td>
                                   <td>
-                                    <input type="text" name="q6" id="" class="input_custom002" />
+                                    <input type="text" name="q6" id="q6" class="input_custom002" />
                                   </td>
                                   <td>
                                     <input
@@ -569,6 +569,7 @@
             <button
                           type="submit"
                           class="sendnotes_btn_resect_ticket00_submit001"
+                          onclick="enable_caller()"
                         >
                           Submit
                         </button>
@@ -600,14 +601,27 @@
       }
     </script>
     <script>
+      function enable_caller() {
+          enabletxt('d2', 'eb2', 'q2');
+          enabletxt('d3', 'eb3', 'q3');
+          enabletxt('d4', 'eb4', 'q4');
+          enabletxt('d5', 'eb5', 'q5');
+          enabletxt('d6', 'eb6', 'q6');
+      }
+    </script>
+    <script>
       function enabletxt(day, cday, quant) {
-        if(document.getElementById(quant).value === "") {
-          document.getElementById(cday).removeAttribute('required');
-          document.getElementById(day).removeAttribute('required');
-        }
-        else {
+        if(document.getElementById(quant).value != "") {
           document.getElementById(cday).setAttribute('required','required');
           document.getElementById(day).setAttribute('required','required');
+        }
+        else if(document.getElementById(day).value != "" || document.getElementById(cday).value != "") {
+          document.getElementById(quant).setAttribute('required','required');
+        }
+        else {
+          document.getElementById(cday).removeAttribute('required');
+          document.getElementById(day).removeAttribute('required');
+          document.getElementById(quant).removeAttribute('required');
         }
       }
       </script>
