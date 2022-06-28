@@ -183,7 +183,14 @@ header {
 }
 
 .input_custom002 {
-	width: 100px !important;
+	width: 60px !important;
+  height: 30px !important
+}
+
+.input_custom002x {
+  background-color: gray;
+	width: 60px !important;
+  height: 30px !important
 }
 
 .ticket_section_body label {
@@ -401,40 +408,20 @@ table {
   width: 98%;
 }
 
-.custom_input_selectA .input_custom002,
-.custom_input_selectB .input_custom002,
-.custom_input_selectC .input_custom002,
-.custom_input_selectD .input_custom002,
-.custom_input_selectE .input_custom002,
-.custom_input_selectF .input_custom002 {
-  display: none;
-  transition: 0.5s;
-}
-
-.custom_input_selectA.mainOpen .input_custom002,
-.custom_input_selectB.mainOpen .input_custom002,
-.custom_input_selectC.mainOpen .input_custom002,
-.custom_input_selectD.mainOpen .input_custom002,
-.custom_input_selectE.mainOpen .input_custom002,
-.custom_input_selectF.mainOpen .input_custom002 {
-  display: block;
-  transition: 0.5s;
-}
-
-.custom_input_selectA.mainOpen .input_custom001,
-.custom_input_selectB.mainOpen .input_custom001,
-.custom_input_selectC.mainOpen .input_custom001,
-.custom_input_selectD.mainOpen .input_custom001,
-.custom_input_selectE.mainOpen .input_custom001,
-.custom_input_selectF.mainOpen .input_custom001 {
-  display: none;
-  transition: 0.5s;
-}
 
 .sendnotes_btn_resect_ticket00_submit001 {
   background: #088804;
   border: none;
-  padding: 12px 40px;
+  padding: 12px 80px;
+  border-radius: 5px;
+  margin: 0 5px 0;
+  color: #fff;
+}
+
+.sendnotes_btn_reset_ticket00_submit001 {
+  background: orange;
+  border: none;
+  padding: 12px 25px;
   border-radius: 5px;
   margin: 0 5px 0;
   color: #fff;
@@ -520,7 +507,7 @@ table {
 }
 
 .section_ticket_sectionR {
-  display: none;
+  display: block;
   transition: 0.5s;
 }
 

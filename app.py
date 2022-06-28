@@ -82,23 +82,24 @@ def view():
 def ticket():
     
     if request.method == "POST":
-
-        day = datetime.date.today().strftime("%d")
         cur_day = datetime.date.today().strftime("%y")
         cur_mo = datetime.date.today().strftime("%m")
 
-        crs.execute("""SELECT _ref_no FROM REF""")
-        increment = crs.fetchone()[0]
 
         crs.execute("""SELECT ticket_timestamp
                     FROM ticket
                     GROUP by ticket_timestamp
                     ORDER BY max(ticket_timestamp)
                     LIMIT 1""")
+        
+        month_online = crs.fetchone()
+        
+        if month_online is None:
+            month_online = -1
+        else:
+            month_online = str(month_online[0])[5:-12]
 
-        month_online = str(crs.fetchone()[0])[5:-12]
-
-        if int(cur_mo) > int(month_online):
+        if month_online == -1 or int(cur_mo) > int(month_online):
             crs.execute("""UPDATE REF
                         SET _ref_no = 1""")
             db.commit()
@@ -107,6 +108,8 @@ def ticket():
                         SET _ref_no = _ref_no + 1""")
             db.commit()
 
+        crs.execute("""SELECT _ref_no FROM REF""")
+        increment = crs.fetchone()[0]
 
         
         bid = cur_day + "-" + cur_mo + str(increment).zfill(5)
@@ -135,12 +138,6 @@ def ticket():
         min_temp = request.form["min_temp"]
         max_temp = request.form["max_temp"]
 
-        d1 = request.form["d1"]
-        d2 = request.form["d2"]
-        d3 = request.form["d3"]
-        d4 = request.form["d4"]
-        d5 = request.form["d5"]
-        d6 = request.form["d6"]
 
         q1 = request.form["q1"]
         q2 = request.form["q2"]
@@ -148,13 +145,30 @@ def ticket():
         q4 = request.form["q4"]
         q5 = request.form["q5"]
         q6 = request.form["q6"]
+        
+        cb1 = request.form.get('eb1')
+        cb2 = request.form.get('eb2')
+        cb3 = request.form.get('eb3')
+        cb4 = request.form.get('eb4')
+        cb5 = request.form.get('eb5')
+        cb6 = request.form.get('eb6')
+        
+        if cb1 is None:
+            d1 = request.form["d1"]
+        if cb2 is None:
+            d2 = request.form["d2"]
+        if cb3 is None:
+            d3 = request.form["d3"]
+        if cb4 is None:
+            d4 = request.form["d4"]
+        if cb5 is None:
+            d5 = request.form["d5"]
+        if cb6 is None:
+            d6 = request.form["d6"]
 
-        # note = request.form["note"]
-        note = "note is a GREAT SUCCESS"
-        batch = "testbatc1"
+        note = request.form["note_text"]
         username = "admin"
 
-        # crs.execute("INSERT INTO user (_username, password) VALUES (%s, %s)", (user, hash_password))
 
 
         crs.execute("""INSERT INTO ticket (_batch_id, username, notes, client_name, mix_id, ticket_no, site_add, load_no, agg_size, struct_grid, spec_slump, 
@@ -165,7 +179,76 @@ def ticket():
                     cast_time, spec_str, mould, meas_air, conc_temp, cast_by, truck_no, amb_temp, min_temp, max_temp))
         db.commit()
 
-        return f"<h1>GREAT SUCCESS { cur_mo } and online mo: { month_online }</h1>"
+        sid = ""
+
+        for i in range(1, int(q1) + 1):
+            if cb1 is None:
+                sid = bid + "A" + "-" + d1 + "D" + "-" + str(i)
+            else:
+                sid = bid + "A" + "-" + cb1 + "D" + "-" + str(i)
+            crs.execute("""INSERT INTO Cylinder (_SID, batch_id) VALUES 
+                        (%s, %s)""", 
+                        (sid, bid))
+            db.commit()
+        
+        if q2:
+            for i in range(1, int(q2) + 1):
+                if cb2 is None:
+                    sid = bid + "B" + "-" + d2 + "D" + "-" + str(i)
+                else:
+                    sid = bid + "B" + "-" + cb2 + "D" + "-" + str(i)
+                crs.execute("""INSERT INTO Cylinder (_SID, batch_id) VALUES 
+                            (%s, %s)""", 
+                            (sid, bid))
+                db.commit()
+
+        if q3:
+            for i in range(1, int(q3) + 1):
+                if cb3 is None:
+                    sid = bid + "C" + "-" + d3 + "D" + "-" + str(i)
+                else:
+                    sid = bid + "C" + "-" + cb3 + "D" + "-" + str(i)
+                crs.execute("""INSERT INTO Cylinder (_SID, batch_id) VALUES 
+                            (%s, %s)""", 
+                            (sid, bid))
+                db.commit()
+
+        if q4:
+            for i in range(1, int(q4) + 1):
+                if cb4 is None:
+                    sid = bid + "D" + "-" + d4 + "D" + "-" + str(i)
+                else:
+                    sid = bid + "D" + "-" + cb4 + "D" + "-" + str(i)
+                crs.execute("""INSERT INTO Cylinder (_SID, batch_id) VALUES 
+                            (%s, %s)""", 
+                            (sid, bid))
+                db.commit()
+
+        if q5:
+            for i in range(1, int(q5) + 1):
+                if cb5 is None:
+                    sid = bid + "E" + "-" + d5 + "D" + "-" + str(i)
+                else:
+                    sid = bid + "E" + "-" + cb5 + "D" + "-" + str(i)
+                crs.execute("""INSERT INTO Cylinder (_SID, batch_id) VALUES 
+                            (%s, %s)""", 
+                            (sid, bid))
+                db.commit()
+
+        if q6:
+            for i in range(1, int(q6) + 1):
+                if cb6 is None:
+                    sid = bid + "F" + "-" + d6 + "D" + "-" + str(i)
+                else:
+                    sid = bid + "F" + "-" + cb6 + "D" + "-" + str(i)
+                crs.execute("""INSERT INTO Cylinder (_SID, batch_id) VALUES 
+                            (%s, %s)""", 
+                            (sid, bid))
+                db.commit()
+
+        return f"<h1>GREAT SUCCESS { sid }</h1>"
+        
+        # return f"<h1>GREAT SUCCESS { cur_mo } and online mo: { month_online } and BID is { sid }</h1>"
     else:
         crs.execute("SELECT * FROM client")
         return render_template('ticket.html', value=crs.fetchall())

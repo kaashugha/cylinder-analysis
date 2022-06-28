@@ -41,7 +41,7 @@
               </div>
               <!-- ticket_section_header -->
               <div class="ticket_section_body">
-                <form method="POST">
+                <form method="POST" id="main">
                   <fieldset>
                     <legend>Data:</legend>
                     <div class="row">
@@ -290,20 +290,6 @@
                           alt="img"
                         />
                       </div>
-                      <div class="col-md-6 text-end">
-                        <button
-                          type="submit"
-                          class="cancel_reset_entry0120 background_btn_1"
-                        >
-                          Reset
-                        </button>
-                        <!-- <button
-                          type="submit"
-                          class="cancel_reset_entry0120 background_btn_2"
-                        >
-                          Cancel Entry
-                        </button> -->
-                      </div>
                     </div>
                   </fieldset>
               </div>
@@ -346,24 +332,26 @@
                                   </td>
                                   <td>
                                     <div class="custom_input_selectA">
-                                      <select name="d1" required class="input_custom001">
-                                        <option selected>0</option>
+                                      <select name="d1" id="d1" required class="input_custom001">
+                                        <option selected></option>
                                         <option>7</option>
                                         <option>14</option>
                                         <option>28</option>
                                         <option>56</option>
                                       </select>
-                                      <input type="text" class="input_custom002" />
+                                      <input type="text" name="eb1" id="eb1" class="input_custom002x" disabled required/>
                                     </div>
                                   </td>
                                   <td>
-                                    <input type="text" name="q1" id="" class="input_custom002" />
+                                    <input type="text" name="q1" id="" class="input_custom002" required/>
                                   </td>
                                   <td>
                                     <input
+                                      name="cb1"
                                       type="checkbox"
-                                      class="checkox_input_255"
                                       id="openSetA"
+                                      class="checkox_input_255"
+                                      onclick="cd1('d1', 'eb1')"
                                     />
                                   </td>
                                 </tr>
@@ -375,24 +363,25 @@
                                   </td>
                                   <td>
                                     <div class="custom_input_selectB">
-                                      <select name="d2" required class="input_custom001">
-                                         <option selected>0</option>
+                                      <select name="d2" id="d2" class="input_custom001">
+                                         <option selected></option>
                                         <option>7</option>
                                         <option>14</option>
                                         <option>28</option>
                                         <option>56</option>
                                       </select>
-                                      <input type="text" class="input_custom002" />
+                                      <input type="text" name="eb2" id="eb2" class="input_custom002x" disabled required/>
                                     </div>
                                   </td>
                                   <td>
-                                    <input type="text" name="q2" id="" class="input_custom002" />
+                                    <input type="text" name="q2" id="q2" class="input_custom002" onkeydown="enabletxt('d2', 'eb2', 'q2')"/>
                                   </td>
                                   <td>
                                     <input
                                       type="checkbox"
                                       class="checkox_input_255"
                                       id="openSetB"
+                                      onclick="cd1('d2', 'eb2')"
                                     />
                                   </td>
                                 </tr>
@@ -404,14 +393,14 @@
                                   </td>
                                   <td>
                                     <div class="custom_input_selectC">
-                                      <select name="d3" required class="input_custom001">
-                                        <option selected>0</option>
+                                      <select name="d3" id="d3" class="input_custom001">
+                                        <option selected></option>
                                         <option>7</option>
                                         <option>14</option>
                                         <option>28</option>
                                         <option>56</option>
                                       </select>
-                                      <input type="text" class="input_custom002" />
+                                      <input type="text" name="eb3" id="eb3" class="input_custom002x" disabled required/>
                                     </div>
                                   </td>
                                   <td>
@@ -422,6 +411,7 @@
                                       type="checkbox"
                                       class="checkox_input_255"
                                       id="openSetC"
+                                      onclick="cd1('d3', 'eb3')"
                                     />
                                   </td>
                                 </tr>
@@ -433,14 +423,14 @@
                                   </td>
                                   <td>
                                     <div class="custom_input_selectD">
-                                      <select name="d4" required class="input_custom001">
-                                        <option selected>0</option>
+                                      <select name="d4" id="d4" class="input_custom001">
+                                        <option selected></option>
                                         <option>7</option>
                                         <option>14</option>
                                         <option>28</option>
                                         <option>56</option>
                                       </select>
-                                      <input type="text" class="input_custom002" />
+                                      <input type="text" name="eb4" id="eb4" class="input_custom002x" disabled required/>
                                     </div>
                                   </td>
                                   <td>
@@ -451,6 +441,7 @@
                                       type="checkbox"
                                       class="checkox_input_255"
                                       id="openSetD"
+                                      onclick="cd1('d4', 'eb4')"
                                     />
                                   </td>
                                 </tr>
@@ -462,14 +453,14 @@
                                   </td>
                                   <td>
                                     <div class="custom_input_selectE">
-                                      <select name="d5" required class="input_custom001">
-                                         <option selected>0</option>
+                                      <select name="d5" id="d5" class="input_custom001">
+                                         <option selected></option>
                                         <option>7</option>
                                         <option>14</option>
                                         <option>28</option>
                                         <option>56</option>
                                       </select>
-                                      <input type="text" class="input_custom002" />
+                                      <input type="text" name="eb5" id="eb5" class="input_custom002x" disabled required/>
                                     </div>
                                   </td>
                                   <td>
@@ -480,6 +471,7 @@
                                       type="checkbox"
                                       class="checkox_input_255"
                                       id="openSetE"
+                                      onclick="cd1('d5', 'eb5')"
                                     />
                                   </td>
                                 </tr>
@@ -491,14 +483,14 @@
                                   </td>
                                   <td>
                                     <div class="custom_input_selectF">
-                                      <select name="d6" required class="input_custom001">
-                                        <option selected>0</option>
+                                      <select name="d6" id="d6" class="input_custom001">
+                                        <option selected></option>
                                         <option>7</option>
                                         <option>14</option>
                                         <option>28</option>
                                         <option>56</option>
                                       </select>
-                                      <input type="text" class="input_custom002" />
+                                      <input type="text" name="eb6" id="eb6" class="input_custom002x" disabled required/>
                                     </div>
                                   </td>
                                   <td>
@@ -509,6 +501,7 @@
                                       type="checkbox"
                                       class="checkox_input_255"
                                       id="openSetF"
+                                      onclick="cd1('d6', 'eb6')"
                                     />
                                   </td>
                                 </tr>
@@ -517,23 +510,6 @@
                         </div>
                       </div>
                       <!-- left -->
-                      <div class="col-md-3 mt-5">
-                        <p class="right_peragraph_section564879876465">
-                          Please Check if you sould like to submit a note with
-                          this entry
-                          <input
-                            type="checkbox"
-                            id="checkbox_input_entry"
-                            name="note"
-                          />
-                        </p>
-                        <button
-                          type="submit"
-                          class="sendnotes_btn_resect_ticket0022135465465"
-                        >
-                          Reset
-                        </button>
-                      </div>
                     </div>
                   </fieldset>
                 <div class="footer_Sectoin_area_list0003">
@@ -561,18 +537,12 @@
                           <div class="col-md-12">
                             <textarea
                               class="notes_text_area__text001"
+                              name="note_text"
+                              placeholder="Optional"
+                              form="main"
                             ></textarea>
                           </div>
                         </div>
-                      </div>
-                      <div class="col-md-12 text-center mb-3">
-                       
-                        <button
-                          type="submit"
-                          class="sendnotes_btn_resect_ticket002"
-                        >
-                          Reset
-                        </button>
                       </div>
                     </div>
                   </fieldset>
@@ -591,10 +561,16 @@
           
              <div class="sbmtbtn"> 
             <button
+                          type="reset"
+                          class="sendnotes_btn_reset_ticket00_submit001"
+                        >
+                          Reset
+                        </button>
+            <button
                           type="submit"
                           class="sendnotes_btn_resect_ticket00_submit001"
                         >
-                          Submit Ticket
+                          Submit
                         </button>
                         </div>
                   
@@ -605,30 +581,36 @@
                 </form>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script>
-      $(document).ready(function () {
-        $("#openSetA").click(function () {
-          $(".custom_input_selectA").toggleClass("mainOpen");
-        });
-        $("#openSetB").click(function () {
-          $(".custom_input_selectB").toggleClass("mainOpen");
-        });
-        $("#openSetC").click(function () {
-          $(".custom_input_selectC").toggleClass("mainOpen");
-        });
-        $("#openSetD").click(function () {
-          $(".custom_input_selectD").toggleClass("mainOpen");
-        });
-        $("#openSetE").click(function () {
-          $(".custom_input_selectE").toggleClass("mainOpen");
-        });
-        $("#openSetF").click(function () {
-          $(".custom_input_selectF").toggleClass("mainOpen");
-        });
-        $("#checkbox_input_entry").click(function () {
-          $(".section_ticket_sectionR").toggleClass("mainOpenRight");
-        });
-      });
+      function cd1(d_var, eb_var) {
+        if(document.getElementById(d_var).disabled === true) {
+          document.getElementById(d_var).disabled = false;
+          document.getElementById(eb_var).disabled = true;
+          document.getElementById(eb_var).value = "";
+          document.getElementById(eb_var).style.backgroundColor = "grey";
+
+
+        }
+        else {
+          document.getElementById(d_var).disabled = true;
+          document.getElementById(eb_var).disabled = false;
+          document.getElementById(d_var).value = "0";
+          document.getElementById(eb_var).style.backgroundColor = "white";
+
+        }
+      }
     </script>
+    <script>
+      function enabletxt(day, cday, quant) {
+        if(document.getElementById(quant).value === "") {
+          document.getElementById(cday).removeAttribute('required');
+          document.getElementById(day).removeAttribute('required');
+        }
+        else {
+          document.getElementById(cday).setAttribute('required','required');
+          document.getElementById(day).setAttribute('required','required');
+        }
+      }
+      </script>
     <script
       src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js"
       integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2"
