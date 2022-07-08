@@ -33,7 +33,7 @@
               </div>
               <!-- ticket_section_header -->
               <div class="ticket_section_body">
-                <form>
+                <form method="POST">
                   <fieldset>
                     <legend>Data</legend>
                     <div class="row">
@@ -41,8 +41,11 @@
                         <div class="row">
                           <label class="col-md-5"> Batch ID </label>
                           <div class="col-md-7">
-                            <select>
-                              <option></option>
+                            <select name="bid_ca" id="bid_ca" data-noreset="true" required>
+                              <option disabled selected value> -- select an option -- </option>
+                              {% for client in bid_cax %} -->
+                                <option value={{client}}>{{ client[0] }}</option>
+                              {% endfor %}
                             </select>
                           </div>
                         </div>
@@ -52,8 +55,7 @@
                         <div class="row">
                           <label class="col-md-5"> SAFFA Designation </label>
                           <div class="col-md-7">
-                            <select>
-                              <option></option>
+                            <select name="sid_ca" id="sid_ca" required>
                             </select>
                           </div>
                         </div>
@@ -62,10 +64,10 @@
                       <div class="col-md-12 mb-3">
                         <div class="row">
                           <label class="col-md-5">
-                            Compressive Strenght (MPa)
+                            Compressive Strength (MPa)
                           </label>
                           <div class="col-md-7">
-                            <input type="text" />
+                            <input type="number" name="comp_str" min="0" required />
                           </div>
                         </div>
                       </div>
@@ -74,7 +76,7 @@
                         <div class="row">
                           <label class="col-md-5"> Type of Fracture </label>
                           <div class="col-md-7">
-                            <input type="text" />
+                            <input type="number" min="1" max="6" name=tof required/>
                           </div>
                         </div>
                       </div>
@@ -89,7 +91,8 @@
                               Save
                             </button>
                             <button
-                              type="submit"
+                              type="button"
+                              onclick="customReset()"
                               class="cancel_reset_entry0120 background_btn_1"
                             >
                               Reset
@@ -123,7 +126,37 @@
         </div>
       </div>
     </div>
-
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script>
+      document.getElementById('bid_ca').onchange = function() {
+          var bid_ca = this.value;
+  
+          $.ajax({
+              type: 'POST',
+              data: JSON.stringify({
+                  'bid_ca': bid_ca,
+              }),
+              contentType: 'application/json; charset=utf-8',
+              url: "{{ url_for('sid_list') }}",
+              success: function(data) {
+                $("#sid_ca").empty();
+                for (var i = 0; i < data.length; i++) {
+                  $("#sid_ca").append('<option>' + data[i] + '</option>');
+                }
+              }
+          });
+      }
+      </script>
+    <script>
+      function customReset()
+      {
+          var fieldsToReset = document.querySelectorAll("input:not([data-noreset='true'])")
+        for(var i=0;i<fieldsToReset.length;i++){
+          fieldsToReset[i].value = null;
+        }
+        
+      }
+      </script>
     <script
       src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js"
       integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2"

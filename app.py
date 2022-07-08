@@ -1,6 +1,7 @@
 import datetime
 from logging import warning
-from flask import Flask, flash, get_flashed_messages, redirect, render_template, request, session, url_for
+from tkinter import dialog
+from flask import Flask, flash, get_flashed_messages, jsonify, redirect, render_template, request, session, url_for
 from flask_sqlalchemy import SQLAlchemy
 from datetime import timedelta
 import mysql.connector
@@ -19,31 +20,46 @@ db = mysql.connector.connect(
 
 crs = db.cursor(buffered=True)
 
+
+@app.route('/sid_list/', methods=['POST'])
+def sid_list():
+
+    req = request.json
+    bid = req.get('bid_ca')[2:-3]
+    crs.execute("SELECT _SID FROM Cylinder WHERE batch_id=%s", [bid])
+    sid = crs.fetchall()
+    print(bid)
+    print(sid)
+    return jsonify(sid)
+
+
 @app.route("/", methods=["POST", "GET"])
 def index():
     return render_template('index.html')
+
 
 @app.route("/login/", methods=["POST", "GET"])
 def login():
     if request.method == "POST":
         session.permanent = True
         user = request.form["username"]
-        
+
         crs.execute("SELECT password FROM user WHERE _username=%s", [user])
         hash_password = crs.fetchone()[0]
         session["user"] = user
-        
+
         if bcrypt.checkpw(request.form["password"].encode('utf-8'), hash_password):
             return redirect(url_for("index"))
         else:
             flash("Incorrect username or password.")
             return render_template('login.html')
-        
+
         # return redirect(url_for("user"))
     else:
         if "user" in session:
             return redirect(url_for("index"))
         return render_template('login.html')
+
 
 @app.route("/user/")
 def user():
@@ -53,6 +69,7 @@ def user():
     else:
         return redirect(url_for("login"))
 
+
 @app.route("/register/", methods=['POST', 'GET'])
 def register():
     if request.method == "POST":
@@ -60,11 +77,12 @@ def register():
         user = request.form["newuser"]
         password = request.form["newpass"].encode('utf-8')
         hash_password = bcrypt.hashpw(password, bcrypt.gensalt())
-        
+
         crs.execute("SELECT * FROM user WHERE _username=%s", [user])
 
         if crs.rowcount == 0:
-            crs.execute("INSERT INTO user (_username, password) VALUES (%s, %s)", (user, hash_password))
+            crs.execute(
+                "INSERT INTO user (_username, password) VALUES (%s, %s)", (user, hash_password))
             db.commit()
             flash(f"User {user} created.")
         else:
@@ -74,26 +92,27 @@ def register():
     else:
         return render_template('register.html')
 
+
 @app.route("/view/")
 def view():
     return render_template('view.html', values=users.query.all())
 
+
 @app.route("/ticket/", methods=['GET', 'POST'])
 def ticket():
-    
+
     if request.method == "POST":
         cur_day = datetime.date.today().strftime("%y")
         cur_mo = datetime.date.today().strftime("%m")
-
 
         crs.execute("""SELECT ticket_timestamp
                     FROM ticket
                     GROUP by ticket_timestamp
                     ORDER BY max(ticket_timestamp)
                     LIMIT 1""")
-        
+
         month_online = crs.fetchone()
-        
+
         if month_online is None:
             month_online = -1
         else:
@@ -111,7 +130,6 @@ def ticket():
         crs.execute("""SELECT _ref_no FROM REF""")
         increment = crs.fetchone()[0]
 
-        
         bid = cur_day + "-" + cur_mo + str(increment).zfill(5)
 
         client = request.form["client"][2:-3]
@@ -138,21 +156,20 @@ def ticket():
         min_temp = request.form["min_temp"]
         max_temp = request.form["max_temp"]
 
-
         q1 = request.form["q1"]
         q2 = request.form["q2"]
         q3 = request.form["q3"]
         q4 = request.form["q4"]
         q5 = request.form["q5"]
         q6 = request.form["q6"]
-        
+
         cb1 = request.form.get('eb1')
         cb2 = request.form.get('eb2')
         cb3 = request.form.get('eb3')
         cb4 = request.form.get('eb4')
         cb5 = request.form.get('eb5')
         cb6 = request.form.get('eb6')
-        
+
         if cb1 is None:
             d1 = request.form["d1"]
         if cb2 is None:
@@ -169,14 +186,12 @@ def ticket():
         note = request.form["note_text"]
         username = "admin"
 
-
-
         crs.execute("""INSERT INTO ticket (_batch_id, username, notes, client_name, mix_id, ticket_no, site_add, load_no, agg_size, struct_grid, spec_slump, 
                     conc_supp, charge_time, subclient_cont, meas_slump, spec_air, cast_time, spec_str, mould_type, meas_air, conc_temp, cast_by, 
                     truck_no, amb_temp, temp_min, temp_max) VALUES
-                    (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)""", 
-                    (bid, username, note, client, mix, ticket, address, load, agg, gridlines, spec_sl, conc_sup, toc, subclient, meas_sl, spec_air, 
-                    cast_time, spec_str, mould, meas_air, conc_temp, cast_by, truck_no, amb_temp, min_temp, max_temp))
+                    (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)""",
+                    (bid, username, note, client, mix, ticket, address, load, agg, gridlines, spec_sl, conc_sup, toc, subclient, meas_sl, spec_air,
+                     cast_time, spec_str, mould, meas_air, conc_temp, cast_by, truck_no, amb_temp, min_temp, max_temp))
         db.commit()
 
         sid = ""
@@ -187,10 +202,10 @@ def ticket():
             else:
                 sid = bid + "A" + "-" + cb1 + "D" + "-" + str(i)
             crs.execute("""INSERT INTO Cylinder (_SID, batch_id) VALUES 
-                        (%s, %s)""", 
+                        (%s, %s)""",
                         (sid, bid))
             db.commit()
-        
+
         if q2:
             for i in range(1, int(q2) + 1):
                 if cb2 is None:
@@ -198,7 +213,7 @@ def ticket():
                 else:
                     sid = bid + "B" + "-" + cb2 + "D" + "-" + str(i)
                 crs.execute("""INSERT INTO Cylinder (_SID, batch_id) VALUES 
-                            (%s, %s)""", 
+                            (%s, %s)""",
                             (sid, bid))
                 db.commit()
 
@@ -209,7 +224,7 @@ def ticket():
                 else:
                     sid = bid + "C" + "-" + cb3 + "D" + "-" + str(i)
                 crs.execute("""INSERT INTO Cylinder (_SID, batch_id) VALUES 
-                            (%s, %s)""", 
+                            (%s, %s)""",
                             (sid, bid))
                 db.commit()
 
@@ -220,7 +235,7 @@ def ticket():
                 else:
                     sid = bid + "D" + "-" + cb4 + "D" + "-" + str(i)
                 crs.execute("""INSERT INTO Cylinder (_SID, batch_id) VALUES 
-                            (%s, %s)""", 
+                            (%s, %s)""",
                             (sid, bid))
                 db.commit()
 
@@ -231,7 +246,7 @@ def ticket():
                 else:
                     sid = bid + "E" + "-" + cb5 + "D" + "-" + str(i)
                 crs.execute("""INSERT INTO Cylinder (_SID, batch_id) VALUES 
-                            (%s, %s)""", 
+                            (%s, %s)""",
                             (sid, bid))
                 db.commit()
 
@@ -242,16 +257,17 @@ def ticket():
                 else:
                     sid = bid + "F" + "-" + cb6 + "D" + "-" + str(i)
                 crs.execute("""INSERT INTO Cylinder (_SID, batch_id) VALUES 
-                            (%s, %s)""", 
+                            (%s, %s)""",
                             (sid, bid))
                 db.commit()
 
         return f"<h1>GREAT SUCCESS { sid }</h1>"
-        
+
         # return f"<h1>GREAT SUCCESS { cur_mo } and online mo: { month_online } and BID is { sid }</h1>"
     else:
         crs.execute("SELECT * FROM client")
         return render_template('ticket.html', value=crs.fetchall())
+
 
 @app.route("/drop-off/", methods=["GET", "POST"])
 def dropoff():
@@ -265,62 +281,73 @@ def dropoff():
         db.commit()
         return f"GOOD SUCCESS { drop_id }"
     else:
-        crs.execute("SELECT _batch_id FROM ticket ORDER BY ticket_timestamp DESC")
+        crs.execute(
+            "SELECT _batch_id FROM ticket ORDER BY ticket_timestamp DESC")
         return render_template('drop-off.html', drop=crs.fetchall())
 
 
-@app.route("/cylinder-analysis/")
+@app.route("/cylinder-analysis/", methods=["GET", "POST"])
 def cyla():
     if request.method == "POST":
-        # d1 = request.form["d1"]
-        # d2 = request.form["d2"]
-        # d3 = request.form["d3"]
-        # d4 = request.form["d4"]
-        # d5 = request.form["d5"]
-        # d6 = request.form["d6"]
 
-        # q1 = request.form["q1"]
-        # q2 = request.form["q2"]
-        # q3 = request.form["q3"]
-        # q4 = request.form["q4"]
-        # q5 = request.form["q5"]
-        # q6 = request.form["q6"]
+        sid = request.form["sid_ca"]
+        weight = request.form["weight"]
+        height = request.form["height"]
+        dia = request.form["dia"]
 
-        # crs.execute("INSERT INTO user (_username, password) VALUES (%s, %s)", (user, hash_password))
+        crs.execute("""UPDATE Cylinder  
+            SET height = %s, weight = %s, dia = %s
+            WHERE _SID = (%s)
+            """, [height, weight, dia, sid])
+        db.commit()
 
-        # crs.execute("INSERT INTO ticket (_batch_id, mix, ticket, address, load, agg, gridlines, spec_sl, "
-        # "conc_sup, toc, subclient, meas_sl, spec_air, cast_time, spec_str, mould, meas_air, conc_temp, cast_by, "
-        # "truck_no, amb_temp, min_temp, max_temp) VALUES"
-        # "(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)", 
-        # (batch_id, mix, ticket, address, load, agg, gridlines, spec_sl, conc_sup, toc, subclient, meas_sl, spec_air, 
-        # cast_time, spec_str, mould, meas_air, conc_temp, cast_by, truck_no, amb_temp, min_temp, max_temp))
-        # db.commit
-
-
-        return f"<h1>hello</h1>"
+        return "GOOD SUCCESS post"
     else:
-        return render_template('cylinder-analysis.html')
+        crs.execute(
+            "SELECT _batch_id FROM ticket ORDER BY ticket_timestamp DESC")
+        bid_cax = crs.fetchall()
 
-@app.route("/cylinder-breaking/")
+        return render_template('cylinder-analysis.html', bid_cax=bid_cax)
+        # return "GOOD SUCCESS get"
+
+
+@app.route("/cylinder-breaking/", methods=["GET", "POST"])
 def cylb():
-    return render_template('cylinder-breaking.html')
+    if request.method == "POST":
+        sid = request.form["sid_ca"]
+        comp_str = request.form["comp_str"]
+        tof = request.form["tof"]
+
+        crs.execute("""UPDATE Cylinder  
+            SET comp_str = %s, frac_type = %s
+            WHERE _SID = (%s)
+            """, [comp_str, tof, sid])
+        db.commit()
+
+        return "GOOD SUCCESS post"
+    else:
+        crs.execute(
+            "SELECT _batch_id FROM ticket ORDER BY ticket_timestamp DESC")
+        bid_cax = crs.fetchall()
+
+        return render_template('cylinder-breaking.html', bid_cax=bid_cax)
+
 
 @app.route("/create-report/")
 def creport():
     return render_template('create-report.html')
+
 
 @app.route("/logout/")
 def logout():
     session.pop("user", None)
     return redirect(url_for("login"))
 
-@app.route("/test/", methods=["GET", "POST"])
-def test():
-    if request.method == "POST":
-        tex1 = request.form["testdd"]
-        return f"<h1>{ tex1 }</h1>"
-    else:
-        return render_template('test.html')
+
+@app.route("/calendar/")
+def calendar():
+    return render_template('calendar.html')
+
 
 if __name__ == '__main__':
     db.create_all()

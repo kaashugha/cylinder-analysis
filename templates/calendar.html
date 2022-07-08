@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang='en'>
+  <head>
+    <meta charset='utf-8' />
+    <link href='../static/main.css' rel='stylesheet' />
+    <script src='../static/main.js'></script>
+    <script type='text/javascript'>
+
+        document.addEventListener('DOMContentLoaded', function() {
+          var calendarEl = document.getElementById('calendar');
+      
+          var calendar = new FullCalendar.Calendar(calendarEl, {
+            height: 700,
+            googleCalendarApiKey: 'AIzaSyA4PtDt1seeTq1VQ6-5Xo7etizV_f1u72A',
+            eventSources: [
+              {
+                googleCalendarId: '61r7bbq1d657on0lv46hpq3e24@group.calendar.google.com'
+              },
+            ]
+          });
+      
+          calendar.render();
+        });
+      
+      </script>
+  </head>
+  <body>
+    <div id='calendar'></div>
+  </body>
+</html>
