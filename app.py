@@ -6,6 +6,7 @@ from flask_sqlalchemy import SQLAlchemy
 from datetime import timedelta
 import mysql.connector
 import bcrypt
+import gcalendar
 
 app = Flask(__name__)
 app.permanent_session_lifetime = timedelta(days=14)
@@ -92,23 +93,19 @@ def register():
     else:
         return render_template('register.html')
 
-
-@app.route("/view/")
-def view():
-    return render_template('view.html', values=users.query.all())
-
-
 @app.route("/ticket/", methods=['GET', 'POST'])
 def ticket():
+    user = session["user"]
 
     if request.method == "POST":
-        cur_day = datetime.date.today().strftime("%y")
+        cur_day = datetime.date.today().strftime("%d")
         cur_mo = datetime.date.today().strftime("%m")
+        cur_year = datetime.date.today().strftime("%y")
 
         crs.execute("""SELECT ticket_timestamp
                     FROM ticket
                     GROUP by ticket_timestamp
-                    ORDER BY max(ticket_timestamp)
+                    ORDER BY ticket_timestamp DESC
                     LIMIT 1""")
 
         month_online = crs.fetchone()
@@ -127,10 +124,11 @@ def ticket():
                         SET _ref_no = _ref_no + 1""")
             db.commit()
 
+
         crs.execute("""SELECT _ref_no FROM REF""")
         increment = crs.fetchone()[0]
 
-        bid = cur_day + "-" + cur_mo + str(increment).zfill(5)
+        bid = cur_year + "-" + cur_mo + str(increment).zfill(5)
 
         client = request.form["client"][2:-3]
         mix = request.form["mix"]
@@ -205,6 +203,14 @@ def ticket():
                         (%s, %s)""",
                         (sid, bid))
             db.commit()
+            
+            eventID = gcalendar.cal_insert(int(cur_day), int(cur_mo), cur_year, sid, 5, user)
+            crs.execute("""UPDATE Cylinder 
+                        SET eventID = (%s)
+                        WHERE _SID = (%s) 
+                        """,
+                        [eventID, sid])
+            db.commit()
 
         if q2:
             for i in range(1, int(q2) + 1):
@@ -216,6 +222,15 @@ def ticket():
                             (%s, %s)""",
                             (sid, bid))
                 db.commit()
+                
+                eventID = gcalendar.cal_insert(int(cur_day), int(cur_mo), cur_year, sid, 5, user)
+                crs.execute("""UPDATE Cylinder 
+                            SET eventID = (%s)
+                            WHERE _SID = (%s) 
+                            """,
+                            [eventID, sid])
+                db.commit()
+
 
         if q3:
             for i in range(1, int(q3) + 1):
@@ -228,6 +243,15 @@ def ticket():
                             (sid, bid))
                 db.commit()
 
+                eventID = gcalendar.cal_insert(int(cur_day), int(cur_mo), cur_year, sid, 5, user)
+                crs.execute("""UPDATE Cylinder 
+                            SET eventID = (%s)
+                            WHERE _SID = (%s) 
+                            """,
+                            [eventID, sid])
+                db.commit()
+
+
         if q4:
             for i in range(1, int(q4) + 1):
                 if cb4 is None:
@@ -237,6 +261,14 @@ def ticket():
                 crs.execute("""INSERT INTO Cylinder (_SID, batch_id) VALUES 
                             (%s, %s)""",
                             (sid, bid))
+                db.commit()
+
+                eventID = gcalendar.cal_insert(int(cur_day), int(cur_mo), cur_year, sid, 5, user)
+                crs.execute("""UPDATE Cylinder 
+                            SET eventID = (%s)
+                            WHERE _SID = (%s) 
+                            """,
+                            [eventID, sid])
                 db.commit()
 
         if q5:
@@ -250,6 +282,14 @@ def ticket():
                             (sid, bid))
                 db.commit()
 
+                eventID = gcalendar.cal_insert(int(cur_day), int(cur_mo), cur_year, sid, 5, user)
+                crs.execute("""UPDATE Cylinder 
+                            SET eventID = (%s)
+                            WHERE _SID = (%s) 
+                            """,
+                            [eventID, sid])
+                db.commit()
+
         if q6:
             for i in range(1, int(q6) + 1):
                 if cb6 is None:
@@ -260,6 +300,15 @@ def ticket():
                             (%s, %s)""",
                             (sid, bid))
                 db.commit()
+
+                eventID = gcalendar.cal_insert(int(cur_day), int(cur_mo), cur_year, sid, 5, user)
+                crs.execute("""UPDATE Cylinder 
+                            SET eventID = (%s)
+                            WHERE _SID = (%s) 
+                            """,
+                            [eventID, sid])
+                db.commit()
+
 
         return f"<h1>GREAT SUCCESS { sid }</h1>"
 
@@ -279,6 +328,14 @@ def dropoff():
                     WHERE _batch_id = (%s)
                     """, (drop_id,))
         db.commit()
+
+        crs.execute(
+            "SELECT eventID FROM Cylinder WHERE batch_id=%s", [drop_id])
+        event_tuple = crs.fetchall()
+
+        for eventId in event_tuple:
+            gcalendar.cal_update(*eventId, 7)
+
         return f"GOOD SUCCESS { drop_id }"
     else:
         crs.execute(
