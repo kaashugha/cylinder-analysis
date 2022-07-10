@@ -1,10 +1,105 @@
-import datetime
+from fpdf import FPDF
+from create_table import PDF
+
+pdf = PDF('P', 'mm', 'Letter')
+pdf.alias_nb_pages()
 
 
-cur_day = int(datetime.date.today().strftime("%d"))
-cur_mo = int(datetime.date.today().strftime("%m"))
-cur_year = int(datetime.date.today().strftime("%y"))
+pdf.set_font('helvetica', '', 11)
+pdf.add_page()
+pdf.cell(0, 6, 'Date: ', border=0, ln=1)
+pdf.cell(0, 6, 'Specified Strength (MPa): ', border=0, ln=1)
+pdf.cell(0, 6, 'Batch Number: ', border=0, ln=1)
+pdf.cell(0, 6, 'Client: ', border=0, ln=1)
+pdf.cell(0, 6, 'Site Address: ', border=0, ln=1)
+pdf.cell(0, 6, 'Subclient/Contractor: ', border=0, ln=1)
 
-print (cur_day)
-print (cur_mo)
-print (cur_year)
+pdf.image('tof.png', 145, 47, 60)
+
+data_as_dict = {"Lab No": ["22-0600003A-7D-1","Mary","Carlson","Lucas", 'x', 'x', 'x', 'x', 'x', 'x'],
+                "Casting Date": ["25-05-2022","Ramos","Banks","Cimon", 'x', 'x', 'x', 'x', 'x', 'x'],
+                "Receiving Date": ['26-05-2022','19','31', 'x', 'x', 'x', 'x', 'x', 'x'],
+                "Curing**": ['Moisture Room','19','31', 'x', 'x', 'x', 'x', 'x', 'x'],
+                "Age": ['52-D','19','31', 'x', 'x', 'x', 'x', 'x', 'x'],
+                "Testing Date": ['01-06-2022','19','31', 'x', 'x', 'x', 'x', 'x', 'x'],
+                "Diameter (mm)": ['101.0','19','31', 'x', 'x', 'x', 'x', 'x', 'x'],
+                "Mass of Cylinder (g)": ['3710','19','31', 'x', 'x', 'x', 'x', 'x', 'x'],
+                "Density (kg/m3)": ['2292','19','31', 'x', 'x', 'x', 'x', 'x', 'x'],
+                "Compressive Strength (MPa)": ['35.4','19','31', 'x', 'x', 'x', 'x', 'x', 'x'],
+                "Type of Fracture*": ['2','19','31', 'x', 'x', 'x', 'x', 'x', 'x']
+            }
+
+pdf.ln(5)
+pdf.create_table(table_data = data_as_dict, align_header='C', align_data='C', data_size=8, cell_width=[27,20,20,15,9,20,18,18,15,19,14], title_size=40)
+pdf.ln(5)
+
+# 97.95 - 62.5 = 35.45
+
+notes = 'This is an example paragraph for the max number of words I can use in the notes section of the final report. I am at 108 characters as of the end of the last sentence but I need 200. Twenty letters now'
+
+pdf.cell(50, 7, 'Mix ID: ', border=0)
+pdf.cell(47.95, 7, 'ANS ', border=0)
+pdf.cell(62.5, 7, 'Cylinders Cast at PLT: ', border=0)
+pdf.cell(35.45, 7, 'ANS ', border=0, ln=1)
+
+pdf.cell(50, 7, 'Ticket ID: ', border=0)
+pdf.cell(47.95, 7, 'ANS ', border=0)
+pdf.cell(62.5, 7, 'Concrete Supplier: ', border=0)
+pdf.cell(35.45, 7, 'ANS ', border=0, ln=1)
+
+pdf.cell(50, 7, 'Specified Slump (mm): ', border=0)
+pdf.cell(47.95, 7, 'ANS ', border=0)
+pdf.cell(62.5, 7, 'Specified Air (%): ', border=0)
+pdf.cell(35.45, 7, 'ANS ', border=0, ln=1)
+
+pdf.cell(50, 7, 'Measured Slump (mm): ', border=0)
+pdf.cell(47.95, 7, 'ANS ', border=0)
+pdf.cell(62.5, 7, 'Measured Air (%): ', border=0)
+pdf.cell(35.45, 7, 'ANS ', border=0, ln=1)
+
+pdf.cell(50, 7, 'Load No.: ', border=0)
+pdf.cell(47.95, 7, 'ANS ', border=0)
+pdf.cell(62.5, 7, 'Truck No.: ', border=0)
+pdf.cell(35.45, 7, 'ANS ', border=0, ln=1)
+
+pdf.cell(50, 7, 'Concrete Temperature (°C): ', border=0)
+pdf.cell(47.95, 7, 'ANS ', border=0)
+pdf.cell(62.5, 7, 'Type of Mould: ', border=0)
+pdf.cell(35.45, 7, 'ANS ', border=0, ln=1)
+
+pdf.cell(50, 7, 'Ambient Temperature (°C): ', border=0)
+pdf.cell(47.95, 7, 'ANS ', border=0)
+pdf.cell(62.5, 7, 'Casting Time: ', border=0)
+pdf.cell(35.45, 7, 'ANS ', border=0, ln=1)
+
+pdf.cell(50, 7, 'Initial Curing Temperature (°C): ', border=0)
+pdf.cell(47.95, 7, 'ANS ', border=0)
+pdf.cell(62.5, 7, 'Time of Charge: ', border=0)
+pdf.cell(35.45, 7, 'ANS ', border=0, ln=1)
+
+pdf.cell(50, 7, 'Casted By: ', border=0)
+pdf.cell(47.95, 7, 'ANS ', border=0)
+pdf.cell(62.5, 7, 'Nominal Size of Aggregate (mm): ', border=0)
+pdf.cell(35.45, 7, 'ANS ', border=0, ln=1)
+
+pdf.cell(50, 7, 'Location: ', border=0)
+pdf.cell(47.95, 7, 'ANS ', border=0)
+pdf.cell(62.5, 7, 'Initial Curing Temperature (Minimum °C): ', border=0)
+pdf.cell(35.45, 7, 'ANS ', border=0, ln=1)
+
+pdf.cell(50, 7, 'PLT #: ', border=0)
+pdf.cell(47.95, 7, 'ANS ', border=0)
+pdf.cell(62.5, 7, 'Initial Curing Temperature (Maximum °C): ', border=0)
+pdf.cell(35.45, 7, 'ANS ', border=0, ln=1)
+
+pdf.ln(5)
+
+pdf.cell(12, 7, 'Notes: ', border=0)
+pdf.multi_cell(0, 7, notes, border=0)
+
+pdf.ln(5)
+
+pdf.cell(15, 7, 'Notes: ')
+
+
+pdf.output('pdf_1.pdf')

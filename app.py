@@ -1,8 +1,5 @@
 import datetime
-from logging import warning
-from tkinter import dialog
 from flask import Flask, flash, get_flashed_messages, jsonify, redirect, render_template, request, session, url_for
-from flask_sqlalchemy import SQLAlchemy
 from datetime import timedelta
 import mysql.connector
 import bcrypt
@@ -246,6 +243,7 @@ def ticket():
         cb4 = request.form.get('eb4')
         cb5 = request.form.get('eb5')
         cb6 = request.form.get('eb6')
+
 
         if cb1 is None:
             d1 = request.form["d1"]
