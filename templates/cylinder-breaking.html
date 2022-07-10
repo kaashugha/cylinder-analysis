@@ -11,14 +11,17 @@
       crossorigin="anonymous"
     />
     <link rel="stylesheet" href="../static/style.css" />
+    <link type="text/css" rel="stylesheet" href="../static/waitMe.css">
   </head>
-  <body>
+  <body id="htmlpage">
       
        <header>
          <div class="container-fluid">
-              <a href="index.html" class="logout_bnt_section">
-              Logout <img src="../static/logout.png" alt="logout" class="logout_header_img">
+          {% if session['user'] %}
+              <a href="/logout" class="logout_bnt_section">
+              Logout {{ session['user'] }}<img src="../static/logout.png" alt="logout" class="logout_header_img">
           </a>
+          {% endif %}
          </div>
       </header>
       
@@ -86,6 +89,7 @@
                           <div class="col-md-12">
                             <button
                               type="submit"
+                              id="submitbtn"
                               class="cancel_reset_entry0120 background_btn_3"
                             >
                               Save
@@ -156,6 +160,56 @@
         }
         
       }
+      </script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script>
+    <script src="../static/waitMe.js"></script> 
+    <script>
+      $(function(){
+      // none, bounce, rotateplane, stretch, orbit, 
+      // roundBounce, win8, win8_linear or ios
+      var current_effect = 'win8_linear'; // 
+      
+
+
+      $('#submitbtn').click(function(){
+      run_waitMe(current_effect);
+      });
+      
+      function run_waitMe(effect){
+      $('#htmlpage').waitMe({
+      effect: 'win8_linear',
+
+      //place text under the effect (string).
+      text: 'Please Wait...',
+      
+      //background for container (string).
+      bg: 'rgba(255,255,255,0.7)',
+      
+      //color for background animation and text (string).
+      color: '#123',
+      
+      //max size
+      maxSize: '8',
+      
+      //wait time im ms to close
+      waitTime: -1,
+      
+      //url to image
+      source: '',
+      
+      //or 'horizontal'
+      textPos: 'vertical',
+      
+      //font size
+      fontSize: '8',
+      
+      // callback
+      onClose: function() {}
+      
+      });
+      }
+        
+      });
       </script>
     <script
       src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js"

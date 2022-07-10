@@ -54,8 +54,6 @@ def sid_list():
     bid = req.get('bid_ca')[2:-3]
     crs.execute("SELECT _SID FROM Cylinder WHERE batch_id=%s", [bid])
     sid = crs.fetchall()
-    print(bid)
-    print(sid)
     return jsonify(sid)
 
 
@@ -263,9 +261,9 @@ def ticket():
             d6 = request.form["d6"]
 
         note = request.form["note_text"]
-        username = "admin"
+        username = user
 
-        crs.execute("""INSERT INTO ticket (_batch_id, username, notes, client_name, mix_id, ticket_no, site_add, load_no, agg_size, struct_grid, spec_slump, 
+        crs.execute("""INSERT INTO ticket (_batch_id, ticket_gen_username, notes, client_name, mix_id, ticket_no, site_add, load_no, agg_size, struct_grid, spec_slump, 
                     conc_supp, charge_time, subclient_cont, meas_slump, spec_air, cast_time, spec_str, mould_type, meas_air, conc_temp, cast_by, 
                     truck_no, amb_temp, temp_min, temp_max) VALUES
                     (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)""",
@@ -405,11 +403,12 @@ def dropoff():
 
     if request.method == "POST":
         drop_id = request.form["drop_id"][2:-3]
+        user = session["user"]
 
         crs.execute("""UPDATE ticket  
-                    SET dropoff_timestamp = CURRENT_TIMESTAMP
+                    SET dropoff_timestamp = CURRENT_TIMESTAMP, dropoff_username = %s
                     WHERE _batch_id = (%s)
-                    """, (drop_id,))
+                    """, [user, drop_id])
         db.commit()
 
         crs.execute(
@@ -441,11 +440,12 @@ def cyla():
             weight = request.form["weight"]
             height = request.form["height"]
             dia = request.form["dia"]
+            user = session["user"]
 
             crs.execute("""UPDATE Cylinder  
-                SET height = %s, weight = %s, dia = %s
+                SET height = %s, weight = %s, dia = %s, analysis_username = %s
                 WHERE _SID = (%s)
-                """, [height, weight, dia, sid])
+                """, [height, weight, dia, user, sid])
             db.commit()
 
             return "GOOD SUCCESS post"
@@ -472,11 +472,12 @@ def cylb():
             sid = request.form["sid_ca"]
             comp_str = request.form["comp_str"]
             tof = request.form["tof"]
+            user = session["user"]
 
             crs.execute("""UPDATE Cylinder  
-                SET comp_str = %s, frac_type = %s
+                SET comp_str = %s, frac_type = %s, breaking_username = %s
                 WHERE _SID = (%s)
-                """, [comp_str, tof, sid])
+                """, [comp_str, tof, user, sid])
             db.commit()
 
             return "GOOD SUCCESS post"
