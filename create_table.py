@@ -13,8 +13,18 @@ class PDF(FPDF):
     def footer(self):
         self.set_y(-15)
         self.set_font('helvetica', 'I', 10)
-        self.cell(0, 10, f'{self.page_no()}/{{nb}}', border=0, align='R')
-        self.image('CCIL.png', 10, 262, 20)
+        self.cell(0, 10, f'{self.page_no()}/{{nb}}', border=0, align='C')
+        self.image('CCIL.png', 187, 262, 20)
+
+
+        self.set_font('helvetica', '', 6)
+        self.ln(0.001)
+        self.cell(0, 2, '14-130 Konrad Crescent, Markham, Ontario, Canada L3R 0G5', border=0, ln=1, align='L')
+        self.ln(1)
+        self.cell(0, 2, 'Phone: (905) 604-8194 Fax: (905) 604-8190', border=0, ln=1, align='L')
+        self.ln(1)
+        self.cell(0, 2, 'Email: info@safaengineeringinc.com Website: safaengineeringinc.com', border=0, ln=1, align='L')
+
 
     def create_table(self, table_data, title='', data_size = 10, title_size=12, align_data='L', align_header='L', cell_width='even', x_start='x_default',emphasize_data=[], emphasize_style=None,emphasize_color=(0,0,0)): 
         """
