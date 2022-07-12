@@ -3,3 +3,6 @@ venv/
 
 # Environment Variables
 .env
+
+# Google OAuth2.0 json file
+client_secret.json
