@@ -176,9 +176,12 @@
         e.preventDefault();
         $.ajax({
           type:'POST',
-          url:'/',
+          url:'/cylinder-analysis/',
           data:{
-            todo:$("#todo").val()
+            sid:$("#sid_ca").val(),
+            height:$("#height").val(),
+            weight:$("#weight").val(),
+            dia:$("#dia").val()
           },
           success:function()
           {

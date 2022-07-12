@@ -4,10 +4,17 @@ from datetime import timedelta
 import mysql.connector
 import bcrypt
 import gcalendar
+from dotenv import load_dotenv
+import os
+import report_pdf
+
+GOOGLE_API_KEY = os.getenv('GOOGLE_API_KEY')
+CALENDAR_ID = os.getenv('CALENDAR_ID')
+SECRET_KEY = os.getenv('SECRET_KEY')
 
 app = Flask(__name__)
 app.permanent_session_lifetime = timedelta(days=14)
-app.secret_key = ''
+app.secret_key = SECRET_KEY
 
 db = mysql.connector.connect(
     host='localhost',
@@ -18,14 +25,15 @@ db = mysql.connector.connect(
 
 crs = db.cursor(buffered=True)
 
+def configure():
+    load_dotenv()
+
 def permission(user):
     crs.execute("""SELECT role
                 FROM user
                 WHERE _username=%s
                 """, [user])
     role = crs.fetchone()[0]
-
-
 
     if role == 'admin':
         return 'admin'
@@ -39,7 +47,6 @@ def login_check():
         user = session["user"]
         return user
     else:
-        print('out')
         return
 
 
@@ -51,7 +58,6 @@ def sid_list():
     bid = req.get('bid_ca')[2:-3]
     crs.execute("SELECT _SID FROM Cylinder WHERE batch_id=%s", [bid])
     sid = crs.fetchall()
-    print(sid)
     return jsonify(sid)
 
 
@@ -458,23 +464,24 @@ def cyla():
     if role == 'admin' or role == 'lab':
 
         if request.method == "POST":
-
-            bid = request.form["bid_ca"]
-            sid = request.form["sid_ca"]
-            weight = request.form["weight"]
-            height = request.form["height"]
-            dia = request.form["dia"]
+            
+            print('hi')
+            sid = request.form.get("sid_ca")
+            print("sid")
+            weight = request.form.get("weight")
+            height = request.form.get("height")
+            dia = request.form.get("dia")
             user = session["user"]
+            print(dia)
 
             crs.execute("""UPDATE Cylinder  
                 SET height = %s, weight = %s, dia = %s, analysis_username = %s
                 WHERE _SID = (%s)
                 """, [height, weight, dia, user, sid])
             db.commit()
+            print("post commit")
 
-            sql_success = True
-
-            return render_template('cylinder-analysis.html', sql_success = sql_success)
+            return render_template('cylinder-analysis.html')
         else:
             crs.execute(
                 "SELECT _batch_id FROM ticket ORDER BY ticket_timestamp DESC")
@@ -532,8 +539,7 @@ def creport():
             crs.execute(
                 "SELECT _batch_id FROM ticket ORDER BY ticket_timestamp DESC")
             bid_cax = crs.fetchall()
-
-            print(bid_cax)
+            
             return render_template('create-report.html', bid_cax=bid_cax)
 
     else:
@@ -553,12 +559,15 @@ def calendar():
     
     role = permission(session['user'])
 
+    google_key = GOOGLE_API_KEY
+    calendar_key = CALENDAR_ID
+
     if role == 'admin' or role == 'lab':
-        return render_template('calendar.html')
+        return render_template('calendar.html', google_key = google_key, calendar_key = calendar_key)
     else:
         return "<h1>Error: Insufficient Permissions to Access Page</h1>"
 
 
 if __name__ == '__main__':
-    db.create_all()
+    configure()
     app.run(debug=True, host='localhost', port=5000)

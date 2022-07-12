@@ -4,9 +4,10 @@ CLIENT_SECRET_FILE = 'client_secret.json'
 API_NAME = 'calendar'
 API_VERSION = 'v3'
 SCOPES = ['https://www.googleapis.com/auth/calendar']
+import os
 
 service = Create_Service(CLIENT_SECRET_FILE, API_NAME, API_VERSION, SCOPES)
-calId = 'placeholder calendar ID'
+calId = os.getenv('CALENDAR_ID')
 
 
 def cal_insert(day, month, year, SID, color, user):
@@ -40,7 +41,6 @@ def cal_insert(day, month, year, SID, color, user):
     ).execute()
     
     eventID = response['id']
-    print(eventID)
 
     return eventID
 

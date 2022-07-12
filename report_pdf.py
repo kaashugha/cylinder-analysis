@@ -1,10 +1,9 @@
-import pprint
 from fpdf import FPDF
 from create_table import PDF
 
+
 pdf = PDF('P', 'mm', 'Letter')
 pdf.alias_nb_pages()
-
 
 pdf.set_font('helvetica', '', 10)
 pdf.add_page()
