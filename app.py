@@ -51,6 +51,7 @@ def sid_list():
     bid = req.get('bid_ca')[2:-3]
     crs.execute("SELECT _SID FROM Cylinder WHERE batch_id=%s", [bid])
     sid = crs.fetchall()
+    print(sid)
     return jsonify(sid)
 
 
@@ -274,12 +275,16 @@ def ticket():
         for i in range(1, int(q1) + 1):
             if cb1 is None:
                 sid = bid + "A" + "-" + d1 + "D" + "-" + str(i)
+                crs.execute("""INSERT INTO Cylinder (_SID, batch_id) VALUES 
+                            (%s, %s)""",
+                            (sid, bid))
+                db.commit()
             else:
                 sid = bid + "A" + "-" + cb1 + "D" + "-" + str(i)
-            crs.execute("""INSERT INTO Cylinder (_SID, batch_id) VALUES 
-                        (%s, %s)""",
-                        (sid, bid))
-            db.commit()
+                crs.execute("""INSERT INTO Cylinder (_SID, batch_id, curing) VALUES 
+                            (%s, %s, %s)""",
+                            (sid, bid, "On-Site"))
+                db.commit()
             
             eventID = gcalendar.cal_insert(int(cur_day), int(cur_mo), cur_year, sid, 5, user)
             crs.execute("""UPDATE Cylinder 
@@ -293,12 +298,16 @@ def ticket():
             for i in range(1, int(q2) + 1):
                 if cb2 is None:
                     sid = bid + "B" + "-" + d2 + "D" + "-" + str(i)
+                    crs.execute("""INSERT INTO Cylinder (_SID, batch_id) VALUES 
+                                (%s, %s)""",
+                                (sid, bid))
+                    db.commit()
                 else:
                     sid = bid + "B" + "-" + cb2 + "D" + "-" + str(i)
-                crs.execute("""INSERT INTO Cylinder (_SID, batch_id) VALUES 
-                            (%s, %s)""",
-                            (sid, bid))
-                db.commit()
+                    crs.execute("""INSERT INTO Cylinder (_SID, batch_id, curing) VALUES 
+                                (%s, %s, %s)""",
+                                (sid, bid, "On-Site"))
+                    db.commit()
                 
                 eventID = gcalendar.cal_insert(int(cur_day), int(cur_mo), cur_year, sid, 5, user)
                 crs.execute("""UPDATE Cylinder 
@@ -313,12 +322,16 @@ def ticket():
             for i in range(1, int(q3) + 1):
                 if cb3 is None:
                     sid = bid + "C" + "-" + d3 + "D" + "-" + str(i)
+                    crs.execute("""INSERT INTO Cylinder (_SID, batch_id) VALUES 
+                                (%s, %s)""",
+                                (sid, bid))
+                    db.commit()
                 else:
                     sid = bid + "C" + "-" + cb3 + "D" + "-" + str(i)
-                crs.execute("""INSERT INTO Cylinder (_SID, batch_id) VALUES 
-                            (%s, %s)""",
-                            (sid, bid))
-                db.commit()
+                    crs.execute("""INSERT INTO Cylinder (_SID, batch_id, curing) VALUES 
+                                (%s, %s, %s)""",
+                                (sid, bid, "On-Site"))
+                    db.commit()
 
                 eventID = gcalendar.cal_insert(int(cur_day), int(cur_mo), cur_year, sid, 5, user)
                 crs.execute("""UPDATE Cylinder 
@@ -333,12 +346,16 @@ def ticket():
             for i in range(1, int(q4) + 1):
                 if cb4 is None:
                     sid = bid + "D" + "-" + d4 + "D" + "-" + str(i)
+                    crs.execute("""INSERT INTO Cylinder (_SID, batch_id) VALUES 
+                                (%s, %s)""",
+                                (sid, bid))
+                    db.commit()
                 else:
                     sid = bid + "D" + "-" + cb4 + "D" + "-" + str(i)
-                crs.execute("""INSERT INTO Cylinder (_SID, batch_id) VALUES 
-                            (%s, %s)""",
-                            (sid, bid))
-                db.commit()
+                    crs.execute("""INSERT INTO Cylinder (_SID, batch_id, curing) VALUES 
+                                (%s, %s, %s)""",
+                                (sid, bid, "On-Site"))
+                    db.commit()
 
                 eventID = gcalendar.cal_insert(int(cur_day), int(cur_mo), cur_year, sid, 5, user)
                 crs.execute("""UPDATE Cylinder 
@@ -352,12 +369,16 @@ def ticket():
             for i in range(1, int(q5) + 1):
                 if cb5 is None:
                     sid = bid + "E" + "-" + d5 + "D" + "-" + str(i)
+                    crs.execute("""INSERT INTO Cylinder (_SID, batch_id) VALUES 
+                                (%s, %s)""",
+                                (sid, bid))
+                    db.commit()
                 else:
                     sid = bid + "E" + "-" + cb5 + "D" + "-" + str(i)
-                crs.execute("""INSERT INTO Cylinder (_SID, batch_id) VALUES 
-                            (%s, %s)""",
-                            (sid, bid))
-                db.commit()
+                    crs.execute("""INSERT INTO Cylinder (_SID, batch_id, curing) VALUES 
+                                (%s, %s, %s)""",
+                                (sid, bid, "On-Site"))
+                    db.commit()
 
                 eventID = gcalendar.cal_insert(int(cur_day), int(cur_mo), cur_year, sid, 5, user)
                 crs.execute("""UPDATE Cylinder 
@@ -371,12 +392,16 @@ def ticket():
             for i in range(1, int(q6) + 1):
                 if cb6 is None:
                     sid = bid + "F" + "-" + d6 + "D" + "-" + str(i)
+                    crs.execute("""INSERT INTO Cylinder (_SID, batch_id) VALUES 
+                                (%s, %s)""",
+                                (sid, bid))
+                    db.commit()
                 else:
                     sid = bid + "F" + "-" + cb6 + "D" + "-" + str(i)
-                crs.execute("""INSERT INTO Cylinder (_SID, batch_id) VALUES 
-                            (%s, %s)""",
-                            (sid, bid))
-                db.commit()
+                    crs.execute("""INSERT INTO Cylinder (_SID, batch_id, curing) VALUES 
+                                (%s, %s, %s)""",
+                                (sid, bid, "On-Site"))
+                    db.commit()
 
                 eventID = gcalendar.cal_insert(int(cur_day), int(cur_mo), cur_year, sid, 5, user)
                 crs.execute("""UPDATE Cylinder 
@@ -488,7 +513,7 @@ def cylb():
     else:
         return "<h1>Error: Insufficient Permissions to Access Page</h1>"
 
-@app.route("/create-report/")
+@app.route("/create-report/", methods=['GET', 'POST'])
 def creport():
     if not login_check():
         return redirect(url_for("login"))
@@ -498,7 +523,16 @@ def creport():
     if role == 'admin' or role == 'lab':
         role = permission(session['user'])
 
-        return render_template('create-report.html')
+        if request.method == "POST":
+            return "GOOD SUCCESS post"
+        else:
+            crs.execute(
+                "SELECT _batch_id FROM ticket ORDER BY ticket_timestamp DESC")
+            bid_cax = crs.fetchall()
+
+            print(bid_cax)
+            return render_template('create-report.html', bid_cax=bid_cax)
+
     else:
         return "<h1>Error: Insufficient Permissions to Access Page</h1>"
 

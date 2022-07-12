@@ -45,8 +45,11 @@
                           <div class="row">
                             <label class="col-md-5"> Batch ID </label>
                             <div class="col-md-7">
-                              <select>
-                                <option>21-0600002</option>
+                              <select name="bid_ca" id="bid_ca" tabindex="2" data-noreset="true" required>
+                                <option disabled selected value> -- select an option -- </option>
+                                {% for client in bid_cax %} -->
+                                  <option value={{client}}>{{ client[0] }}</option>
+                                {% endfor %}
                               </select>
                             </div>
                           </div>
@@ -56,8 +59,7 @@
                           <div class="row">
                             <label class="col-md-5"> SAFFA Designation </label>
                             <div class="col-md-7">
-                              <select>
-                                <option>21-0600002B-28D-2</option>
+                              <select name="sid_ca" id="sid_ca" required>
                               </select>
                             </div>
                           </div>
@@ -340,6 +342,26 @@
       });
     </script>
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script>
+    <script>
+      document.getElementById('bid_ca').onchange = function() {
+          var bid_ca = this.value;
+  
+          $.ajax({
+              type: 'POST',
+              data: JSON.stringify({
+                  'bid_ca': bid_ca,
+              }),
+              contentType: 'application/json; charset=utf-8',
+              url: "{{ url_for('sid_list') }}",
+              success: function(data) {
+                $("#sid_ca").empty();
+                for (var i = 0; i < data.length; i++) {
+                  $("#sid_ca").append('<option>' + data[i] + '</option>');
+                }
+              }
+          });
+      }
+      </script>
     <script src="../static/waitMe.js"></script> 
     <script>
       $(function(){

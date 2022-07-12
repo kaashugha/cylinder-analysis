@@ -342,11 +342,11 @@
                                         <option>28</option>
                                         <option>56</option>
                                       </select>
-                                      <input type="number" min = 1 step = 1 name="eb1" id="eb1" class="input_custom002x" disabled required/>
+                                      <input type="number" min="1" max="4" step="1" name="eb1" id="eb1" class="input_custom002x" disabled required/>
                                     </div>
                                   </td>
                                   <td>
-                                    <input type="number" min = 1 step = 1 name="q1" id="" class="input_custom002" required/>
+                                    <input type="number" min="1" step="1" max="20" name="q1" id="" class="input_custom002" required/>
                                   </td>
                                   <td>
                                     <input
@@ -373,11 +373,11 @@
                                         <option>28</option>
                                         <option>56</option>
                                       </select>
-                                      <input type="number" min = 1 step = 1 name="eb2" id="eb2" class="input_custom002x" disabled/>
+                                      <input type="number" min="1" max="4" step="1" name="eb2" id="eb2" class="input_custom002x" disabled/>
                                     </div>
                                   </td>
                                   <td>
-                                    <input type="number" min = 1 step = 1 name="q2" id="q2" class="input_custom002" />
+                                    <input type="number" min="1" step="1" max="20" name="q2" id="q2" class="input_custom002" />
                                   </td>
                                   <td>
                                     <input
@@ -403,11 +403,11 @@
                                         <option>28</option>
                                         <option>56</option>
                                       </select>
-                                      <input type="number" min = 1 step = 1 name="eb3" id="eb3" class="input_custom002x" disabled/>
+                                      <input type="number" min="1" max="4" step="1" name="eb3" id="eb3" class="input_custom002x" disabled/>
                                     </div>
                                   </td>
                                   <td>
-                                    <input type="number" min = 1 step = 1 name="q3" id="q3" class="input_custom002" />
+                                    <input type="number" min="1" step="1" max="20" name="q3" id="q3" class="input_custom002" />
                                   </td>
                                   <td>
                                     <input
@@ -433,11 +433,11 @@
                                         <option>28</option>
                                         <option>56</option>
                                       </select>
-                                      <input type="number" min = 1 step = 1 name="eb4" id="eb4" class="input_custom002x" disabled/>
+                                      <input type="number" min="1" max="4" step="1" name="eb4" id="eb4" class="input_custom002x" disabled/>
                                     </div>
                                   </td>
                                   <td>
-                                    <input type="number" min = 1 step = 1 name="q4" id="q4" class="input_custom002" />
+                                    <input type="number" min="1" step="1" max="20" name="q4" id="q4" class="input_custom002" />
                                   </td>
                                   <td>
                                     <input
@@ -463,11 +463,11 @@
                                         <option>28</option>
                                         <option>56</option>
                                       </select>
-                                      <input type="number" min = 1 step = 1 name="eb5" id="eb5" class="input_custom002x" disabled/>
+                                      <input type="number" min="1" max="4" step="1" name="eb5" id="eb5" class="input_custom002x" disabled/>
                                     </div>
                                   </td>
                                   <td>
-                                    <input type="number" min = 1 step = 1 name="q5" id="q5" class="input_custom002" />
+                                    <input type="number" min="1" step="1" max="20" name="q5" id="q5" class="input_custom002" />
                                   </td>
                                   <td>
                                     <input
@@ -493,11 +493,11 @@
                                         <option>28</option>
                                         <option>56</option>
                                       </select>
-                                      <input type="number" min = 1 step = 1 name="eb6" id="eb6" class="input_custom002x" disabled/>
+                                      <input type="number" min="1" max="4" step="1" name="eb6" id="eb6" class="input_custom002x" disabled/>
                                     </div>
                                   </td>
                                   <td>
-                                    <input type="number" min = 1 step = 1 name="q6" id="q6" class="input_custom002" />
+                                    <input type="number" min="1" step="1" max="20" name="q6" id="q6" class="input_custom002" />
                                   </td>
                                   <td>
                                     <input
@@ -574,7 +574,6 @@
                           type="submit"
                           id="submitbtn"
                           class="sendnotes_btn_resect_ticket00_submit001"
-                          onclick="enable_caller()"
                         >
                           Submit
                         </button>
@@ -593,27 +592,38 @@
           document.getElementById(eb_var).disabled = true;
           document.getElementById(eb_var).value = "";
           document.getElementById(eb_var).style.backgroundColor = "grey";
-
-
+          
+          
         }
         else {
           document.getElementById(d_var).disabled = true;
           document.getElementById(eb_var).disabled = false;
           document.getElementById(d_var).value = "0";
           document.getElementById(eb_var).style.backgroundColor = "white";
-
+          
         }
       }
-    </script>
+      </script>
     <script>
       function enable_caller() {
-          enabletxt('d2', 'eb2', 'q2');
-          enabletxt('d3', 'eb3', 'q3');
-          enabletxt('d4', 'eb4', 'q4');
-          enabletxt('d5', 'eb5', 'q5');
-          enabletxt('d6', 'eb6', 'q6');
+        if (enabletxt('d2', 'eb2', 'q2') === false){
+          return false;
+        }
+        if (enabletxt('d3', 'eb3', 'q3') === false){
+           return false;
+        }
+        if (enabletxt('d4', 'eb4', 'q4') === false){
+           return false;
+        }
+        if (enabletxt('d5', 'eb5', 'q5') === false){
+           return false;
+        }
+        if (enabletxt('d6', 'eb6', 'q6') === false){
+           return false;
+        }
+        return true;
       }
-    </script>
+      </script>
     <script>
       function enabletxt(day, cday, quant) {
         if(document.getElementById(quant).value != "") {
@@ -628,56 +638,72 @@
           document.getElementById(day).removeAttribute('required');
           document.getElementById(quant).removeAttribute('required');
         }
+
+        if(document.getElementById(quant).value != "" && document.getElementById(day).value === "" && document.getElementById(cday).disabled){
+          return false;
+        }
+        if(document.getElementById(quant).value === "" && document.getElementById(day).value != ""){
+          console.log(20);
+        }
+        if(document.getElementById(quant).value != "" && document.getElementById(cday).value === '' && document.getElementById(day).disabled){
+          return false;
+        }
+        if(document.getElementById(quant).value === "" && document.getElementById(cday).value != ""){
+          return false;
+        }
+        return true;
       }
       </script>
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script>
     <script src="../static/waitMe.js"></script> 
+    <script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/jquery.validate.min.js"></script>
     <script>
       $(function(){
-      // none, bounce, rotateplane, stretch, orbit, 
-      // roundBounce, win8, win8_linear or ios
-      var current_effect = 'win8_linear'; // 
-      
-
-
-      $('#submitbtn').click(function(){
-      run_waitMe(current_effect);
-      });
-      
-      function run_waitMe(effect){
-      $('#htmlpage').waitMe({
-      effect: 'win8_linear',
-
-      //place text under the effect (string).
-      text: 'Please Wait...',
-      
-      //background for container (string).
-      bg: 'rgba(255,255,255,0.7)',
-      
-      //color for background animation and text (string).
-      color: '#123',
-      
-      //max size
-      maxSize: '8',
-      
-      //wait time im ms to close
-      waitTime: -1,
-      
-      //url to image
-      source: '',
-      
-      //or 'horizontal'
-      textPos: 'vertical',
-      
-      //font size
-      fontSize: '8',
-      
-      // callback
-      onClose: function() {}
-      
-      });
-      }
+        // none, bounce, rotateplane, stretch, orbit, 
+        // roundBounce, win8, win8_linear or ios
+        var current_effect = 'win8_linear'; // 
         
+        
+        
+        $('#submitbtn').click(function(){
+           if (enable_caller()){
+            run_waitMe(current_effect);
+           }
+        });
+        
+        function run_waitMe(effect){
+          $('#htmlpage').waitMe({
+            effect: 'win8_linear',
+            
+            //place text under the effect (string).
+            text: 'Please Wait...',
+            
+            //background for container (string).
+            bg: 'rgba(255,255,255,0.7)',
+            
+            //color for background animation and text (string).
+            color: '#123',
+            
+            //max size
+            maxSize: '8',
+            
+            //wait time im ms to close
+            waitTime: -1,
+            
+            //url to image
+            source: '',
+            
+            //or 'horizontal'
+            textPos: 'vertical',
+            
+            //font size
+            fontSize: '8',
+            
+            // callback
+            onClose: function() {}
+          
+          });
+        }
       });
       </script>
     <script
