@@ -6,6 +6,7 @@ API_VERSION = 'v3'
 SCOPES = ['https://www.googleapis.com/auth/calendar']
 
 service = Create_Service(CLIENT_SECRET_FILE, API_NAME, API_VERSION, SCOPES)
+calId = 'placeholder calendar ID'
 
 
 def cal_insert(day, month, year, SID, color, user):
@@ -34,7 +35,7 @@ def cal_insert(day, month, year, SID, color, user):
 
 
     response = service.events().insert(
-        calendarId='61r7bbq1d657on0lv46hpq3e24@group.calendar.google.com',
+        calendarId=calId,
         body=event_request_body
     ).execute()
     
@@ -46,13 +47,13 @@ def cal_insert(day, month, year, SID, color, user):
 def cal_update(eventId, color):
     
     response = service.events().get(
-        calendarId='61r7bbq1d657on0lv46hpq3e24@group.calendar.google.com', eventId=eventId
+        calendarId=calId, eventId=eventId
         ).execute()
 
     response['colorId'] = color
 
     response = service.events().update(
-        calendarId='61r7bbq1d657on0lv46hpq3e24@group.calendar.google.com',
+        calendarId=calId,
         eventId=eventId,
         body=response
     ).execute()

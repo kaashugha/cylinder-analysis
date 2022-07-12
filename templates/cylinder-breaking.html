@@ -70,7 +70,7 @@
                             Compressive Strength (MPa)
                           </label>
                           <div class="col-md-7">
-                            <input type="number" name="comp_str" min="0" required />
+                            <input type="number" name="comp_str" min="0" id="cstr" required />
                           </div>
                         </div>
                       </div>
@@ -79,7 +79,7 @@
                         <div class="row">
                           <label class="col-md-5"> Type of Fracture </label>
                           <div class="col-md-7">
-                            <input type="number" min="1" max="6" name=tof required/>
+                            <input type="number" min="1" max="6" name="tof" id="tof" required/>
                           </div>
                         </div>
                       </div>
@@ -161,6 +161,20 @@
         
       }
       </script>
+      <script>
+        function validate() {
+        var bca = document.getElementById("bid_ca");
+        var sca = document.getElementById("sid_ca");
+        var cca = document.getElementById("cstr");
+        var dca = document.getElementById("tof");
+
+
+        if (bca.value != '' && sca.value != '' && cca.value != '' && dca.value != ''){
+          return true
+        }
+        return false
+      }
+      </script>
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script>
     <script src="../static/waitMe.js"></script> 
     <script>
@@ -172,7 +186,9 @@
 
 
       $('#submitbtn').click(function(){
-      run_waitMe(current_effect);
+        if (validate()) {
+              run_waitMe(current_effect);
+            }
       });
       
       function run_waitMe(effect){

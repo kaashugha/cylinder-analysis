@@ -7,7 +7,7 @@ import gcalendar
 
 app = Flask(__name__)
 app.permanent_session_lifetime = timedelta(days=14)
-app.secret_key = 'arrrimasecretkeyarrrrrr'
+app.secret_key = ''
 
 db = mysql.connector.connect(
     host='localhost',
@@ -459,6 +459,7 @@ def cyla():
 
         if request.method == "POST":
 
+            bid = request.form["bid_ca"]
             sid = request.form["sid_ca"]
             weight = request.form["weight"]
             height = request.form["height"]
@@ -471,7 +472,9 @@ def cyla():
                 """, [height, weight, dia, user, sid])
             db.commit()
 
-            return "GOOD SUCCESS post"
+            sql_success = True
+
+            return render_template('cylinder-analysis.html', sql_success = sql_success)
         else:
             crs.execute(
                 "SELECT _batch_id FROM ticket ORDER BY ticket_timestamp DESC")
