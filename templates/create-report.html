@@ -4,6 +4,9 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Create Report</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.css">
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.js"></script>
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css"
       rel="stylesheet"
@@ -36,7 +39,7 @@
               </div>
               <!-- ticket_section_header -->
               <div class="ticket_section_body">
-                <form>
+                <form method="POST">
                   <fieldset>
                     <legend>Generate Engineering Report</legend>
                     <div class="row">
@@ -45,7 +48,8 @@
                           <div class="row">
                             <label class="col-md-5"> Batch ID </label>
                             <div class="col-md-7">
-                              <select name="bid_ca" id="bid_ca" tabindex="2" data-noreset="true" required>
+                              <select name="
+                              " id="bid_ca" tabindex="2" data-noreset="true" required>
                                 <option disabled selected value> -- select an option -- </option>
                                 {% for client in bid_cax %} -->
                                   <option value={{client}}>{{ client[0] }}</option>
@@ -72,188 +76,46 @@
                           type="button"
                           name="batch"
                           value="Add"
+                          onclick="add_id()"
                           class="btn btn-info border-0 mb-2"
                         />
+                        <input
+                        type="button"
+                        name="batch"
+                        value="TEST"
+                        onclick="test()"
+                        class="btn btn-info border-0 mb-2"
+                      />
+                        <input
+                        type="button"
+                        name="batch"
+                        value="Remove"
+                        onclick="remove_id()"
+                        class="btn btn-danger border-0 mb-2"
+                        />
                       </div>
-
                       <div class="col-md-4">
                         <select
                           class="form-select"
+                          id="selected_id"
+                          name="selected_id"
                           multiple
                           aria-label="multiple select example"
                         >
-                          <option selected>21-0600002A-7D-1</option>
-                          <option value="1">21-0600002B-28D-1</option>
-                          <option value="2">21-0600002B-28D-2</option>
-                          <option value="3">21-0600002B-28D-3</option>
-                          <option value="3">21-0600002B-28D-4</option>
                         </select>
                       </div>
                       <!-- Left Column -->
                     </div>
-                    <br />
-                    <!-- end input row -->
-                    <div class="row mb-2">
-                      <div class="col-md-2 col-sm-6 mb-3">
-                        <div class="row">
-                          <label class="col-md-12"> Search By </label>
-                          <div class="col-md-12">
-                            <select>
-                              <option></option>
-                            </select>
-                          </div>
-                        </div>
-                      </div>
-                      <!-- 1 -->
-                      <div class="col-md-2 col-sm-6 mb-3">
-                        <div class="row">
-                          <label class="col-md-12"> Search Value </label>
-                          <div class="col-md-12">
-                            <input type="text" name="batch" />
-                          </div>
-                        </div>
-                      </div>
-                      <!-- 2 -->
-                      <div class="col-md-2 col-sm-6 mb-3">
-                        <div class="row">
-                          <label
-                            class="col-md-12 mobile_display_none"
-                            style="opacity: 0"
-                          >
-                            Search Value
-                          </label>
-                          <div class="col-md-12">
-                            <input
-                              type="button"
-                              name="batch"
-                              value="Search"
-                              class="btn btn-info border-0"
-                            />
-                          </div>
-                        </div>
-                      </div>
-                      <!-- 3 -->
-                      <div class="col-md-2 col-sm-6 mb-3">
-                        <div class="row">
-                          <label
-                            class="col-md-12 mobile_display_none"
-                            style="opacity: 0"
-                          >
-                            Search Value
-                          </label>
-                          <div class="col-md-12">
-                            <input
-                              type="button"
-                              name="batch"
-                              value="Edit"
-                              class="btn btn-warning border-0"
-                            />
-                          </div>
-                        </div>
-                      </div>
-                      <!-- 4 -->
-                      <div class="col-md-4 col-sm-6 mb-3 text-end">
-                        <div class="row">
-                          <div class="col-md-12">
-                            <button
-                              type="submit"
-                              class="cylinder_analysis_table_btn001 bg-danger"
-                            >
-                              Select
-                            </button>
-                          </div>
-                        </div>
-                      </div>
-                      <!-- 4 -->
-                    </div>
-                    <!-- End Filer-->
                     <div class="create_data_cylinder_analysis_table">
                       <div class="row">
-                        <div class="table-responsive-custom">
-                          <table>
-                            <tr>
-                              <th>Batch ID</th>
-                              <th>Date (yyyy-mm-dd)</th>
-                              <th>Client</th>
-                              <th>Site Address</th>
-                              <th>Contractor</th>
-                            </tr>
-                            <tr class="rowMai1">
-                              <td>21-0600001</td>
-                              <td>2021-06-08</td>
-                              <td>Allmix Concrete</td>
-                              <td>10th Line & Mckean</td>
-                              <td>Dicrete Concrete Ltd</td>
-                            </tr>
-                            <tr class="rowMai2">
-                              <td>21-0600002</td>
-                              <td>2021-06-08</td>
-                              <td>Allmix Concrete</td>
-                              <td>2201 kingston Rd, Scarb</td>
-                              <td>Merge Condos</td>
-                            </tr>
-                            <tr class="rowMai3">
-                              <td>21-0600003</td>
-                              <td>2021-06-08</td>
-                              <td>Allmix Concrete</td>
-                              <td>905 Don Mills Road</td>
-                              <td>DCMS Realty Inc.</td>
-                            </tr>
-                            <tr class="rowMai4">
-                              <td>21-0600004</td>
-                              <td>2021-06-08</td>
-                              <td>Allmix Concrete</td>
-                              <td>905 Don Mills Road</td>
-                              <td>FS Allenbury</td>
-                            </tr>
-                            <tr class="rowMai5">
-                              <td>21-0600005</td>
-                              <td>2021-06-08</td>
-                              <td>Allmix Concrete</td>
-                              <td>55 Warrender Ave</td>
-                              <td>The Terraces</td>
-                            </tr>
-                            <tr class="rowMai6">
-                              <td>21-0600006</td>
-                              <td>2021-06-08</td>
-                              <td>Allmix Concrete</td>
-                              <td>55 Warrender Ave</td>
-                              <td>The Terraces</td>
-                            </tr>
-                            <tr class="rowMai7">
-                              <td>21-0600007</td>
-                              <td>2021-06-08</td>
-                              <td>Allmix Concrete</td>
-                              <td>8 Cederland</td>
-                              <td>H & W Development Corporation</td>
-                            </tr>
-                            <tr class="rowMai8">
-                              <td>21-0600008</td>
-                              <td>2021-06-08</td>
-                              <td>Allmix Concrete</td>
-                              <td>55 Warrender Ave</td>
-                              <td>The Terraces</td>
-                            </tr>
-                            <tr class="rowMai9">
-                              <td>21-0600009</td>
-                              <td>2021-06-08</td>
-                              <td>Allmix Concrete</td>
-                              <td>55 Warrender Ave</td>
-                              <td>The Terraces</td>
-                            </tr>
-                            <tr class="rowMai10">
-                              <td>21-06000010</td>
-                              <td>2021-06-08</td>
-                              <td>Allmix Concrete</td>
-                              <td>905 Don Mills Road</td>
-                              <td>FS Allenbury</td>
-                            </tr>
-                          </table>
+                        <div class="table-responsive-custom-large">
+                            {{ search_data_html|safe }}
                         </div>
                       </div>
                       <div class="row">
                         <div class="col-md-12 text-center">
-                          <button
+                          <button 
+                            type="submit"
                             id="submitbtn"
                             class="generate_report_middle_section_add btn btn-info"
                           >
@@ -268,15 +130,10 @@
                   <img src="../static/footer_icons.png" class="foot_icons" alt="img" />
                 </div>
               </div>
-              <!-- ticket_section_body -->
-            </div>
-            <!-- end ticket section-->
           </div>
         </div>
       </div>
     </div>
-
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script>
       $(document).ready(function () {
         $(".rowMai1").click(function () {
@@ -341,7 +198,6 @@
         //15
       });
     </script>
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script>
     <script>
       document.getElementById('bid_ca').onchange = function() {
           var bid_ca = this.value;
@@ -362,6 +218,32 @@
           });
       }
       </script>
+      <script>
+        function add_id() {
+          
+          var sidArray= new Array();
+          var sidElement = document.getElementById('selected_id');
+
+          for (i = 0; i < sidElement.options.length; i++) {
+            sidArray[i] = sidElement.options[i].value;
+          }
+
+          var sid = document.getElementById('sid_ca').value;
+
+          var bool = false;
+
+          if (!sidArray.includes(sid) && sid != '') {
+            var option = document.createElement("option");
+            option.text = sid;
+            var select = document.getElementById("selected_id");
+            select.appendChild(option);
+          }
+        }
+        function remove_id() {
+          var x = document.getElementById("selected_id");
+          x.remove(x.selectedIndex);
+        }
+      </script>
     <script src="../static/waitMe.js"></script> 
     <script>
       $(function(){
@@ -371,9 +253,9 @@
       
 
 
-      $('#submitbtn').click(function(){
-      run_waitMe(current_effect);
-      });
+      // $('#submitbtn').click(function(){
+      // run_waitMe(current_effect);
+      // });
       
       function run_waitMe(effect){
       $('#htmlpage').waitMe({
@@ -410,6 +292,49 @@
       }
         
       });
+      </script>
+      <script>
+      $(document).ready(function () {
+        $('#search_data').DataTable({
+          columns: [
+            null,
+            null,
+            null,
+            null,
+            null],
+        });
+      });
+      </script>
+      <script>
+        function test() {
+          var selectobject=document.getElementById("selected_id")
+          var sid_array = [];
+
+          for (var i=0; i<selectobject.length; i++){
+          sid_array.push(selectobject.options[i].text)
+          }
+
+              $.ajax(
+                    {
+                        type:'POST',
+                        contentType:'application/json;charset-utf-08',
+                        data: {name:sid_array},
+                        url:'http://127.0.0.1:5000/test?value=' + sid_array,
+                        success:function (data) {
+                            var reply=data.reply;
+                            if (reply=="success")
+                            {
+                                return;
+                            }
+                            else
+                                {
+                                alert("some error ocured in session agent")
+                                }
+
+                        }
+                    }
+                );
+      }
       </script>
     <script
       src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js"

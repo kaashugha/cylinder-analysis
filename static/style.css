@@ -506,6 +506,11 @@ table {
   height: 250px;
 }
 
+.table-responsive-custom-large {
+  overflow: scroll;
+  height: 570px;
+}
+
 .section_ticket_sectionR {
   display: block;
   transition: 0.5s;

@@ -19,7 +19,7 @@ pdf.image('tof.png', 145, 47, 60)
 data_as_dict = {"Lab No",
                 "Casting Date",
                 "Receiving Date",
-                "Curing**",
+                "Curing",
                 "Age",
                 "Testing Date",
                 "Diameter (mm)",
@@ -37,7 +37,7 @@ data_as_dict = {k: [] for k in data_as_dict}
 data_as_dict = {"Lab No": ["22-0600003A-7D-1","Mary","Carlson","Lucas", 'x', 'x'],
                 "Casting Date": ["25-05-2022","Ramos","Banks","Cimon",  'x', 'x'],
                 "Receiving Date": ['26-05-2022','19','31',              'x', 'x'],
-                "Curing**": ['Moisture Room','19','31',                 'x', 'x'],
+                "Curing": ['Moisture Room','19','31',                   'x', 'x'],
                 "Age": ['52-D','19','31',                               'x', 'x'],
                 "Testing Date": ['01-06-2022','19','31',                'x', 'x'],
                 "Diameter (mm)": ['101.0','19','31',                    'x', 'x'],
@@ -120,9 +120,6 @@ pdf.cell(17, 7, '', border=0)
 pdf.set_font('helvetica', 'U', 10)
 sig_x = pdf.get_x()
 sig_y = pdf.get_y()
-
-print(sig_x)
-print(sig_y)
 
 pdf.image('signature.png', sig_x + 6, sig_y - 5, 18)
 pdf.cell(15, 7, '                                ', ln=1)

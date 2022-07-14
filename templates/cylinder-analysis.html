@@ -56,9 +56,9 @@
                       <!-- 1 -->
                       <div class="col-md-6 mb-3">
                         <div class="row">
-                          <label class="col-md-5"> Diameter (0.1 mm) </label>
+                          <label class="col-md-5"> Height (0.1 mm) </label>
                           <div class="col-md-7">
-                            <input type="number" name="dia" min="95" max="155" step="0.1" tabindex="4" id="dia" required />
+                            <input type="number" name="height" min="195" max="305" step="0.1" tabindex="4" id="height" required />
                           </div>
                         </div>
                       </div>
@@ -75,9 +75,9 @@
                       <!-- 4 -->
                       <div class="col-md-6 mb-3">
                         <div class="row">
-                          <label class="col-md-5"> Height (0.1 mm) </label>
+                          <label class="col-md-5"> Diameter (0.1 mm) </label>
                           <div class="col-md-7">
-                            <input type="number" name="height" min="195" max="305" step="0.1" tabindex="5" id="height" required />
+                            <input type="number" name="dia" min="95" max="155" step="0.1" tabindex="5" id="dia" required />
                           </div>
                         </div>
                       </div>
@@ -85,7 +85,7 @@
                       <!-- 3 -->
                       <div class="col-md-6 mb-3">
                         <div class="row">
-                          <label class="col-md-5"> Weight (gr) </label>
+                          <label class="col-md-5"> Weight (0.1 gr) </label>
                           <div class="col-md-7">
                             <input type="number" name="weight" min="1450" max="3600" step="0.1" tabindex="3" id="weight" required />
                           </div>
@@ -97,6 +97,7 @@
                             <button
                               type="submit"
                               id="submitbtn"
+                              tabindex="6"
                               class="cancel_reset_entry0120 background_btn_3"
                             >
                               Save
@@ -104,6 +105,7 @@
                             <button
                               type="button"
                               onclick="customReset()"
+                              tabindex="7"
                               class="cancel_reset_entry0120 background_btn_1"
                             >
                               Reset
@@ -167,18 +169,17 @@
         return false
       }
     </script>
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script>
-    <script src="../static/waitMe.js"></script> 
     <script type="text/javascript">
       $(document).on('submit','#caform',function(e)
                      {
-        console.log('hello');
+        var sca = document.getElementById("sid_ca").value;
         e.preventDefault();
+        console.log(sca);
         $.ajax({
           type:'POST',
           url:'/cylinder-analysis/',
           data:{
-            sid:$("#sid_ca").val(),
+            sid_ca:sca,
             height:$("#height").val(),
             weight:$("#weight").val(),
             dia:$("#dia").val()
@@ -190,56 +191,6 @@
         })
       });
     </script>
-    <script>
-      $(function(){
-      // none, bounce, rotateplane, stretch, orbit, 
-      // roundBounce, win8, win8_linear or ios
-      var current_effect = 'win8_linear'; // 
-      
-
-
-      // $('#submitbtn').click(function(){
-      //       if (validate()) {
-      //         run_waitMe(current_effect);
-      //       }
-      //   });
-      
-      function run_waitMe(effect){
-      $('#htmlpage').waitMe({
-      effect: 'win8_linear',
-
-      //place text under the effect (string).
-      text: 'Please Wait...',
-      
-      //background for container (string).
-      bg: 'rgba(255,255,255,0.7)',
-      
-      //color for background animation and text (string).
-      color: '#123',
-      
-      //max size
-      maxSize: '8',
-      
-      //wait time im ms to close
-      waitTime: -1,
-      
-      //url to image
-      source: '',
-      
-      //or 'horizontal'
-      textPos: 'vertical',
-      
-      //font size
-      fontSize: '8',
-      
-      // callback
-      onClose: function() {}
-      
-      });
-      }
-        
-      });
-      </script>
     <script
       src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js"
       integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2"

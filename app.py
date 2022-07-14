@@ -7,6 +7,7 @@ import gcalendar
 from dotenv import load_dotenv
 import os
 import report_pdf
+from tabulate import tabulate
 
 GOOGLE_API_KEY = os.getenv('GOOGLE_API_KEY')
 CALENDAR_ID = os.getenv('CALENDAR_ID')
@@ -59,6 +60,23 @@ def sid_list():
     crs.execute("SELECT _SID FROM Cylinder WHERE batch_id=%s", [bid])
     sid = crs.fetchall()
     return jsonify(sid)
+
+@app.route('/test/', methods=['POST'])
+def test():
+    name=request.args.get('value')
+    bid_list = name.split(",")
+
+    format_strings = ','.join(['%s'] * len(bid_list))
+
+    crs.execute("""SELECT _batch_id, ticket_timestamp, client_name, site_add, subclient_cont 
+                FROM ticket 
+                WHERE _batch_id
+                IN (%s)"""  % format_strings, tuple(bid_list))
+    test_res = crs.fetchall()
+    print(test_res)
+
+
+    return jsonify({'reply':'success'})
 
 
 @app.route("/", methods=["POST", "GET"])
@@ -462,24 +480,19 @@ def cyla():
     role = permission(session['user'])
 
     if role == 'admin' or role == 'lab':
-
         if request.method == "POST":
             
-            print('hi')
             sid = request.form.get("sid_ca")
-            print("sid")
             weight = request.form.get("weight")
             height = request.form.get("height")
             dia = request.form.get("dia")
             user = session["user"]
-            print(dia)
 
             crs.execute("""UPDATE Cylinder  
                 SET height = %s, weight = %s, dia = %s, analysis_username = %s
                 WHERE _SID = (%s)
                 """, [height, weight, dia, user, sid])
             db.commit()
-            print("post commit")
 
             return render_template('cylinder-analysis.html')
         else:
@@ -502,9 +515,10 @@ def cylb():
 
     if role == 'admin' or role == 'lab':
         if request.method == "POST":
-            sid = request.form["sid_ca"]
-            comp_str = request.form["comp_str"]
-            tof = request.form["tof"]
+
+            sid = request.form.get("sid_ca")
+            comp_str = request.form.get("cstr")
+            tof = request.form.get("tof")
             user = session["user"]
 
             crs.execute("""UPDATE Cylinder  
@@ -513,7 +527,8 @@ def cylb():
                 """, [comp_str, tof, user, sid])
             db.commit()
 
-            return "GOOD SUCCESS post"
+            return render_template('cylinder-breaking.html')
+
         else:
             crs.execute(
                 "SELECT _batch_id FROM ticket ORDER BY ticket_timestamp DESC")
@@ -534,13 +549,50 @@ def creport():
         role = permission(session['user'])
 
         if request.method == "POST":
+            bid_list = request.form.get("selected_id")
+            print(bid_list)
+
+            # format_strings = ','.join(['%s'] * len(bid_list))
+
+            # crs.execute("""SELECT _batch_id, ticket_timestamp, client_name, site_add, subclient_cont 
+            #             FROM ticket 
+            #             WHERE _batch_id
+            #             IN (%s)"""  % format_strings, tuple(bid_list))
+            # test_res = crs.fetchall()
+            # print(test_res)
             return "GOOD SUCCESS post"
         else:
             crs.execute(
                 "SELECT _batch_id FROM ticket ORDER BY ticket_timestamp DESC")
             bid_cax = crs.fetchall()
+
+            batch_id = '22-0600001'
+
+            # ticket_timestamp,
+            # ORDER BY ticket_timestamp DESC
+
+            crs.execute("""SELECT _batch_id, ticket_timestamp, client_name, site_add, subclient_cont 
+                        FROM ticket 
+                        ORDER BY ticket_timestamp DESC
+                        LIMIT 500""")
+
+            result = crs.fetchall()
+
+            fin = [['Batch ID', 'Date', 'Client', 'Site Address', 'Contractor']]
+
+            for i in range(len(result)):
+                res_list = []
+                for j in range(5):
+                    res_list.append(result[i][j])
+                fin.append(res_list)
             
-            return render_template('create-report.html', bid_cax=bid_cax)
+            fintabulate = tabulate(fin,headers='firstrow',tablefmt='html')
+
+            fintabulate = '<table id="search_data">' + fintabulate[7:]
+
+
+            
+            return render_template('create-report.html', bid_cax=bid_cax, search_data_html=fintabulate)
 
     else:
         return "<h1>Error: Insufficient Permissions to Access Page</h1>"
