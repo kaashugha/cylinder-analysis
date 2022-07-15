@@ -1,4 +1,5 @@
 import datetime
+from typing import OrderedDict
 from flask import Flask, flash, get_flashed_messages, jsonify, redirect, render_template, request, session, url_for
 from datetime import timedelta
 import mysql.connector
@@ -64,17 +65,176 @@ def sid_list():
 @app.route('/test/', methods=['POST'])
 def test():
     name=request.args.get('value')
-    bid_list = name.split(",")
+    sid_list = name.split(",")
 
-    format_strings = ','.join(['%s'] * len(bid_list))
+    bid_dict = {}
 
-    crs.execute("""SELECT _batch_id, ticket_timestamp, client_name, site_add, subclient_cont 
-                FROM ticket 
-                WHERE _batch_id
-                IN (%s)"""  % format_strings, tuple(bid_list))
-    test_res = crs.fetchall()
-    print(test_res)
+    for i in range(len(sid_list)):
+        bid = sid_list[i][:10]
+        sid = sid_list[i]
+        if bid not in bid_dict:
+            bid_dict[bid] = [sid]
+        else:
+            bid_dict[bid].append(sid)
 
+    for bid in bid_dict:
+        sid = bid_dict[bid]
+        format_strings = ','.join(['%s'] * len(sid))
+        crs.execute("""SELECT
+                    ticket._batch_id,
+                    ticket.ticket_timestamp,
+                    ticket.dropoff_timestamp,
+                    ticket.client_name,
+                    ticket.notes,
+                    ticket.site_add,
+                    ticket.struct_grid,
+                    ticket.charge_time,
+                    ticket.spec_air,
+                    ticket.mould_type,
+                    ticket.cast_by,
+                    ticket.temp_min,
+                    ticket.temp_max,
+                    ticket.mix_id,
+                    ticket.load_no,
+                    ticket.spec_slump,
+                    ticket.subclient_cont,
+                    ticket.cast_time,
+                    ticket.meas_air,
+                    ticket.truck_no,
+                    ticket.ticket_no,
+                    ticket.agg_size,
+                    ticket.conc_supp,
+                    ticket.meas_slump,
+                    ticket.spec_str,
+                    ticket.conc_temp,
+                    ticket.amb_temp,
+                    ticket.plt,
+                    ticket.cast_plt,
+                    Cylinder._SID,
+                    Cylinder.curing,
+                    Cylinder.height,
+                    Cylinder.weight,
+                    Cylinder.dia,
+                    Cylinder.comp_str,
+                    Cylinder.frac_type,
+                    Cylinder.receiving_date
+                FROM
+                    ticket
+                JOIN Cylinder ON ticket._batch_id = Cylinder.batch_id
+                    WHERE Cylinder._SID
+                    IN (%s)"""  % format_strings, tuple(sid))
+
+        # crs.execute("""SELECT _batch_id, ticket_timestamp, client_name, site_add, subclient_cont 
+        #             FROM ticket 
+        #             WHERE _batch_id
+        #             IN (%s)"""  % format_strings, tuple(bid_list))
+
+        test_res = crs.fetchall()
+
+        sid_dict = OrderedDict()
+
+        sid_dict["Lab No"] = []
+        sid_dict["Casting Date"] = []
+        sid_dict["Receiving Date"] = []
+        sid_dict["Curing"] = []
+        sid_dict["Age"] = []
+        sid_dict["Testing Date"] = []
+        sid_dict["Diameter (mm)"] = []
+        sid_dict["Mass of Cylinder (g)"] = []
+        sid_dict["Density (kg/m3)"] = []
+        sid_dict["Compressive Strength (MPa)"] = []
+        sid_dict["Type of Fracture*"] = []
+
+        # Takes batch information from first cylinder
+        batch_data = {
+        '_batch_id': test_res[0][0],
+        'client_name': test_res[0][3],
+        'notes': test_res[0][4],
+        'site_add': test_res[0][5],
+        'struct_grid': test_res[0][6],
+        'charge_time': test_res[0][7],
+        'spec_air': test_res[0][8],
+        'mould_type': test_res[0][9],
+        'cast_by': test_res[0][10],
+        'temp_min': test_res[0][11],
+        'temp_max': test_res[0][12],
+        'mix_id': test_res[0][13],
+        'load_no': test_res[0][14],
+        'spec_slump': test_res[0][15],
+        'subclient_cont': test_res[0][16],
+        'cast_time': test_res[0][17],
+        'meas_air': test_res[0][18],
+        'truck_no': test_res[0][19],
+        'ticket_no': test_res[0][20],
+        'agg_size': test_res[0][21],
+        'conc_supp': test_res[0][22],
+        'meas_slump': test_res[0][23],
+        'spec_str': test_res[0][24],
+        'conc_temp': test_res[0][25],
+        'amb_temp': test_res[0][26],
+        'plt': test_res[0][27],
+        'cast_plt': test_res[0][28]
+        }
+        
+        for i in range(len(test_res)):
+            ticket_timestamp = str(test_res[i][1])[:-9]
+
+            if test_res[i][2]:
+                dropoff_timestamp = str(test_res[i][2])[:-9]
+            else:
+                dropoff_timestamp = ""
+
+            _SID = test_res[i][29]
+            curing = test_res[i][30]
+
+            if test_res[i][31]:
+                height = test_res[i][31]
+            else:
+                height = ""
+
+            if test_res[i][32]:
+                weight = test_res[i][32]
+            else:
+                weight = ""
+
+            if test_res[i][33]:
+                dia = test_res[i][33]
+            else:
+                dia = ""
+
+            if test_res[i][34]:
+                comp_str = test_res[i][34]
+            else:
+                comp_str = ""
+
+            if test_res[i][35]:    
+                frac_type = test_res[i][35]
+            else:
+                frac_type = ""
+            
+            if test_res[i][36]:
+                testing_date = str(test_res[i][36])[:-16]
+            else:
+                testing_date = ""
+
+            if test_res[i][32] and test_res[i][33] and test_res[i][31]:
+                density = round((float(weight) / (3.14159265 * float(dia / 2) ** 2 * float(height))) * 1000000)
+            else:
+                density = ""
+
+            sid_dict["Lab No"].append(_SID)
+            sid_dict["Casting Date"].append(ticket_timestamp)
+            sid_dict["Receiving Date"].append(dropoff_timestamp)
+            sid_dict["Curing"].append(curing)
+            sid_dict["Age"].append(_SID[12:].split('D', 1)[0])
+            sid_dict["Testing Date"].append(testing_date)
+            sid_dict["Diameter (mm)"].append(dia)
+            sid_dict["Mass of Cylinder (g)"].append(weight)
+            sid_dict["Density (kg/m3)"].append(density)
+            sid_dict["Compressive Strength (MPa)"].append(comp_str)
+            sid_dict["Type of Fracture*"].append(frac_type)
+
+        report_pdf.create_pdf(sid_dict, batch_data)
 
     return jsonify({'reply':'success'})
 
@@ -255,6 +415,17 @@ def ticket():
         min_temp = request.form["min_temp"]
         max_temp = request.form["max_temp"]
 
+        if request.form["plt"]:
+            plt = request.form["plt"]
+            if request.form.get("cast_plt"):
+                cast_plt = "Yes"
+            else:
+                cast_plt = "No"
+        else:
+            plt = "N/A"
+            cast_plt = "N/A"
+
+
         q1 = request.form["q1"]
         q2 = request.form["q2"]
         q3 = request.form["q3"]
@@ -288,10 +459,10 @@ def ticket():
 
         crs.execute("""INSERT INTO ticket (_batch_id, ticket_gen_username, notes, client_name, mix_id, ticket_no, site_add, load_no, agg_size, struct_grid, spec_slump, 
                     conc_supp, charge_time, subclient_cont, meas_slump, spec_air, cast_time, spec_str, mould_type, meas_air, conc_temp, cast_by, 
-                    truck_no, amb_temp, temp_min, temp_max) VALUES
-                    (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)""",
+                    truck_no, amb_temp, temp_min, temp_max, plt, cast_plt) VALUES
+                    (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)""",
                     (bid, username, note, client, mix, ticket, address, load, agg, gridlines, spec_sl, conc_sup, toc, subclient, meas_sl, spec_air,
-                     cast_time, spec_str, mould, meas_air, conc_temp, cast_by, truck_no, amb_temp, min_temp, max_temp))
+                     cast_time, spec_str, mould, meas_air, conc_temp, cast_by, truck_no, amb_temp, min_temp, max_temp, plt, cast_plt))
         db.commit()
 
         sid = ""
