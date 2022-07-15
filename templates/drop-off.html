@@ -44,7 +44,8 @@
                         <div class="row">
                           <label class="col-md-5"> Batch ID </label>
                           <div class="col-md-7">
-                            <select name="drop_id" required>
+                            <select name="drop_id" id="dropdown" required>
+                              <option disabled selected value="NULL"> -- select an option -- </option>
                               {% for client in drop %} -->
                                 <option value={{client}}>{{ client[0] }}</option>
                               {% endfor %}
@@ -90,10 +91,17 @@
       var current_effect = 'win8_linear'; // 
       
 
-
       $('#submitbtn').click(function(){
-      run_waitMe(current_effect);
-      });
+      if (document.getElementById("dropdown").value === "NULL") {
+        alert("Please select batch to dropoff.");
+        event.preventDefault();
+
+      }
+      else {
+        run_waitMe(current_effect);
+        
+      }
+    });
       
       function run_waitMe(effect){
       $('#htmlpage').waitMe({

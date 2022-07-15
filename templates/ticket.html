@@ -53,7 +53,8 @@
                           <label class="col-md-5"> Client </label>
                           <div class="col-md-7">
                             <!-- <input type="text" name="client" id="" name="batch_id"> -->
-                            <select name="client" id="">
+                            <select name="client" id="1">
+                              <option disabled selected value="NULL"> -- select an option -- </option>
                               {% for client in value %} -->
                                 <option value={{client}}>{{ client[0] }}</option>
                               {% endfor %}
@@ -67,7 +68,7 @@
                         <div class="row">
                           <label class="col-md-5"> Mix ID # </label>
                           <div class="col-md-7">
-                            <input type="text" maxlength="20" name="mix" required/>
+                            <input type="text" maxlength="20" name="mix" id="2" required/>
                           </div>
                         </div>
                       </div>
@@ -76,7 +77,7 @@
                         <div class="row">
                           <label class="col-md-5"> Ticket Number </label>
                           <div class="col-md-7">
-                            <input type="text" maxlength="15" name="ticket" required/>
+                            <input type="text" maxlength="15" name="ticket" id="3" required/>
                           </div>
                         </div>
                       </div>
@@ -85,7 +86,7 @@
                         <div class="row">
                           <label class="col-md-5"> Site Address </label>
                           <div class="col-md-7">
-                            <input type="text" maxlength="150" name="address" required/>
+                            <input type="text" maxlength="150" name="address" id="4" required/>
                           </div>
                         </div>
                       </div>
@@ -94,7 +95,7 @@
                         <div class="row">
                           <label class="col-md-5"> Load No. </label>
                           <div class="col-md-7">
-                            <input type="number" min="0" maxlength="4" name="load" required/>
+                            <input type="number" min="0" maxlength="4" name="load" id="5" required/>
                           </div>
                         </div>
                       </div>
@@ -105,7 +106,7 @@
                             Nominal Size of Agg (mm)
                           </label>
                           <div class="col-md-7">
-                            <input type="number" min="0" maxlength="4" name="agg" required/>
+                            <input type="number" min="0" maxlength="4" name="agg" id="6" required/>
                           </div>
                         </div>
                       </div>
@@ -116,7 +117,7 @@
                             Structure & Gridlines
                           </label>
                           <div class="col-md-7">
-                            <input type="text" maxlength="150" name="gridlines" required/>
+                            <input type="text" maxlength="150" name="gridlines" id="7" required/>
                           </div>
                         </div>
                       </div>
@@ -125,7 +126,7 @@
                         <div class="row">
                           <label class="col-md-5"> Specified Slump (mm) </label>
                           <div class="col-md-7">
-                            <input type="text" maxlength="7" name="spec_sl" required/>
+                            <input type="text" maxlength="7" name="spec_sl" id="8" required/>
                           </div>
                         </div>
                       </div>
@@ -134,7 +135,7 @@
                         <div class="row">
                           <label class="col-md-5"> Concrete Supplier </label>
                           <div class="col-md-7">
-                            <input type="text" maxlength="50" name="conc_sup" required/>
+                            <input type="text" maxlength="50" name="conc_sup" id="9" required/>
                           </div>
                         </div>
                       </div>
@@ -143,7 +144,7 @@
                         <div class="row">
                           <label class="col-md-5"> Time of Charge </label>
                           <div class="col-md-7">
-                            <input type="time" name="toc" required/>
+                            <input type="time" name="toc" id="10" required/>
                           </div>
                         </div>
                       </div>
@@ -154,7 +155,7 @@
                             Subclient / Contractor
                           </label>
                           <div class="col-md-7">
-                            <input type="text" maxlength="50" name="subclient" required/>
+                            <input type="text" maxlength="50" name="subclient" id="11" required/>
                           </div>
                         </div>
                       </div>
@@ -163,7 +164,7 @@
                         <div class="row">
                           <label class="col-md-5"> Measured Slump (mm) </label>
                           <div class="col-md-7">
-                            <input type="number" min="0" max="200" name="meas_sl" required/>
+                            <input type="number" min="0" max="200" name="meas_sl" id="12" required/>
                           </div>
                         </div>
                       </div>
@@ -172,7 +173,7 @@
                         <div class="row">
                           <label class="col-md-5"> Specified Air (%) </label>
                           <div class="col-md-7">
-                            <input type="text" maxlength="5" name="spec_air" required/>
+                            <input type="text" maxlength="5" name="spec_air" id="13" required/>
                           </div>
                         </div>
                       </div>
@@ -181,7 +182,7 @@
                         <div class="row">
                           <label class="col-md-5"> Casting Time </label>
                           <div class="col-md-7">
-                            <input type="time" name="cast_time" required/>
+                            <input type="time" name="cast_time" id="14" required/>
                           </div>
                         </div>
                       </div>
@@ -192,7 +193,7 @@
                             Specified Strength MPa (28 Days)
                           </label>
                           <div class="col-md-7">
-                            <input type="text" maxlength="10" name="spec_str" required/>
+                            <input type="text" maxlength="10" name="spec_str" id="15" required/>
                           </div>
                         </div>
                       </div>
@@ -203,7 +204,7 @@
                             Type of Mould (ie 4x8)
                           </label>
                           <div class="col-md-7">
-                            <input type="text" maxlength="9" name="mould" required/>
+                            <input type="text" maxlength="9" name="mould" id="16" required/>
                           </div>
                         </div>
                       </div>
@@ -212,7 +213,7 @@
                         <div class="row">
                           <label class="col-md-5"> Measured Air (%) </label>
                           <div class="col-md-7">
-                            <input type="text" maxlength="4" name="meas_air" required/>
+                            <input type="text" maxlength="4" name="meas_air" id="17" required/>
                           </div>
                         </div>
                       </div>
@@ -221,7 +222,7 @@
                         <div class="row">
                           <label class="col-md-5"> Concrete Temp (°C) </label>
                           <div class="col-md-7">
-                            <input type="number" min="0" max="50" step="0.1" name="conc_temp" required/>
+                            <input type="number" min="0" max="50" step="0.1" name="conc_temp" id="18" required/>
                           </div>
                         </div>
                       </div>
@@ -230,7 +231,7 @@
                         <div class="row">
                           <label class="col-md-5"> Casted By </label>
                           <div class="col-md-7">
-                            <input type="text" maxlength="25" name="cast_by" required/>
+                            <input type="text" maxlength="25" name="cast_by" id="19" required/>
                           </div>
                         </div>
                       </div>
@@ -239,7 +240,7 @@
                         <div class="row">
                           <label class="col-md-5"> Truck No </label>
                           <div class="col-md-7">
-                            <input type="number" name="truck_no" required/>
+                            <input type="number" name="truck_no" id="20" required/>
                           </div>
                         </div>
                       </div>
@@ -248,7 +249,7 @@
                         <div class="row">
                           <label class="col-md-5"> Ambient Temp (°C) </label>
                           <div class="col-md-7">
-                            <input type="number" max="60" step="0.1" name="amb_temp" required/>
+                            <input type="number" max="60" step="0.1" name="amb_temp" id="21" required/>
                           </div>
                         </div>
                       </div>
@@ -266,6 +267,7 @@
                               min="0"
                               max="50"
                               step="0.1"
+                              id="22"
                               required
                             />
                           </div>
@@ -277,6 +279,7 @@
                               min="0"
                               max="50"
                               step="0.1"
+                              id="23"
                               required
                             />
                           </div>
@@ -361,7 +364,7 @@
                                     </div>
                                   </td>
                                   <td>
-                                    <input type="number" min="1" step="1" max="20" name="q1" id="" class="input_custom002" required/>
+                                    <input type="number" min="1" step="1" max="20" name="q1" id="q1" class="input_custom002" required/>
                                   </td>
                                   <td>
                                     <input
@@ -658,7 +661,7 @@
           return false;
         }
         if(document.getElementById(quant).value === "" && document.getElementById(day).value != ""){
-          console.log(20);
+          return false;
         }
         if(document.getElementById(quant).value != "" && document.getElementById(cday).value === '' && document.getElementById(day).disabled){
           return false;
@@ -669,6 +672,85 @@
         return true;
       }
       </script>
+      <script>
+        function ticket_validation() {
+          const i1 = document.getElementById("1");
+          const i2 = document.getElementById("2");
+          const i3 = document.getElementById("3");
+          const i4 = document.getElementById("4");
+          const i5 = document.getElementById("5");
+          const i6 = document.getElementById("6");
+          const i7 = document.getElementById("7");
+          const i8 = document.getElementById("8");
+          const i9 = document.getElementById("9");
+          const i10 = document.getElementById("10");
+          const i11 = document.getElementById("11");
+          const i12 = document.getElementById("12");
+          const i13 = document.getElementById("13");
+          const i14 = document.getElementById("14");
+          const i15 = document.getElementById("15");
+          const i16 = document.getElementById("16");
+          const i17 = document.getElementById("17");
+          const i18 = document.getElementById("18");
+          const i19 = document.getElementById("19");
+          const i20 = document.getElementById("20");
+          const i21 = document.getElementById("21");
+          const i22 = document.getElementById("22");
+          const i23 = document.getElementById("23");
+          const i24 = document.getElementById("d1");
+          const i25 = document.getElementById("eb1");
+          const i26 = document.getElementById("q1");
+          const i27 = document.getElementById("eb2");
+          const i28 = document.getElementById("eb3");
+          const i29 = document.getElementById("eb4");
+          const i30 = document.getElementById("eb5");
+          const i31 = document.getElementById("eb6");
+
+
+
+          if (document.getElementById("1").value === "NULL"){
+            alert("Please choose a client.")
+            event.preventDefault();
+            return false;
+          }
+
+
+          if (!i2.checkValidity() ||
+          !i3.checkValidity() ||
+          !i4.checkValidity() ||
+          !i5.checkValidity() ||
+          !i6.checkValidity() ||
+          !i7.checkValidity() ||
+          !i8.checkValidity() ||
+          !i9.checkValidity() ||
+          !i10.checkValidity() ||
+          !i11.checkValidity() ||
+          !i12.checkValidity() ||
+          !i13.checkValidity() ||
+          !i14.checkValidity() ||
+          !i15.checkValidity() ||
+          !i16.checkValidity() ||
+          !i17.checkValidity() ||
+          !i18.checkValidity() ||
+          !i19.checkValidity() ||
+          !i20.checkValidity() ||
+          !i21.checkValidity() ||
+          !i22.checkValidity() ||
+          !i23.checkValidity() ||
+          !i24.checkValidity() ||
+          !i25.checkValidity() ||
+          !i26.checkValidity() ||
+          !i27.checkValidity() ||
+          !i28.checkValidity() ||
+          !i29.checkValidity() ||
+          !i30.checkValidity() ||
+          !i31.checkValidity()) {
+            return false;
+          } else {
+            return true;
+          } 
+        } 
+        </script>
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script>
     <script src="../static/waitMe.js"></script> 
     <script>
@@ -680,7 +762,7 @@
         
         
         $('#submitbtn').click(function(){
-           if (enable_caller()){
+           if (enable_caller() && ticket_validation()){
             run_waitMe(current_effect);
            }
         });

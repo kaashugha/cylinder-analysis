@@ -607,7 +607,7 @@ def ticket():
                 db.commit()
 
 
-        return f"<h1>GREAT SUCCESS { sid }</h1>"
+        return render_template('ticket_success.html', bid=bid)
 
     else:
         crs.execute("SELECT * FROM client")
@@ -636,7 +636,7 @@ def dropoff():
         for eventId in event_tuple:
             gcalendar.cal_update(*eventId, 7)
 
-        return f"GOOD SUCCESS { drop_id }"
+        return render_template('dropoff_success.html', bid=drop_id)
     else:
         crs.execute(
             "SELECT _batch_id FROM ticket ORDER BY ticket_timestamp DESC")
@@ -790,6 +790,13 @@ def calendar():
     else:
         return "<h1>Error: Insufficient Permissions to Access Page</h1>"
 
+@app.route("/ticket_success/")
+def ticket_success():
+    return render_template('ticket_success.html')
+
+@app.route("/dropoff_success/")
+def dropoff_success():
+    return render_template('dropoff_success.html')
 
 if __name__ == '__main__':
     configure()
