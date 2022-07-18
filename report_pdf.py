@@ -98,4 +98,5 @@ def create_pdf(data_as_dict, batch_data):
     pdf.cell(19, 4, '', border=0)
     pdf.cell(15, 4, 'Lab Manager')
 
-    pdf.output(batch_data['_batch_id'] + '.pdf')
+    # pdf.output('static/Reports/' + 'test' + '.pdf')
+    pdf.output('static/Reports/' + batch_data['_batch_id'] + '.pdf', 'F')

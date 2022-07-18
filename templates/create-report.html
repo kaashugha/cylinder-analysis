@@ -39,7 +39,7 @@
               </div>
               <!-- ticket_section_header -->
               <div class="ticket_section_body">
-                <form method="POST">
+                <form method="POST" id="myForm">
                   <fieldset>
                     <legend>Generate Engineering Report</legend>
                     <div class="row">
@@ -75,15 +75,15 @@
                         <input
                           type="button"
                           name="batch"
-                          value="Add"
+                          value="Add Cylinder"
                           onclick="add_id()"
                           class="btn btn-info border-0 mb-2"
                         />
                         <input
                         type="button"
                         name="batch"
-                        value="TEST"
-                        onclick="test()"
+                        value="Add Batch"
+                        onclick="add_batch()"
                         class="btn btn-info border-0 mb-2"
                       />
                         <input
@@ -115,8 +115,9 @@
                       <div class="row">
                         <div class="col-md-12 text-center">
                           <button 
-                            type="submit"
+                            type="button"
                             id="submitbtn"
+                            onclick="test()"
                             class="generate_report_middle_section_add btn btn-info"
                           >
                             Generate Report
@@ -230,13 +231,31 @@
 
           var sid = document.getElementById('sid_ca').value;
 
-          var bool = false;
-
           if (!sidArray.includes(sid) && sid != '') {
             var option = document.createElement("option");
             option.text = sid;
             var select = document.getElementById("selected_id");
             select.appendChild(option);
+          }
+        }
+        function add_batch() {
+          
+          var sidArray= new Array();
+          var sidElement = document.getElementById('selected_id');
+
+          for (i = 0; i < sidElement.options.length; i++) {
+            sidArray[i] = sidElement.options[i].value;
+          }
+
+          var sid = document.getElementById('sid_ca');
+
+          for (i = 0; i < sid.options.length; i++) {
+            if (!sidArray.includes(sid[i].value) && sid != '') {
+              var option = document.createElement("option");
+              option.text = sid[i].value;
+              var select = document.getElementById("selected_id");
+              select.appendChild(option);
+            }
           }
         }
         function remove_id() {
@@ -249,66 +268,31 @@
       $(function(){
       // none, bounce, rotateplane, stretch, orbit, 
       // roundBounce, win8, win8_linear or ios
-      var current_effect = 'win8_linear'; // 
-      
+      $('#submitbtn').click(function(){
+        let optionsLength = document.getElementById("selected_id").length;
 
-
-      // $('#submitbtn').click(function(){
-      // run_waitMe(current_effect);
-      // });
-      
-      function run_waitMe(effect){
-      $('#htmlpage').waitMe({
-      effect: 'win8_linear',
-
-      //place text under the effect (string).
-      text: 'Please Wait...',
-      
-      //background for container (string).
-      bg: 'rgba(255,255,255,0.7)',
-      
-      //color for background animation and text (string).
-      color: '#123',
-      
-      //max size
-      maxSize: '8',
-      
-      //wait time im ms to close
-      waitTime: -1,
-      
-      //url to image
-      source: '',
-      
-      //or 'horizontal'
-      textPos: 'vertical',
-      
-      //font size
-      fontSize: '8',
-      
-      // callback
-      onClose: function() {}
-      
+        if(optionsLength < 1){
+          alert("Please add cylinders to generate report.")
+          event.preventDefault();
+        }
       });
-      }
-        
       });
       </script>
       <script>
-      $(document).ready(function () {
-        $('#search_data').DataTable({
-          columns: [
-            null,
-            null,
-            null,
-            null,
-            null],
-        });
-      });
+        function sbmt() {
+          document.getElementById("myForm").submit()
+        }
       </script>
       <script>
         function test() {
           var selectobject=document.getElementById("selected_id")
           var sid_array = [];
+
+          optionsLength = selectobject.length;
+
+          if(optionsLength < 1){
+            return;
+          }
 
           for (var i=0; i<selectobject.length; i++){
           sid_array.push(selectobject.options[i].text)
@@ -324,7 +308,7 @@
                             var reply=data.reply;
                             if (reply=="success")
                             {
-                                return;
+                                sbmt();
                             }
                             else
                                 {

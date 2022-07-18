@@ -1,6 +1,9 @@
 import datetime
+import io
+from pathlib import Path
+import shutil
 from typing import OrderedDict
-from flask import Flask, flash, get_flashed_messages, jsonify, redirect, render_template, request, session, url_for
+from flask import Flask, flash, jsonify, redirect, render_template, request, session, url_for, send_file
 from datetime import timedelta
 import mysql.connector
 import bcrypt
@@ -18,6 +21,8 @@ app = Flask(__name__)
 app.permanent_session_lifetime = timedelta(days=14)
 app.secret_key = SECRET_KEY
 
+DIRNAME = os.path.dirname(__file__)
+
 db = mysql.connector.connect(
     host='localhost',
     user='root',
@@ -25,17 +30,29 @@ db = mysql.connector.connect(
     database='cylinders'
 )
 
-crs = db.cursor(buffered=True)
+####
+
+# db = pymysql.connect(host='localhost',
+#                              user='root',
+#                              password='',
+#                              database='cylinders',
+#                              )
+# crs = db.cursor()
+
+####
+
 
 def configure():
     load_dotenv()
 
 def permission(user):
+    crs = db.cursor(buffered=True)
     crs.execute("""SELECT role
                 FROM user
                 WHERE _username=%s
                 """, [user])
     role = crs.fetchone()[0]
+    crs.close()
 
     if role == 'admin':
         return 'admin'
@@ -55,11 +72,12 @@ def login_check():
 
 @app.route('/sid_list/', methods=['POST'])
 def sid_list():
-
+    crs = db.cursor(buffered=True)
     req = request.json
     bid = req.get('bid_ca')[2:-3]
     crs.execute("SELECT _SID FROM Cylinder WHERE batch_id=%s", [bid])
     sid = crs.fetchall()
+    crs.close()
     return jsonify(sid)
 
 @app.route('/test/', methods=['POST'])
@@ -68,9 +86,11 @@ def test():
     sid_list = name.split(",")
 
     bid_dict = {}
+    bid_list = []
 
     for i in range(len(sid_list)):
         bid = sid_list[i][:10]
+        bid_list.append(bid)
         sid = sid_list[i]
         if bid not in bid_dict:
             bid_dict[bid] = [sid]
@@ -78,6 +98,7 @@ def test():
             bid_dict[bid].append(sid)
 
     for bid in bid_dict:
+        crs = db.cursor(buffered=True)
         sid = bid_dict[bid]
         format_strings = ','.join(['%s'] * len(sid))
         crs.execute("""SELECT
@@ -130,6 +151,8 @@ def test():
         #             IN (%s)"""  % format_strings, tuple(bid_list))
 
         test_res = crs.fetchall()
+        crs.close()
+
 
         sid_dict = OrderedDict()
 
@@ -236,8 +259,23 @@ def test():
 
         report_pdf.create_pdf(sid_dict, batch_data)
 
-    return jsonify({'reply':'success'})
+    user = session['user']
 
+    filename = 'reports'
+    dir_zip = os.path.join(DIRNAME, 'static/Reports', '')
+    dir_dest = os.path.join(DIRNAME, f'static/Zip/{ user }', '')
+
+    # Creates users folder in zip folder if it doesnt exist
+    if not os.path.isdir(dir_dest):
+        os.mkdir(dir_dest)
+        
+
+    shutil.make_archive(os.path.join(dir_dest, filename), 'zip', dir_zip)
+
+    # Delete all reports generated in Reports file
+    [f.unlink() for f in Path(dir_zip).glob("*") if f.is_file()]
+
+    return jsonify({'reply':'success'})
 
 @app.route("/", methods=["POST", "GET"])
 def index():
@@ -289,11 +327,14 @@ def f():
 @app.route("/login/", methods=["POST", "GET"])
 def login():
     if request.method == "POST":
+        crs = db.cursor(buffered=True)
         session.permanent = True
         user = request.form["username"]
 
         crs.execute("SELECT password FROM user WHERE _username=%s", [user])
         hash_password = crs.fetchone()
+        crs.close()
+
         if hash_password is None:
             flash("Incorrect username or password.")
             return render_template('login.html')
@@ -329,6 +370,7 @@ def register():
 
     if role == 'admin':
         if request.method == "POST":
+            crs = db.cursor(buffered=True)
             session.permanent = True
             user = request.form["newuser"]
             password = request.form["newpass"].encode('utf-8')
@@ -345,6 +387,8 @@ def register():
             else:
                 flash("User already exists. Please select a different username.")
 
+            crs.close()
+
             return redirect(url_for("register"))
         else:
             return render_template('register.html')
@@ -359,6 +403,7 @@ def ticket():
     user = session["user"]
 
     if request.method == "POST":
+        crs = db.cursor(buffered=True)
         cur_day = datetime.date.today().strftime("%d")
         cur_mo = datetime.date.today().strftime("%m")
         cur_year = datetime.date.today().strftime("%y")
@@ -370,12 +415,15 @@ def ticket():
                     LIMIT 1""")
 
         month_online = crs.fetchone()
+        crs.close()
 
         if month_online is None:
             month_online = -1
         else:
             month_online = str(month_online[0])[5:-12]
 
+
+        crs = db.cursor(buffered=True)
         if month_online == -1 or int(cur_mo) > int(month_online):
             crs.execute("""UPDATE REF
                         SET _ref_no = 1""")
@@ -384,10 +432,13 @@ def ticket():
             crs.execute("""UPDATE REF
                         SET _ref_no = _ref_no + 1""")
             db.commit()
+        crs.close()
 
 
+        crs = db.cursor(buffered=True)
         crs.execute("""SELECT _ref_no FROM REF""")
         increment = crs.fetchone()[0]
+        crs.close()
 
         bid = cur_year + "-" + cur_mo + str(increment).zfill(5)
 
@@ -457,6 +508,8 @@ def ticket():
         note = request.form["note_text"]
         username = user
 
+
+        crs = db.cursor(buffered=True)
         crs.execute("""INSERT INTO ticket (_batch_id, ticket_gen_username, notes, client_name, mix_id, ticket_no, site_add, load_no, agg_size, struct_grid, spec_slump, 
                     conc_supp, charge_time, subclient_cont, meas_slump, spec_air, cast_time, spec_str, mould_type, meas_air, conc_temp, cast_by, 
                     truck_no, amb_temp, temp_min, temp_max, plt, cast_plt) VALUES
@@ -464,10 +517,11 @@ def ticket():
                     (bid, username, note, client, mix, ticket, address, load, agg, gridlines, spec_sl, conc_sup, toc, subclient, meas_sl, spec_air,
                      cast_time, spec_str, mould, meas_air, conc_temp, cast_by, truck_no, amb_temp, min_temp, max_temp, plt, cast_plt))
         db.commit()
-
+        crs.close()
         sid = ""
 
         for i in range(1, int(q1) + 1):
+            crs = db.cursor(buffered=True)
             if cb1 is None:
                 sid = bid + "A" + "-" + d1 + "D" + "-" + str(i)
                 crs.execute("""INSERT INTO Cylinder (_SID, batch_id) VALUES 
@@ -488,9 +542,11 @@ def ticket():
                         """,
                         [eventID, sid])
             db.commit()
+            crs.close()
 
         if q2:
             for i in range(1, int(q2) + 1):
+                crs = db.cursor(buffered=True)
                 if cb2 is None:
                     sid = bid + "B" + "-" + d2 + "D" + "-" + str(i)
                     crs.execute("""INSERT INTO Cylinder (_SID, batch_id) VALUES 
@@ -511,10 +567,12 @@ def ticket():
                             """,
                             [eventID, sid])
                 db.commit()
+                crs.close()
 
 
         if q3:
             for i in range(1, int(q3) + 1):
+                crs = db.cursor(buffered=True)
                 if cb3 is None:
                     sid = bid + "C" + "-" + d3 + "D" + "-" + str(i)
                     crs.execute("""INSERT INTO Cylinder (_SID, batch_id) VALUES 
@@ -535,10 +593,12 @@ def ticket():
                             """,
                             [eventID, sid])
                 db.commit()
+                crs.close()
 
 
         if q4:
             for i in range(1, int(q4) + 1):
+                crs = db.cursor(buffered=True)
                 if cb4 is None:
                     sid = bid + "D" + "-" + d4 + "D" + "-" + str(i)
                     crs.execute("""INSERT INTO Cylinder (_SID, batch_id) VALUES 
@@ -559,9 +619,11 @@ def ticket():
                             """,
                             [eventID, sid])
                 db.commit()
+                crs.close()
 
         if q5:
             for i in range(1, int(q5) + 1):
+                crs = db.cursor(buffered=True)
                 if cb5 is None:
                     sid = bid + "E" + "-" + d5 + "D" + "-" + str(i)
                     crs.execute("""INSERT INTO Cylinder (_SID, batch_id) VALUES 
@@ -582,9 +644,11 @@ def ticket():
                             """,
                             [eventID, sid])
                 db.commit()
+                crs.close()
 
         if q6:
             for i in range(1, int(q6) + 1):
+                crs = db.cursor(buffered=True)
                 if cb6 is None:
                     sid = bid + "F" + "-" + d6 + "D" + "-" + str(i)
                     crs.execute("""INSERT INTO Cylinder (_SID, batch_id) VALUES 
@@ -605,13 +669,17 @@ def ticket():
                             """,
                             [eventID, sid])
                 db.commit()
+                crs.close()
 
 
         return render_template('ticket_success.html', bid=bid)
 
     else:
+        crs = db.cursor(buffered=True)
         crs.execute("SELECT * FROM client")
-        return render_template('ticket.html', value=crs.fetchall())
+        value = crs.fetchall()
+        crs.close()
+        return render_template('ticket.html', value=value)
 
 
 @app.route("/drop-off/", methods=["GET", "POST"])
@@ -620,6 +688,7 @@ def dropoff():
         return redirect(url_for("login"))
 
     if request.method == "POST":
+        crs = db.cursor(buffered=True)
         drop_id = request.form["drop_id"][2:-3]
         user = session["user"]
 
@@ -628,19 +697,26 @@ def dropoff():
                     WHERE _batch_id = (%s)
                     """, [user, drop_id])
         db.commit()
+        crs.close()
 
+
+        crs = db.cursor(buffered=True)
         crs.execute(
             "SELECT eventID FROM Cylinder WHERE batch_id=%s", [drop_id])
         event_tuple = crs.fetchall()
+        crs.close()
 
         for eventId in event_tuple:
             gcalendar.cal_update(*eventId, 7)
 
         return render_template('dropoff_success.html', bid=drop_id)
     else:
+        crs = db.cursor(buffered=True)
         crs.execute(
             "SELECT _batch_id FROM ticket ORDER BY ticket_timestamp DESC")
-        return render_template('drop-off.html', drop=crs.fetchall())
+        drop = crs.fetchall()
+        crs.close()
+        return render_template('drop-off.html', drop=drop)
 
 
 @app.route("/cylinder-analysis/", methods=["GET", "POST"])
@@ -652,7 +728,7 @@ def cyla():
 
     if role == 'admin' or role == 'lab':
         if request.method == "POST":
-            
+            crs = db.cursor(buffered=True)
             sid = request.form.get("sid_ca")
             weight = request.form.get("weight")
             height = request.form.get("height")
@@ -664,13 +740,15 @@ def cyla():
                 WHERE _SID = (%s)
                 """, [height, weight, dia, user, sid])
             db.commit()
+            crs.close()
 
             return render_template('cylinder-analysis.html')
         else:
+            crs = db.cursor(buffered=True)
             crs.execute(
                 "SELECT _batch_id FROM ticket ORDER BY ticket_timestamp DESC")
             bid_cax = crs.fetchall()
-
+            crs.close()
             return render_template('cylinder-analysis.html', bid_cax=bid_cax)
 
     else:
@@ -686,6 +764,7 @@ def cylb():
 
     if role == 'admin' or role == 'lab':
         if request.method == "POST":
+            crs = db.cursor(buffered=True)
 
             sid = request.form.get("sid_ca")
             comp_str = request.form.get("cstr")
@@ -697,13 +776,16 @@ def cylb():
                 WHERE _SID = (%s)
                 """, [comp_str, tof, user, sid])
             db.commit()
+            crs.close()
 
             return render_template('cylinder-breaking.html')
 
         else:
+            crs = db.cursor(buffered=True)
             crs.execute(
                 "SELECT _batch_id FROM ticket ORDER BY ticket_timestamp DESC")
             bid_cax = crs.fetchall()
+            crs.close()
 
             return render_template('cylinder-breaking.html', bid_cax=bid_cax)
     else:
@@ -714,59 +796,64 @@ def creport():
     if not login_check():
         return redirect(url_for("login"))
     
-    role = permission(session['user'])
+    # role = permission(session['user'])
 
-    if role == 'admin' or role == 'lab':
-        role = permission(session['user'])
+    # if role == 'admin' or role == 'lab':
+        # role = permission(session['user'])
 
-        if request.method == "POST":
-            bid_list = request.form.get("selected_id")
-            print(bid_list)
+    if request.method == "POST":
+        # Prompt user to download zip file of generated reports
+        user = session['user']
+        dir_dest = os.path.join(DIRNAME, f'static/Zip/{ user }', '')
+        # return send_file(dir_dest + 'reports' + '.zip', as_attachment=True)
 
-            # format_strings = ','.join(['%s'] * len(bid_list))
+        return_data = io.BytesIO()
+        with open(dir_dest + 'reports.zip', 'rb') as fo:
+            return_data.write(fo.read())
+        return_data.seek(0)
 
-            # crs.execute("""SELECT _batch_id, ticket_timestamp, client_name, site_add, subclient_cont 
-            #             FROM ticket 
-            #             WHERE _batch_id
-            #             IN (%s)"""  % format_strings, tuple(bid_list))
-            # test_res = crs.fetchall()
-            # print(test_res)
-            return "GOOD SUCCESS post"
-        else:
-            crs.execute(
-                "SELECT _batch_id FROM ticket ORDER BY ticket_timestamp DESC")
-            bid_cax = crs.fetchall()
+        os.remove(dir_dest + 'reports.zip')
+        os.rmdir(dir_dest)
 
-            batch_id = '22-0600001'
-
-            # ticket_timestamp,
-            # ORDER BY ticket_timestamp DESC
-
-            crs.execute("""SELECT _batch_id, ticket_timestamp, client_name, site_add, subclient_cont 
-                        FROM ticket 
-                        ORDER BY ticket_timestamp DESC
-                        LIMIT 500""")
-
-            result = crs.fetchall()
-
-            fin = [['Batch ID', 'Date', 'Client', 'Site Address', 'Contractor']]
-
-            for i in range(len(result)):
-                res_list = []
-                for j in range(5):
-                    res_list.append(result[i][j])
-                fin.append(res_list)
-            
-            fintabulate = tabulate(fin,headers='firstrow',tablefmt='html')
-
-            fintabulate = '<table id="search_data">' + fintabulate[7:]
-
-
-            
-            return render_template('create-report.html', bid_cax=bid_cax, search_data_html=fintabulate)
+        return send_file(return_data, mimetype='application/zip',
+                        attachment_filename='reports.zip')
 
     else:
-        return "<h1>Error: Insufficient Permissions to Access Page</h1>"
+        crs = db.cursor(buffered=True)
+        crs.execute(
+            "SELECT _batch_id FROM ticket ORDER BY ticket_timestamp DESC")
+        bid_cax = crs.fetchall()
+        crs.close()
+
+        # ticket_timestamp,
+        # ORDER BY ticket_timestamp DESC
+
+        crs = db.cursor(buffered=True)
+        crs.execute("""SELECT _batch_id, ticket_timestamp, client_name, site_add, subclient_cont 
+                    FROM ticket 
+                    ORDER BY ticket_timestamp DESC
+                    LIMIT 500""")
+
+        result = crs.fetchall()
+        crs.close()
+        fin = [['Batch ID', 'Date', 'Client', 'Site Address', 'Contractor']]
+
+        for i in range(len(result)):
+            res_list = []
+            for j in range(5):
+                res_list.append(result[i][j])
+            fin.append(res_list)
+        
+        fintabulate = tabulate(fin,headers='firstrow',tablefmt='html')
+
+        fintabulate = '<table id="search_data">' + fintabulate[7:]
+
+
+        
+        return render_template('create-report.html', bid_cax=bid_cax, search_data_html=fintabulate)
+
+    # else:
+    #     return "<h1>Error: Insufficient Permissions to Access Page</h1>"
 
 
 @app.route("/logout/")
