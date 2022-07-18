@@ -2,7 +2,7 @@ from fpdf import FPDF
 
 class PDF(FPDF):
     def header(self):
-        self.image('main_logo.png', 165, 8, 50)
+        self.image('static/main_logo.png', 165, 8, 50)
         self.set_font('helvetica', 'B', 13)
         self.ln(5)
         self.cell(0, 7, 'COMPRESIVE STRENGTH TEST REPORT', border=0, ln=1, align='C')
@@ -14,7 +14,7 @@ class PDF(FPDF):
         self.set_y(-15)
         self.set_font('helvetica', 'I', 10)
         self.cell(0, 10, f'{self.page_no()}/{{nb}}', border=0, align='C')
-        self.image('CCIL.png', 187, 262, 20)
+        self.image('static/CCIL.png', 187, 262, 20)
 
 
         self.set_font('helvetica', '', 6)

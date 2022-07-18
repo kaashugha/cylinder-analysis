@@ -16,7 +16,7 @@ def create_pdf(data_as_dict, batch_data):
     pdf.cell(0, 6, 'Site Address: ' + batch_data['site_add'], border=0, ln=1)
     pdf.cell(0, 6, 'Subclient/Contractor: ' + batch_data['subclient_cont'], border=0, ln=1)
 
-    pdf.image('tof.png', 145, 47, 60)
+    pdf.image('static/tof.png', 145, 47, 60)
 
     pdf.ln(5)
     pdf.create_table(table_data = data_as_dict, align_header='C', align_data='C', data_size=8, cell_width=[27,20,20,15,9,20,18,18,15,19,14], title_size=40)
@@ -90,7 +90,7 @@ def create_pdf(data_as_dict, batch_data):
     sig_x = pdf.get_x()
     sig_y = pdf.get_y()
 
-    pdf.image('signature.png', sig_x + 6, sig_y - 5, 18)
+    pdf.image('static/signature.png', sig_x + 6, sig_y - 5, 18)
     pdf.cell(15, 7, '                                ', ln=1)
     pdf.set_font('helvetica', '', 9)
     pdf.cell(19, 4, '', border=0)
