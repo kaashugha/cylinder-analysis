@@ -7,10 +7,10 @@ from flask import Flask, flash, jsonify, redirect, render_template, request, ses
 from datetime import timedelta
 import mysql.connector
 import bcrypt
+import report_pdf
 import gcalendar
 from dotenv import load_dotenv
 import os
-import report_pdf
 from tabulate import tabulate
 
 GOOGLE_API_KEY = os.getenv('GOOGLE_API_KEY')
@@ -23,12 +23,12 @@ app.secret_key = SECRET_KEY
 
 DIRNAME = os.path.dirname(__file__)
 
-db = mysql.connector.connect(
-    host='localhost',
-    user='root',
-    passwd='',
-    database='cylinders'
-)
+# db = mysql.connector.connect(
+#     host='localhost',
+#     user='root',
+#     passwd='',
+#     database='cylinders'
+# )
 
 ####
 
@@ -46,13 +46,15 @@ def configure():
     load_dotenv()
 
 def permission(user):
-    crs = db.cursor(buffered=True)
-    crs.execute("""SELECT role
-                FROM user
-                WHERE _username=%s
-                """, [user])
-    role = crs.fetchone()[0]
-    crs.close()
+    # crs = db.cursor(buffered=True)
+    # crs.execute("""SELECT role
+    #             FROM user
+    #             WHERE _username=%s
+    #             """, [user])
+    # role = crs.fetchone()[0]
+    # crs.close()
+
+    role = 'admin'
 
     if role == 'admin':
         return 'admin'
@@ -887,4 +889,4 @@ def dropoff_success():
 
 if __name__ == '__main__':
     configure()
-    app.run(debug=True, host='localhost', port=5000)
+    app.run(debug=False, host='0.0.0.0', port=5000, use_reloader=False)
