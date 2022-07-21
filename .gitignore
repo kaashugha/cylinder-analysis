@@ -4,5 +4,7 @@ venv/
 # Environment Variables
 .env
 
+__pycache__/
+
 # Google OAuth2.0 json file
 client_secret.json

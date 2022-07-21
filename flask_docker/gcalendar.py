@@ -13,11 +13,11 @@ def cal_insert(day, month, year, SID, color, user):
     time_conv = 4
     event_request_body = {
         'start': {
-            'dateTime': convert_to_RFC_datetime(int('20' + year), month, day, 9 + time_conv, 0),
+            'dateTime': convert_to_RFC_datetime(year, month, day, 9 + time_conv, 0),
             'timeZone': 'America/New_York',
         },
         'end': {
-            'dateTime': convert_to_RFC_datetime(int('20' + year), month, day, 17 + time_conv, 0),
+            'dateTime': convert_to_RFC_datetime(year, month, day, 17 + time_conv, 0),
             'timeZone': 'America/New_York',
         },
         'summary': SID,

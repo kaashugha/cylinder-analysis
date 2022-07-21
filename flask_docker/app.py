@@ -4,7 +4,8 @@ from pathlib import Path
 import shutil
 from typing import OrderedDict
 from flask import Flask, flash, jsonify, redirect, render_template, request, session, url_for, send_file
-from datetime import timedelta
+from datetime import date, timedelta
+from dateutil.relativedelta import relativedelta
 import mysql.connector
 import bcrypt
 import report_pdf
@@ -12,6 +13,7 @@ import gcalendar
 from dotenv import load_dotenv
 import os
 from tabulate import tabulate
+
 
 GOOGLE_API_KEY = os.getenv('GOOGLE_API_KEY')
 CALENDAR_ID = os.getenv('CALENDAR_ID')
@@ -23,12 +25,12 @@ app.secret_key = SECRET_KEY
 
 DIRNAME = os.path.dirname(__file__)
 
-# db = mysql.connector.connect(
-#     host='localhost',
-#     user='root',
-#     passwd='',
-#     database='cylinders'
-# )
+db = mysql.connector.connect(
+    host='localhost',
+    user='root',
+    passwd='',
+    database='cylinders'
+)
 
 ####
 
@@ -39,22 +41,20 @@ DIRNAME = os.path.dirname(__file__)
 #                              )
 # crs = db.cursor()
 
-####
+###
 
 
 def configure():
     load_dotenv()
 
 def permission(user):
-    # crs = db.cursor(buffered=True)
-    # crs.execute("""SELECT role
-    #             FROM user
-    #             WHERE _username=%s
-    #             """, [user])
-    # role = crs.fetchone()[0]
-    # crs.close()
-
-    role = 'admin'
+    crs = db.cursor(buffered=True)
+    crs.execute("""SELECT role
+                FROM user
+                WHERE _username=%s
+                """, [user])
+    role = crs.fetchone()[0]
+    crs.close()
 
     if role == 'admin':
         return 'admin'
@@ -279,8 +279,8 @@ def test():
 
     return jsonify({'reply':'success'})
 
-@app.route("/", methods=["POST", "GET"])
-def index():
+@app.route("/employee-portal", methods=["POST", "GET"])
+def empPortal():
     if not login_check():
         return redirect(url_for("login"))
 
@@ -358,7 +358,7 @@ def login():
 
     else:
         if "user" in session:
-            return redirect(url_for('index'))
+            return redirect(url_for('empPortal'))
 
         return render_template('login.html')
 
@@ -524,6 +524,7 @@ def ticket():
 
         for i in range(1, int(q1) + 1):
             crs = db.cursor(buffered=True)
+            sid = ""
             if cb1 is None:
                 sid = bid + "A" + "-" + d1 + "D" + "-" + str(i)
                 crs.execute("""INSERT INTO Cylinder (_SID, batch_id) VALUES 
@@ -537,7 +538,13 @@ def ticket():
                             (sid, bid, "On-Site"))
                 db.commit()
             
-            eventID = gcalendar.cal_insert(int(cur_day), int(cur_mo), cur_year, sid, 5, user)
+            break_date = date.today() + relativedelta(days=+ int(sid[12:].split('D', 1)[0]))
+
+            day= str(break_date)[8:]
+            month = str(break_date)[5:-3]
+            year = str(break_date)[:-6]
+            
+            eventID = gcalendar.cal_insert(int(day), int(month), int(year), sid, 5, user)
             crs.execute("""UPDATE Cylinder 
                         SET eventID = (%s)
                         WHERE _SID = (%s) 
@@ -548,6 +555,7 @@ def ticket():
 
         if q2:
             for i in range(1, int(q2) + 1):
+                sid = ""
                 crs = db.cursor(buffered=True)
                 if cb2 is None:
                     sid = bid + "B" + "-" + d2 + "D" + "-" + str(i)
@@ -561,8 +569,14 @@ def ticket():
                                 (%s, %s, %s)""",
                                 (sid, bid, "On-Site"))
                     db.commit()
+
+                break_date = date.today() + relativedelta(days=+ int(sid[12:].split('D', 1)[0]))
+
+                day= str(break_date)[8:]
+                month = str(break_date)[5:-3]
+                year = str(break_date)[:-6]
                 
-                eventID = gcalendar.cal_insert(int(cur_day), int(cur_mo), cur_year, sid, 5, user)
+                eventID = gcalendar.cal_insert(int(day), int(month), int(year), sid, 5, user)
                 crs.execute("""UPDATE Cylinder 
                             SET eventID = (%s)
                             WHERE _SID = (%s) 
@@ -574,6 +588,7 @@ def ticket():
 
         if q3:
             for i in range(1, int(q3) + 1):
+                sid = ""
                 crs = db.cursor(buffered=True)
                 if cb3 is None:
                     sid = bid + "C" + "-" + d3 + "D" + "-" + str(i)
@@ -588,7 +603,13 @@ def ticket():
                                 (sid, bid, "On-Site"))
                     db.commit()
 
-                eventID = gcalendar.cal_insert(int(cur_day), int(cur_mo), cur_year, sid, 5, user)
+                break_date = date.today() + relativedelta(days=+ int(sid[12:].split('D', 1)[0]))
+
+                day= str(break_date)[8:]
+                month = str(break_date)[5:-3]
+                year = str(break_date)[:-6]
+
+                eventID = gcalendar.cal_insert(int(day), int(month), int(year), sid, 5, user)
                 crs.execute("""UPDATE Cylinder 
                             SET eventID = (%s)
                             WHERE _SID = (%s) 
@@ -600,6 +621,7 @@ def ticket():
 
         if q4:
             for i in range(1, int(q4) + 1):
+                sid = ""
                 crs = db.cursor(buffered=True)
                 if cb4 is None:
                     sid = bid + "D" + "-" + d4 + "D" + "-" + str(i)
@@ -614,7 +636,13 @@ def ticket():
                                 (sid, bid, "On-Site"))
                     db.commit()
 
-                eventID = gcalendar.cal_insert(int(cur_day), int(cur_mo), cur_year, sid, 5, user)
+                break_date = date.today() + relativedelta(days=+ int(sid[12:].split('D', 1)[0]))
+
+                day= str(break_date)[8:]
+                month = str(break_date)[5:-3]
+                year = str(break_date)[:-6]
+
+                eventID = gcalendar.cal_insert(int(day), int(month), int(year), 5, user)
                 crs.execute("""UPDATE Cylinder 
                             SET eventID = (%s)
                             WHERE _SID = (%s) 
@@ -625,6 +653,7 @@ def ticket():
 
         if q5:
             for i in range(1, int(q5) + 1):
+                sid = ""
                 crs = db.cursor(buffered=True)
                 if cb5 is None:
                     sid = bid + "E" + "-" + d5 + "D" + "-" + str(i)
@@ -639,7 +668,13 @@ def ticket():
                                 (sid, bid, "On-Site"))
                     db.commit()
 
-                eventID = gcalendar.cal_insert(int(cur_day), int(cur_mo), cur_year, sid, 5, user)
+                break_date = date.today() + relativedelta(days=+ int(sid[12:].split('D', 1)[0]))
+
+                day= str(break_date)[8:]
+                month = str(break_date)[5:-3]
+                year = str(break_date)[:-6]
+
+                eventID = gcalendar.cal_insert(int(day), int(month), int(year), sid, 5, user)
                 crs.execute("""UPDATE Cylinder 
                             SET eventID = (%s)
                             WHERE _SID = (%s) 
@@ -650,6 +685,7 @@ def ticket():
 
         if q6:
             for i in range(1, int(q6) + 1):
+                sid = ""
                 crs = db.cursor(buffered=True)
                 if cb6 is None:
                     sid = bid + "F" + "-" + d6 + "D" + "-" + str(i)
@@ -664,7 +700,13 @@ def ticket():
                                 (sid, bid, "On-Site"))
                     db.commit()
 
-                eventID = gcalendar.cal_insert(int(cur_day), int(cur_mo), cur_year, sid, 5, user)
+                break_date = date.today() + relativedelta(days=+ int(sid[12:].split('D', 1)[0]))
+
+                day= str(break_date)[8:]
+                month = str(break_date)[5:-3]
+                year = str(break_date)[:-6]
+
+                eventID = gcalendar.cal_insert(int(day), int(month), int(year), sid, 5, user)
                 crs.execute("""UPDATE Cylinder 
                             SET eventID = (%s)
                             WHERE _SID = (%s) 
@@ -887,6 +929,30 @@ def ticket_success():
 def dropoff_success():
     return render_template('dropoff_success.html')
 
+@app.route("/about-us/")
+def aboutUs():
+    return render_template('about-us.html')
+
+@app.route("/careers/")
+def careers():
+    return render_template('careers.html')
+
+@app.route("/contact-us/")
+def contactUs():
+    return render_template('contact-us.html')
+
+@app.route("/")
+def index():
+    return render_template('index.html')
+
+@app.route("/projects/")
+def projects():
+    return render_template('projects.html')
+
+@app.route("/services/")
+def services():
+    return render_template('services.html')
+
 if __name__ == '__main__':
     configure()
-    app.run(debug=False, host='0.0.0.0', port=5000, use_reloader=False)
+    app.run(debug=False, host='0.0.0.0', port=8080, use_reloader=False)

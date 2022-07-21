@@ -477,6 +477,12 @@ table {
   height: 50px;
 }
 
+.head-color {
+  background-color: rgb(77, 78, 77);
+  outline:none !important;
+
+}
+
 .submit-form-btn-list01 {
   width: 100%;
   display: block;

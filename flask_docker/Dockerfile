@@ -13,4 +13,4 @@ COPY . .
 
 EXPOSE 5000
 
-CMD [ "flask", "run", "--no-reload" ]
+CMD [ "uwsgi", "app.ini" ]
