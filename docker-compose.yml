@@ -3,11 +3,13 @@ services:
   flask:
     build: ./flask_docker
     container_name: flask_docker
+    ports:
+      -"8080:8080"
     restart: always
     environment:
     - APP_NAME=app
-    expose:
-      - 8080
+    # expose:
+    #   - 8080
 
   # nginx:
   #   build: ./nginx
