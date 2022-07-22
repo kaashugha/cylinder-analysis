@@ -25,38 +25,24 @@ app.secret_key = SECRET_KEY
 
 DIRNAME = os.path.dirname(__file__)
 
-# db = mysql.connector.connect(
-#     host='localhost',
-#     user='root',
-#     passwd='',
-#     database='cylinders'
-# )
-
-####
-
-# db = pymysql.connect(host='localhost',
-#                              user='root',
-#                              password='',
-#                              database='cylinders',
-#                              )
-# crs = db.cursor()
-
-###
-
+db = mysql.connector.connect(
+    host=os.getenv('HOST'),
+    user=os.getenv('USERNAME'),
+    passwd=os.getenv('PASSWORD'),
+    database=os.getenv('DATABASE')
+)
 
 def configure():
     load_dotenv()
 
 def permission(user):
-    # crs = db.cursor(buffered=True)
-    # crs.execute("""SELECT role
-    #             FROM user
-    #             WHERE _username=%s
-    #             """, [user])
-    # role = crs.fetchone()[0]
-    # crs.close()
-
-    role = 'admin'
+    crs = db.cursor(buffered=True)
+    crs.execute("""SELECT role
+                FROM user
+                WHERE _username=%s
+                """, [user])
+    role = crs.fetchone()[0]
+    crs.close()
 
     if role == 'admin':
         return 'admin'
@@ -148,11 +134,6 @@ def test():
                 JOIN Cylinder ON ticket._batch_id = Cylinder.batch_id
                     WHERE Cylinder._SID
                     IN (%s)"""  % format_strings, tuple(sid))
-
-        # crs.execute("""SELECT _batch_id, ticket_timestamp, client_name, site_add, subclient_cont 
-        #             FROM ticket 
-        #             WHERE _batch_id
-        #             IN (%s)"""  % format_strings, tuple(bid_list))
 
         test_res = crs.fetchall()
         crs.close()
@@ -841,11 +822,6 @@ def cylb():
 def creport():
     if not login_check():
         return redirect(url_for("login"))
-    
-    # role = permission(session['user'])
-
-    # if role == 'admin' or role == 'lab':
-        # role = permission(session['user'])
 
     if request.method == "POST":
         # Prompt user to download zip file of generated reports
@@ -871,9 +847,6 @@ def creport():
         bid_cax = crs.fetchall()
         crs.close()
 
-        # ticket_timestamp,
-        # ORDER BY ticket_timestamp DESC
-
         crs = db.cursor(buffered=True)
         crs.execute("""SELECT _batch_id, ticket_timestamp, client_name, site_add, subclient_cont 
                     FROM ticket 
@@ -897,10 +870,6 @@ def creport():
 
         
         return render_template('create-report.html', bid_cax=bid_cax, search_data_html=fintabulate)
-
-    # else:
-    #     return "<h1>Error: Insufficient Permissions to Access Page</h1>"
-
 
 @app.route("/logout/")
 def logout():
@@ -957,4 +926,4 @@ def services():
 
 if __name__ == '__main__':
     configure()
-    app.run(debug=False, host='0.0.0.0', port=8080, use_reloader=False)
+    app.run(debug=False, host=os.getenv('HOST'), port=8080, use_reloader=False)
