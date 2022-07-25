@@ -13,32 +13,26 @@ import gcalendar
 from dotenv import load_dotenv
 import os
 from tabulate import tabulate
-import boto3
-import json
 
-client = boto3.client('secretsmanager', region_name='us-east-1')
-
-response = client.get_secret_value(
-    SecretId='saffaeng-FLASK'
-)
-
-secretDict = json.loads(response['SecretString'])
-
-GOOGLE_API_KEY = secretDict['GOOGLE_API_KEY']
-CALENDAR_ID = secretDict['CALENDAR_ID']
-SECRET_KEY = secretDict['SECRET_KEY']
+GOOGLE_API_KEY = os.getenv('GOOGLE_API_KEY')
+CALENDAR_ID = os.getenv('CALENDAR_ID')
+SECRET_KEY = os.getenv('SECRET_KEY')
 
 app = Flask(__name__)
 app.permanent_session_lifetime = timedelta(days=14)
 app.secret_key = SECRET_KEY
 
 DIRNAME = os.path.dirname(__file__)
+print(os.getenv('HOST'))
+print(os.getenv('USERNAME'))
+print(os.getenv('PASSWORD'))
+print(os.getenv('DATABASE'))
 
 db = mysql.connector.connect(
-    host=secretDict['HOST'],
-    user=secretDict['USERNAME'],
-    passwd=secretDict['PASSWORD'],
-    database=secretDict['DATABASE']
+    host=os.getenv('HOST'),
+    user=os.getenv('USERNAME'),
+    passwd=os.getenv('PASSWORD'),
+    database=os.getenv('DATABASE')
 )
 
 def configure():
@@ -935,4 +929,4 @@ def services():
 
 if __name__ == '__main__':
     configure()
-    app.run(debug=False, host=secretDict['HOST'], port=8080, use_reloader=False)
+    app.run(debug=False, host=os.getenv('HOST'), port=8080, use_reloader=False)
