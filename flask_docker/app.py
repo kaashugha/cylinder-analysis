@@ -14,6 +14,7 @@ from dotenv import load_dotenv
 import os
 from tabulate import tabulate
 
+
 GOOGLE_API_KEY = os.getenv('GOOGLE_API_KEY')
 CALENDAR_ID = os.getenv('CALENDAR_ID')
 SECRET_KEY = os.getenv('SECRET_KEY')
@@ -23,10 +24,6 @@ app.permanent_session_lifetime = timedelta(days=14)
 app.secret_key = SECRET_KEY
 
 DIRNAME = os.path.dirname(__file__)
-print(os.getenv('HOST'))
-print(os.getenv('USERNAME'))
-print(os.getenv('PASSWORD'))
-print(os.getenv('DATABASE'))
 
 db = mysql.connector.connect(
     host=os.getenv('HOST'),
@@ -60,8 +57,6 @@ def login_check():
         return user
     else:
         return
-
-
 
 @app.route('/sid_list/', methods=['POST'])
 def sid_list():
@@ -507,6 +502,7 @@ def ticket():
         db.commit()
         crs.close()
         sid = ""
+        all_sid = []
 
         for i in range(1, int(q1) + 1):
             crs = db.cursor(buffered=True)
@@ -524,6 +520,7 @@ def ticket():
                             (sid, bid, "On-Site"))
                 db.commit()
             
+            all_sid.append(sid)
             break_date = date.today() + relativedelta(days=+ int(sid[12:].split('D', 1)[0]))
 
             day= str(break_date)[8:]
@@ -555,7 +552,8 @@ def ticket():
                                 (%s, %s, %s)""",
                                 (sid, bid, "On-Site"))
                     db.commit()
-
+                
+                all_sid.append(sid)
                 break_date = date.today() + relativedelta(days=+ int(sid[12:].split('D', 1)[0]))
 
                 day= str(break_date)[8:]
@@ -589,6 +587,7 @@ def ticket():
                                 (sid, bid, "On-Site"))
                     db.commit()
 
+                all_sid.append(sid)
                 break_date = date.today() + relativedelta(days=+ int(sid[12:].split('D', 1)[0]))
 
                 day= str(break_date)[8:]
@@ -622,6 +621,7 @@ def ticket():
                                 (sid, bid, "On-Site"))
                     db.commit()
 
+                all_sid.append(sid)
                 break_date = date.today() + relativedelta(days=+ int(sid[12:].split('D', 1)[0]))
 
                 day= str(break_date)[8:]
@@ -654,6 +654,7 @@ def ticket():
                                 (sid, bid, "On-Site"))
                     db.commit()
 
+                all_sid.append(sid)
                 break_date = date.today() + relativedelta(days=+ int(sid[12:].split('D', 1)[0]))
 
                 day= str(break_date)[8:]
@@ -686,6 +687,7 @@ def ticket():
                                 (sid, bid, "On-Site"))
                     db.commit()
 
+                all_sid.append(sid)
                 break_date = date.today() + relativedelta(days=+ int(sid[12:].split('D', 1)[0]))
 
                 day= str(break_date)[8:]
@@ -702,7 +704,7 @@ def ticket():
                 crs.close()
 
 
-        return render_template('ticket_success.html', bid=bid)
+        return render_template('ticket_success.html', bid=bid, all_sid=all_sid)
 
     else:
         crs = db.cursor(buffered=True)

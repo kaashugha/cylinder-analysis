@@ -1,14 +1,7 @@
-from datetime import date
-import datetime
-from dateutil.relativedelta import relativedelta
+import bcrypt
 
-threed = date.today() + relativedelta(days=+3)
+password = "SaffaLab130".encode('utf-8')
+hash_password = bcrypt.hashpw(password, bcrypt.gensalt())
 
-year = str(threed)[:-6]
-month = str(threed)[5:-3]
-day= str(threed)[8:]
-
-print(threed)
-print(year)
-print(month)
-print(day)
+print(password)
+print(hash_password)

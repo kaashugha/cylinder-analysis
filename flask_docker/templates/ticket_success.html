@@ -44,6 +44,12 @@
       <br/>
         <p>Your response has been submitted. <br/> Please record the following batch number for dropoff:</p>
         <h1>{{ bid }}</h1>
+        <p>Please write the following id's on each cylinder mould with a marker: <br/></p>
+        <div>
+          {% for sid in all_sid %}
+              <h2>{{ sid }}</h2>
+          {% endfor %}
+         </div>
       </div>
     </body>
 </html>
