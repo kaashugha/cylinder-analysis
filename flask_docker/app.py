@@ -518,6 +518,7 @@ def ticket():
         crs.close()
         sid = ""
         all_sid = []
+        user = session["user"]
 
         for i in range(1, int(q1) + 1):
             crs = db.cursor(buffered=True)
@@ -855,7 +856,7 @@ def creport():
             'reports.zip',
             as_attachment=True,
         )
-        
+
     else:
         user = session['user']
         dir_dest = os.path.join(DIRNAME, f'static/Zip/{ user }', '')
