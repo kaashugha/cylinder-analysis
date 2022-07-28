@@ -3,7 +3,7 @@ import io
 from pathlib import Path
 import shutil
 from typing import OrderedDict
-from flask import Flask, flash, jsonify, redirect, render_template, request, session, url_for, send_file
+from flask import Flask, flash, jsonify, redirect, render_template, request, send_from_directory, session, url_for, send_file
 from datetime import date, timedelta
 from dateutil.relativedelta import relativedelta
 import mysql.connector
@@ -849,6 +849,8 @@ def creport():
 
         os.remove(dir_dest + 'reports.zip')
         os.rmdir(dir_dest)
+
+        print(return_data)
 
         return send_file(return_data, mimetype='application/zip',
                         attachment_filename='reports.zip')
