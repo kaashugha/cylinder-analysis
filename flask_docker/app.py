@@ -1,4 +1,5 @@
 import datetime
+import glob
 import io
 from pathlib import Path
 import shutil
@@ -244,9 +245,13 @@ def test():
 
     user = session['user']
 
+
     filename = 'reports'
     dir_zip = os.path.join(DIRNAME, 'static/Reports', '')
     dir_dest = os.path.join(DIRNAME, f'static/Zip/{ user }', '')
+
+    # os.remove(dir_dest + 'reports.zip')
+    # os.rmdir(dir_dest)
 
     # Creates users folder in zip folder if it doesnt exist
     if not os.path.isdir(dir_dest):
@@ -254,6 +259,8 @@ def test():
         
 
     shutil.make_archive(os.path.join(dir_dest, filename), 'zip', dir_zip)
+
+    print("here i am")
 
     # Delete all reports generated in Reports file
     [f.unlink() for f in Path(dir_zip).glob("*") if f.is_file()]
@@ -839,24 +846,25 @@ def creport():
     if request.method == "POST":
         # Prompt user to download zip file of generated reports
         user = session['user']
-        dir_dest = os.path.join(DIRNAME, f'static/Zip/{ user }', '')
-        # return send_file(dir_dest + 'reports' + '.zip', as_attachment=True)
+        dir_dest = f'static/Zip/{ user }'
+
         full_path = os.path.join(app.root_path, dir_dest)
 
-        print("XXXXXXXXXXXXXXXXXXXXXXXXXX")
-        print(dir_dest)
-
-        return_data = io.BytesIO()
-        with open(full_path + 'reports.zip', 'rb') as fo:
-            return_data.write(fo.read())
-        return_data.seek(0)
-
-        os.remove(dir_dest + 'reports.zip')
-        os.rmdir(dir_dest)
-        return send_file(return_data, mimetype='application/zip',
-                        attachment_filename='reports.zip')
-
+        return send_from_directory(
+            full_path,
+            'reports.zip',
+            as_attachment=True,
+        )
+        
     else:
+        user = session['user']
+        dir_dest = os.path.join(DIRNAME, f'static/Zip/{ user }', '')
+        
+        if os.path.isdir(dir_dest):
+            os.remove(dir_dest + 'reports.zip')
+            os.rmdir(dir_dest)
+
+        
         crs = db.cursor(buffered=True)
         crs.execute(
             "SELECT _batch_id FROM ticket ORDER BY ticket_timestamp DESC")

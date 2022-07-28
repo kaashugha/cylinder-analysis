@@ -303,7 +303,7 @@
                         type:'POST',
                         contentType:'application/json;charset-utf-08',
                         data: {name:sid_array},
-                        url:'http://127.0.0.1:5000/test?value=' + sid_array,
+                        url:'/test?value=' + sid_array,
                         success:function (data) {
                             var reply=data.reply;
                             if (reply=="success")

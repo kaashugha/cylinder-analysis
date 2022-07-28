@@ -6,6 +6,7 @@ services:
     restart: always
     environment:
     - APP_NAME=app
+    - PYTHONUNBUFFERED=0
     env_file:
     - .env
     expose:
