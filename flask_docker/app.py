@@ -309,6 +309,12 @@ def f():
 
 @app.route("/login/", methods=["POST", "GET"])
 def login():
+    db = mysql.connector.connect(
+    host=os.getenv('HOST'),
+    user=os.getenv('USERNAME'),
+    passwd=os.getenv('PASSWORD'),
+    database=os.getenv('DATABASE')
+    )
     if request.method == "POST":
         crs = db.cursor(buffered=True)
         session.permanent = True
