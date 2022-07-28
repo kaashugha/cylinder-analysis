@@ -62,7 +62,7 @@ def login_check():
 def sid_list():
     crs = db.cursor(buffered=True)
     req = request.json
-    bid = req.get('bid_ca')[2:-3]
+    bid = req.get('bid_ca')
     crs.execute("SELECT _SID FROM Cylinder WHERE batch_id=%s", [bid])
     sid = crs.fetchall()
     crs.close()
@@ -431,7 +431,7 @@ def ticket():
 
         bid = cur_year + "-" + cur_mo + str(increment).zfill(5)
 
-        client = request.form["client"][2:-3]
+        client = request.form["client"]
         mix = request.form["mix"]
         ticket = request.form["ticket"]
         address = request.form["address"]
@@ -454,6 +454,8 @@ def ticket():
         amb_temp = request.form["amb_temp"]
         min_temp = request.form["min_temp"]
         max_temp = request.form["max_temp"]
+
+        print(client)
 
         if request.form["plt"]:
             plt = request.form["plt"]
@@ -727,7 +729,7 @@ def dropoff():
 
     if request.method == "POST":
         crs = db.cursor(buffered=True)
-        drop_id = request.form["drop_id"][2:-3]
+        drop_id = request.form["drop_id"]
         user = session["user"]
 
         crs.execute("""UPDATE ticket  
