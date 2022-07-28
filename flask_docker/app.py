@@ -518,7 +518,6 @@ def ticket():
         crs.close()
         sid = ""
         all_sid = []
-        user = session["user"]
 
         for i in range(1, int(q1) + 1):
             crs = db.cursor(buffered=True)
@@ -587,8 +586,6 @@ def ticket():
 
 
         if q3:
-            user = session["user"]
-
             for i in range(1, int(q3) + 1):
                 sid = ""
                 crs = db.cursor(buffered=True)
@@ -623,7 +620,6 @@ def ticket():
 
 
         if q4:
-            user = session["user"]
             for i in range(1, int(q4) + 1):
                 sid = ""
                 crs = db.cursor(buffered=True)
@@ -647,7 +643,7 @@ def ticket():
                 month = str(break_date)[5:-3]
                 year = str(break_date)[:-6]
 
-                eventID = gcalendar.cal_insert(int(day), int(month), int(year), 5, user)
+                eventID = gcalendar.cal_insert(int(day), int(month), int(year), sid, 5, user)
                 crs.execute("""UPDATE Cylinder 
                             SET eventID = (%s)
                             WHERE _SID = (%s) 
@@ -657,7 +653,6 @@ def ticket():
                 crs.close()
 
         if q5:
-            user = session["user"]
             for i in range(1, int(q5) + 1):
                 sid = ""
                 crs = db.cursor(buffered=True)
@@ -691,7 +686,6 @@ def ticket():
                 crs.close()
 
         if q6:
-            user = session["user"]
             for i in range(1, int(q6) + 1):
                 sid = ""
                 crs = db.cursor(buffered=True)
@@ -861,7 +855,7 @@ def creport():
             'reports.zip',
             as_attachment=True,
         )
-
+        
     else:
         user = session['user']
         dir_dest = os.path.join(DIRNAME, f'static/Zip/{ user }', '')
