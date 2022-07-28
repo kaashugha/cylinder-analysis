@@ -587,6 +587,8 @@ def ticket():
 
 
         if q3:
+            user = session["user"]
+
             for i in range(1, int(q3) + 1):
                 sid = ""
                 crs = db.cursor(buffered=True)
@@ -621,6 +623,7 @@ def ticket():
 
 
         if q4:
+            user = session["user"]
             for i in range(1, int(q4) + 1):
                 sid = ""
                 crs = db.cursor(buffered=True)
@@ -654,6 +657,7 @@ def ticket():
                 crs.close()
 
         if q5:
+            user = session["user"]
             for i in range(1, int(q5) + 1):
                 sid = ""
                 crs = db.cursor(buffered=True)
@@ -687,6 +691,7 @@ def ticket():
                 crs.close()
 
         if q6:
+            user = session["user"]
             for i in range(1, int(q6) + 1):
                 sid = ""
                 crs = db.cursor(buffered=True)
