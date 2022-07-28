@@ -842,6 +842,9 @@ def creport():
         dir_dest = os.path.join(DIRNAME, f'static/Zip/{ user }', '')
         # return send_file(dir_dest + 'reports' + '.zip', as_attachment=True)
 
+        print("XXXXXXXXXXXXXXXXXXXXXXXXXX")
+        print(dir_dest)
+
         return_data = io.BytesIO()
         with open(dir_dest + 'reports.zip', 'rb') as fo:
             return_data.write(fo.read())
@@ -849,8 +852,6 @@ def creport():
 
         os.remove(dir_dest + 'reports.zip')
         os.rmdir(dir_dest)
-
-        print(return_data)
 
         return send_file(return_data, mimetype='application/zip',
                         attachment_filename='reports.zip')
