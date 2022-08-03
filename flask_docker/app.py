@@ -37,7 +37,11 @@ def configure():
     load_dotenv()
 
 def permission(user):
-    crs = db.cursor(buffered=True)
+    try:
+        crs = db.cursor(buffered=True)
+    except:
+        db.reconnect()
+        crs = db.cursor(buffered=True)
     crs.execute("""SELECT role
                 FROM user
                 WHERE _username=%s
@@ -61,7 +65,11 @@ def login_check():
 
 @app.route('/sid_list/', methods=['POST'])
 def sid_list():
-    crs = db.cursor(buffered=True)
+    try:
+        crs = db.cursor(buffered=True)
+    except:
+        db.reconnect()
+        crs = db.cursor(buffered=True)
     req = request.json
     bid = req.get('bid_ca')
     crs.execute("SELECT _SID FROM Cylinder WHERE batch_id=%s", [bid])
@@ -87,7 +95,11 @@ def test():
             bid_dict[bid].append(sid)
 
     for bid in bid_dict:
-        crs = db.cursor(buffered=True)
+        try:
+            crs = db.cursor(buffered=True)
+        except:
+            db.reconnect()
+            crs = db.cursor(buffered=True)
         sid = bid_dict[bid]
         format_strings = ','.join(['%s'] * len(sid))
         crs.execute("""SELECT
@@ -316,14 +328,12 @@ def f():
 
 @app.route("/login/", methods=["POST", "GET"])
 def login():
-    db = mysql.connector.connect(
-    host=os.getenv('HOST'),
-    user=os.getenv('USERNAME'),
-    passwd=os.getenv('PASSWORD'),
-    database=os.getenv('DATABASE')
-    )
     if request.method == "POST":
-        crs = db.cursor(buffered=True)
+        try:
+            crs = db.cursor(buffered=True)
+        except:
+            db.reconnect()
+            crs = db.cursor(buffered=True)
         session.permanent = True
         user = request.form["username"]
 
@@ -366,7 +376,11 @@ def register():
 
     if role == 'admin':
         if request.method == "POST":
-            crs = db.cursor(buffered=True)
+            try:
+                crs = db.cursor(buffered=True)
+            except:
+                db.reconnect()
+                crs = db.cursor(buffered=True)
             session.permanent = True
             user = request.form["newuser"]
             password = request.form["newpass"].encode('utf-8')
@@ -399,8 +413,11 @@ def ticket():
     user = session["user"]
 
     if request.method == "POST":
-        crs = db.cursor(buffered=True)
-        cur_day = datetime.date.today().strftime("%d")
+        try:
+            crs = db.cursor(buffered=True)
+        except:
+            db.reconnect()
+            crs = db.cursor(buffered=True)
         cur_mo = datetime.date.today().strftime("%m")
         cur_year = datetime.date.today().strftime("%y")
 
@@ -722,7 +739,11 @@ def ticket():
         return render_template('ticket_success.html', bid=bid, all_sid=all_sid)
 
     else:
-        crs = db.cursor(buffered=True)
+        try:
+            crs = db.cursor(buffered=True)
+        except:
+            db.reconnect()
+            crs = db.cursor(buffered=True)
         crs.execute("SELECT * FROM client")
         value = crs.fetchall()
         crs.close()
@@ -735,7 +756,11 @@ def dropoff():
         return redirect(url_for("login"))
 
     if request.method == "POST":
-        crs = db.cursor(buffered=True)
+        try:
+            crs = db.cursor(buffered=True)
+        except:
+            db.reconnect()
+            crs = db.cursor(buffered=True)
         drop_id = request.form["drop_id"]
         user = session["user"]
 
@@ -758,7 +783,11 @@ def dropoff():
 
         return render_template('dropoff_success.html', bid=drop_id)
     else:
-        crs = db.cursor(buffered=True)
+        try:
+            crs = db.cursor(buffered=True)
+        except:
+            db.reconnect()
+            crs = db.cursor(buffered=True)
         crs.execute(
             "SELECT _batch_id FROM ticket ORDER BY ticket_timestamp DESC")
         drop = crs.fetchall()
@@ -775,7 +804,11 @@ def cyla():
 
     if role == 'admin' or role == 'lab':
         if request.method == "POST":
-            crs = db.cursor(buffered=True)
+            try:
+                crs = db.cursor(buffered=True)
+            except:
+                db.reconnect()
+                crs = db.cursor(buffered=True)
             sid = request.form.get("sid_ca")
             weight = request.form.get("weight")
             height = request.form.get("height")
@@ -791,7 +824,11 @@ def cyla():
 
             return render_template('cylinder-analysis.html')
         else:
-            crs = db.cursor(buffered=True)
+            try:
+                crs = db.cursor(buffered=True)
+            except:
+                db.reconnect()
+                crs = db.cursor(buffered=True)
             crs.execute(
                 "SELECT _batch_id FROM ticket ORDER BY ticket_timestamp DESC")
             bid_cax = crs.fetchall()
@@ -811,7 +848,11 @@ def cylb():
 
     if role == 'admin' or role == 'lab':
         if request.method == "POST":
-            crs = db.cursor(buffered=True)
+            try:
+                crs = db.cursor(buffered=True)
+            except:
+                db.reconnect()
+                crs = db.cursor(buffered=True)
 
             sid = request.form.get("sid_ca")
             comp_str = request.form.get("cstr")
@@ -828,7 +869,11 @@ def cylb():
             return render_template('cylinder-breaking.html')
 
         else:
-            crs = db.cursor(buffered=True)
+            try:
+                crs = db.cursor(buffered=True)
+            except:
+                db.reconnect()
+                crs = db.cursor(buffered=True)
             crs.execute(
                 "SELECT _batch_id FROM ticket ORDER BY ticket_timestamp DESC")
             bid_cax = crs.fetchall()
@@ -865,7 +910,11 @@ def creport():
             os.rmdir(dir_dest)
 
         
-        crs = db.cursor(buffered=True)
+        try:
+            crs = db.cursor(buffered=True)
+        except:
+            db.reconnect()
+            crs = db.cursor(buffered=True)
         crs.execute(
             "SELECT _batch_id FROM ticket ORDER BY ticket_timestamp DESC")
         bid_cax = crs.fetchall()
