@@ -1,20 +1,21 @@
 import datetime
 import glob
 import io
-from pathlib import Path
-import shutil
-from typing import OrderedDict
-from flask import Flask, flash, jsonify, redirect, render_template, request, send_from_directory, session, url_for, send_file
-from datetime import date, timedelta
-from dateutil.relativedelta import relativedelta
-import mysql.connector
-import bcrypt
-import report_pdf
-import gcalendar
-from dotenv import load_dotenv
 import os
-from tabulate import tabulate
+import shutil
+from datetime import date, timedelta
+from pathlib import Path
+from typing import OrderedDict
 
+import bcrypt
+import gcalendar
+import mysql.connector
+import report_pdf
+from dateutil.relativedelta import relativedelta
+from dotenv import load_dotenv
+from flask import (Flask, flash, jsonify, redirect, render_template, request,
+                   send_file, send_from_directory, session, url_for)
+from tabulate import tabulate
 
 GOOGLE_API_KEY = os.getenv('GOOGLE_API_KEY')
 CALENDAR_ID = os.getenv('CALENDAR_ID')
@@ -747,6 +748,7 @@ def ticket():
         crs.execute("SELECT * FROM client")
         value = crs.fetchall()
         crs.close()
+        print(value)
         return render_template('ticket.html', value=value)
 
 
