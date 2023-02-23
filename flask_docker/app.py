@@ -33,6 +33,7 @@ db = mysql.connector.connect(
     passwd=os.getenv('PASSWORD'),
     database=os.getenv('DATABASE')
 )
+db.autocommit = True
 
 def configure():
     load_dotenv()
@@ -273,8 +274,6 @@ def test():
 
     shutil.make_archive(os.path.join(dir_dest, filename), 'zip', dir_zip)
 
-    print("here i am")
-
     # Delete all reports generated in Reports file
     [f.unlink() for f in Path(dir_zip).glob("*") if f.is_file()]
 
@@ -479,8 +478,6 @@ def ticket():
         amb_temp = request.form["amb_temp"]
         min_temp = request.form["min_temp"]
         max_temp = request.form["max_temp"]
-
-        print(client)
 
         if request.form["plt"]:
             plt = request.form["plt"]
@@ -748,7 +745,6 @@ def ticket():
         crs.execute("SELECT * FROM client")
         value = crs.fetchall()
         crs.close()
-        print(value)
         return render_template('ticket.html', value=value)
 
 
