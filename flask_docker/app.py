@@ -9,17 +9,27 @@ from typing import OrderedDict
 
 import bcrypt
 import gcalendar
+import google.oauth2.credentials
+import google_auth_oauthlib.flow
+import googleapiclient.discovery
 import mysql.connector
 import report_pdf
 from dateutil.relativedelta import relativedelta
 from dotenv import load_dotenv
 from flask import (Flask, flash, jsonify, redirect, render_template, request,
                    send_file, send_from_directory, session, url_for)
+from Google import Create_Service
 from tabulate import tabulate
 
+os.environ['OAUTHLIB_INSECURE_TRANSPORT'] = '1'
 GOOGLE_API_KEY = os.getenv('GOOGLE_API_KEY')
 CALENDAR_ID = os.getenv('CALENDAR_ID')
 SECRET_KEY = os.getenv('SECRET_KEY')
+
+CLIENT_SECRET_FILE = 'client_secret.json'
+API_NAME = 'calendar'
+API_VERSION = 'v3'
+SCOPES = ['https://www.googleapis.com/auth/calendar']
 
 app = Flask(__name__)
 app.permanent_session_lifetime = timedelta(days=14)
@@ -64,6 +74,86 @@ def login_check():
         return user
     else:
         return
+
+def credentials_to_dict(credentials):
+  return {'token': credentials.token,
+          'refresh_token': credentials.refresh_token,
+          'token_uri': credentials.token_uri,
+          'client_id': credentials.client_id,
+          'client_secret': credentials.client_secret,
+          'scopes': credentials.scopes}
+
+def service_build():
+    # Load credentials from the session.
+    creds = google.oauth2.credentials.Credentials(
+        **session['credentials'])
+
+    #drive = googleapiclient.discovery.build(
+        #API_NAME, API_VERSION, credentials=credentials)
+
+    # files = drive.files().list().execute()
+
+    # Save credentials back to session in case access token was refreshed.
+    # ACTION ITEM: In a production app, you likely want to save these
+    #              credentials in a persistent database instead.
+    session['credentials'] = credentials_to_dict(creds)
+
+    service = googleapiclient.discovery.build(API_NAME, API_VERSION, credentials=creds)
+
+    return service
+
+@app.route('/oauth2', methods=['GET', 'POST'])
+def oauth2():
+	# Use the client_secret.json file to identify the application requesting
+	# authorization. The client ID (from that file) and access scopes are required.
+    flow = google_auth_oauthlib.flow.Flow.from_client_secrets_file(
+        CLIENT_SECRET_FILE,
+        scopes=[SCOPES][0])
+
+	# Indicate where the API server will redirect the user after the user completes
+	# the authorization flow. The redirect URI is required. The value must exactly
+	# match one of the authorized redirect URIs for the OAuth 2.0 client, which you
+	# configured in the API Console. If this value doesn't match an authorized URI,
+	# you will get a 'redirect_uri_mismatch' error.
+    flow.redirect_uri = url_for('oauth2callback', _external=True)
+
+	# Generate URL for request to Google's OAuth 2.0 server.
+	# Use kwargs to set optional request parameters.
+    authorization_url, state = flow.authorization_url(
+		# Enable offline access so that you can refresh an access token without
+		# re-prompting the user for permission. Recommended for web server apps.
+		access_type='offline',
+		# Enable incremental authorization. Recommended as a best practice.
+		include_granted_scopes='true')
+
+			# 	service = build(API_SERVICE_NAME, API_VERSION, credentials=cred)
+	# 	print(API_SERVICE_NAME, API_VERSION, 'service created successfully')
+	
+    session['state'] = state
+
+    return redirect(authorization_url)
+
+@app.route('/oauth2callback')
+def oauth2callback():
+    # Specify the state when creating the flow in the callback so that it can
+    # verified in the authorization server response.
+    state = session['state']
+
+    flow = google_auth_oauthlib.flow.Flow.from_client_secrets_file(
+        CLIENT_SECRET_FILE, scopes=SCOPES, state=state)
+    flow.redirect_uri = url_for('oauth2callback', _external=True)
+
+    # Use the authorization server's response to fetch the OAuth 2.0 tokens.
+    authorization_response = request.url
+    flow.fetch_token(authorization_response=authorization_response)
+
+    # Store credentials in the session.
+    # ACTION ITEM: In a production app, you likely want to save these
+    #              credentials in a persistent database instead.
+    credentials = flow.credentials
+    session['credentials'] = credentials_to_dict(credentials)
+    
+    return redirect(url_for('index'))
 
 @app.route('/sid_list/', methods=['POST'])
 def sid_list():
@@ -412,6 +502,11 @@ def ticket():
 
     user = session["user"]
 
+    if 'credentials' not in session:
+        return redirect(url_for("oauth2"))
+    else:
+        service = service_build()
+
     if request.method == "POST":
         try:
             crs = db.cursor(buffered=True)
@@ -557,7 +652,7 @@ def ticket():
             month = str(break_date)[5:-3]
             year = str(break_date)[:-6]
             
-            eventID = gcalendar.cal_insert(int(day), int(month), int(year), sid, 5, user)
+            eventID = gcalendar.cal_insert(int(day), int(month), int(year), sid, 5, user, service)
             crs.execute("""UPDATE Cylinder 
                         SET eventID = (%s)
                         WHERE _SID = (%s) 
@@ -590,7 +685,7 @@ def ticket():
                 month = str(break_date)[5:-3]
                 year = str(break_date)[:-6]
                 
-                eventID = gcalendar.cal_insert(int(day), int(month), int(year), sid, 5, user)
+                eventID = gcalendar.cal_insert(int(day), int(month), int(year), sid, 5, user, service)
                 crs.execute("""UPDATE Cylinder 
                             SET eventID = (%s)
                             WHERE _SID = (%s) 
@@ -624,7 +719,7 @@ def ticket():
                 month = str(break_date)[5:-3]
                 year = str(break_date)[:-6]
 
-                eventID = gcalendar.cal_insert(int(day), int(month), int(year), sid, 5, user)
+                eventID = gcalendar.cal_insert(int(day), int(month), int(year), sid, 5, user, service)
                 crs.execute("""UPDATE Cylinder 
                             SET eventID = (%s)
                             WHERE _SID = (%s) 
@@ -658,7 +753,7 @@ def ticket():
                 month = str(break_date)[5:-3]
                 year = str(break_date)[:-6]
 
-                eventID = gcalendar.cal_insert(int(day), int(month), int(year), sid, 5, user)
+                eventID = gcalendar.cal_insert(int(day), int(month), int(year), sid, 5, user, service)
                 crs.execute("""UPDATE Cylinder 
                             SET eventID = (%s)
                             WHERE _SID = (%s) 
@@ -691,7 +786,7 @@ def ticket():
                 month = str(break_date)[5:-3]
                 year = str(break_date)[:-6]
 
-                eventID = gcalendar.cal_insert(int(day), int(month), int(year), sid, 5, user)
+                eventID = gcalendar.cal_insert(int(day), int(month), int(year), sid, 5, user, service)
                 crs.execute("""UPDATE Cylinder 
                             SET eventID = (%s)
                             WHERE _SID = (%s) 
@@ -724,7 +819,7 @@ def ticket():
                 month = str(break_date)[5:-3]
                 year = str(break_date)[:-6]
 
-                eventID = gcalendar.cal_insert(int(day), int(month), int(year), sid, 5, user)
+                eventID = gcalendar.cal_insert(int(day), int(month), int(year), sid, 5, user, service)
                 crs.execute("""UPDATE Cylinder 
                             SET eventID = (%s)
                             WHERE _SID = (%s) 
@@ -753,6 +848,11 @@ def dropoff():
     if not login_check():
         return redirect(url_for("login"))
 
+    if 'credentials' not in session:
+        return redirect(url_for("oauth2"))
+    else:
+        service = service_build()
+
     if request.method == "POST":
         try:
             crs = db.cursor(buffered=True)
@@ -777,7 +877,7 @@ def dropoff():
         crs.close()
 
         for eventId in event_tuple:
-            gcalendar.cal_update(*eventId, 7)
+            gcalendar.cal_update(*eventId, 7, service)
 
         return render_template('dropoff_success.html', bid=drop_id)
     else:

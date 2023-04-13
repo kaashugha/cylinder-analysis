@@ -1,4 +1,6 @@
-from Google import Create_Service, convert_to_RFC_datetime
+import datetime
+
+from Google import Create_Service
 
 CLIENT_SECRET_FILE = 'client_secret.json'
 API_NAME = 'calendar'
@@ -6,11 +8,13 @@ API_VERSION = 'v3'
 SCOPES = ['https://www.googleapis.com/auth/calendar']
 import os
 
-service = Create_Service(CLIENT_SECRET_FILE, API_NAME, API_VERSION, SCOPES)
 calId = os.getenv('CALENDAR_ID')
 
+def convert_to_RFC_datetime(year=1900, month=1, day=1, hour=0, minute=0):
+	dt = datetime.datetime(year, month, day, hour, minute, 0).isoformat() + 'Z'
+	return dt
 
-def cal_insert(day, month, year, SID, color, user):
+def cal_insert(day, month, year, SID, color, user, service):
     time_conv = 4
     event_request_body = {
         'start': {
@@ -44,7 +48,7 @@ def cal_insert(day, month, year, SID, color, user):
 
     return eventID
 
-def cal_update(eventId, color):
+def cal_update(eventId, color, service):
     
     response = service.events().get(
         calendarId=calId, eventId=eventId
