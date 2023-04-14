@@ -25,6 +25,7 @@ os.environ['OAUTHLIB_INSECURE_TRANSPORT'] = '1'
 GOOGLE_API_KEY = os.getenv('GOOGLE_API_KEY')
 CALENDAR_ID = os.getenv('CALENDAR_ID')
 SECRET_KEY = os.getenv('SECRET_KEY')
+REDIRECT_URI = 'http://saffaeng.ca/oauth2callback'
 
 CLIENT_SECRET_FILE = 'client_secret.json'
 API_NAME = 'calendar'
@@ -115,8 +116,7 @@ def oauth2():
 	# match one of the authorized redirect URIs for the OAuth 2.0 client, which you
 	# configured in the API Console. If this value doesn't match an authorized URI,
 	# you will get a 'redirect_uri_mismatch' error.
-    print(url_for('oauth2callback', _external=True))
-    flow.redirect_uri = url_for('oauth2callback', _external=True)
+    flow.redirect_uri = REDIRECT_URI
 
 	# Generate URL for request to Google's OAuth 2.0 server.
 	# Use kwargs to set optional request parameters.
