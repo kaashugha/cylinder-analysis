@@ -125,7 +125,8 @@ def oauth2():
 		# re-prompting the user for permission. Recommended for web server apps.
 		access_type='offline',
 		# Enable incremental authorization. Recommended as a best practice.
-		include_granted_scopes='true')
+		include_granted_scopes='true',
+        prompt='consent')
 
 			# 	service = build(API_SERVICE_NAME, API_VERSION, credentials=cred)
 	# 	print(API_SERVICE_NAME, API_VERSION, 'service created successfully')
