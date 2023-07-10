@@ -10,22 +10,20 @@ This is the main Flask application file (`app.py`) for the project. It contains 
 - [Installation](#installation)
 - [Usage](#usage)
 - [Routes](#routes)
-  - [Homepage (`/`)](#homepage)
-  - [User Login (`/login/`)](#user-login)
-  - [User Registration (`/register/`)](#user-registration)
-  - [Ticket Generation and Management (`/ticket/`)](#ticket-generation-and-management)
-  - [Drop-off Tracking and Analysis (`/drop-off/`)](#drop-off-tracking-and-analysis)
-  - [Cylinder Analysis (`/cylinder-analysis/`)](#cylinder-analysis)
-  - [Cylinder Breaking (`/cylinder-breaking/`)](#cylinder-breaking)
-  - [Report Generation (`/create-report/`)](#report-generation)
-  - [Logout (`/logout/`)](#logout)
-  - [Calendar Integration (`/calendar/`)](#calendar-integration)
-  - [Ticket Creation Success (`/ticket_success/`)](#ticket-creation-success)
-  - [Drop-off Success (`/dropoff_success/`)](#drop-off-success)
+  - [Homepage](#homepage)
+  - [User Login](#user-login)
+  - [User Registration](#user-registration)
+  - [Ticket Generation and Management](#ticket-generation-and-management)
+  - [Drop-off Tracking and Analysis](#drop-off-tracking-and-analysis)
+  - [Cylinder Analysis](#cylinder-analysis)
+  - [Cylinder Breaking](#cylinder-breaking)
+  - [Report Generation](#report-generation)
+  - [Logout](#logout)
+  - [Calendar Integration](#calendar-integration)
+  - [Ticket Creation Success](#ticket-creation-success)
+  - [Drop-off Success](#drop-off-success)
   - [Client Specific Static Website Pages](#client-specific-static-website-pages)
 - [Dependencies](#dependencies)
-- [Contributing](#contributing)
-- [License](#license)
 
 ## Prerequisites
 
@@ -68,78 +66,90 @@ The Flask application provides the following functionality:
 
 The application defines the following routes:
 
-### Homepage (`/`)
+### Homepage
 
+(`/`)
 - Main landing page for clients website.
 
-### User Login (`/login/`)
+### User Login
 
+(`/login/`)
 - Provides a form for users to enter their login credentials.
 - Handles the login process by validating the user's credentials.
 - If the login is successful, redirects the user to the appropriate dashboard based on their role (admin, lab technician, or field technician).
 - If the login fails, displays an error message and allows the user to try again.
 
-### User Registration (`/register/`)
+### User Registration
 
+(`/register/`)
 - Requires user authentication (Admin)
 - Provides a form for users to create a new lab or field accounts.
 - Handles the registration process by validating the form data and creating a new user in the database.
 - If the registration is successful, redirects the user to the login page.
 - If the registration fails (e.g., due to an existing username), displays an error message and allows the user to try again.
 
-### Ticket Generation and Management (`/ticket/`)
+### Ticket Generation and Management
 
+`/ticket/`
 - Requires user authentication (Lab, Field, Admin).
 - Provides a form for generating new tickets with various details such as client information, site address, load number, etc.
 - Validates the form data and creates a new ticket for batch of cylinders (able to create multiple cylinders with different breaking dates from one batch) in the database.
 - Assigns a unique batch ID to each ticket.
 - Creates an event in the Google Calendar for ticket breaking date.
 
-### Drop-off Tracking and Analysis (`/drop-off/`)
+### Drop-off Tracking and Analysis
 
+`/drop-off/`
 - Requires user authentication (Lab, Field, Admin).
 - Provides a form for tracking drop-offs of certain items or materials.
 - Records the drop-off timestamp and the user responsible for the drop-off in the corresponding ticket entry.
 - Changes the color in the Google Calendar for each cylinder in the batch (potentially across different days) to show that the cylinder has been dropped off in the lab.
 
-### Cylinder Analysis (`/cylinder-analysis/`)
+### Cylinder Analysis
 
+`/cylinder-analysis/`
 - Requires user authentication (Lab, Admin).
 - Provides a form for analyzing cylinders, including parameters like weight, height, and diameter.
 - Allows authorized users to update the cylinder analysis data in the database.
 
-### Cylinder Breaking (`/cylinder-breaking/`)
+### Cylinder Breaking
 
+`/cylinder-breaking/`
 - Requires user authentication (Lab, Admin).
 - Provides a form for recording the breaking of cylinders, including parameters like compressive strength and fracture type.
 - Allows authorized users to update the cylinder breaking data in the database.
 
-### Report Generation (`/create-report/`)
+### Report Generation
 
+`/create-report/`
 - Requires user authentication (Lab, Admin).
 - Provides a form for generating reports based on specific criteria (e.g., batch ID, date range, client, etc.).
 - Generates PDF report and stores them in a designated directory within the EC2 instance.
 - Downloads the generated reports to the users system.
 - Deletes the reports from the EC2 instance.
 
-### Logout (`/logout/`)
+### Logout
 
+`/logout/`
 - Logs out the currently authenticated user and redirects them to the login page.
 
-### Calendar Integration (`/calendar/`)
+### Calendar Integration
 
+`/calendar/`
 - Requires user authentication (Lab, Admin).
 - Integrates with Google Calendar to display and manage scheduled events.
 - Allows authorized users to view and manage calendar events.
 
-### Ticket Creation Success (`/ticket_success/`)
+### Ticket Creation Success
 
+`/ticket_success/`
 - Requires user authentication (Lab, Field, Admin).
 - Displays a success page after successfully creating a new ticket.
 - Provides the batch ID and other relevant details of the created ticket for field technician to record.
 
-### Drop-off Success (`/dropoff_success/`)
+### Drop-off Success
 
+`/dropoff_success/`
 - Requires user authentication (Lab, Field, Admin).
 - Displays a success page after successfully recording a drop-off.
 - Provides the batch ID and other relevant details of the drop-off.
