@@ -22,7 +22,7 @@ This is the main Flask application file (`app.py`) for the project. It contains 
   - [Calendar Integration (`/calendar/`)](#calendar-integration)
   - [Ticket Creation Success (`/ticket_success/`)](#ticket-creation-success)
   - [Drop-off Success (`/dropoff_success/`)](#drop-off-success)
-  - [Client Specific Static Website Pages] (#Client-Specific-Static-Website-Pages)
+  - [Client Specific Static Website Pages](#client-specific-static-website-pages)
 - [Dependencies](#dependencies)
 - [Contributing](#contributing)
 - [License](#license)
