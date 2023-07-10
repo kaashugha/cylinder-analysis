@@ -1,3 +1,4 @@
+# Importing the necessary libraries and modules
 import datetime
 import glob
 import io
@@ -7,36 +8,53 @@ from datetime import date, timedelta
 from pathlib import Path
 from typing import OrderedDict
 
+# Google calendar and authentication libraries
 import bcrypt
 import gcalendar
 import google.oauth2.credentials
 import google_auth_oauthlib.flow
 import googleapiclient.discovery
+
+# Database and report libraries
 import mysql.connector
 import report_pdf
+
+# Libraries for working with dates and environment variables
 from dateutil.relativedelta import relativedelta
 from dotenv import load_dotenv
+
+# Flask and its functions for rendering pages, handling requests, etc.
 from flask import (Flask, flash, jsonify, redirect, render_template, request,
                    send_file, send_from_directory, session, url_for)
+
+# Google and database utility functions
 from Google import Create_Service
 from tabulate import tabulate
+from db_utils import get_db_cursor, execute_query
 
+# Setting insecure transport for OAuth library (should be used only in development)
 os.environ['OAUTHLIB_INSECURE_TRANSPORT'] = '1'
+
+# Fetching API keys and credentials from environment variables
 GOOGLE_API_KEY = os.getenv('GOOGLE_API_KEY')
 CALENDAR_ID = os.getenv('CALENDAR_ID')
 SECRET_KEY = os.getenv('SECRET_KEY')
 
+# Google service client setup
 CLIENT_SECRET_FILE = 'client_secret.json'
 API_NAME = 'calendar'
 API_VERSION = 'v3'
 SCOPES = ['https://www.googleapis.com/auth/calendar']
 
+# Setting up Flask app and session lifetime
 app = Flask(__name__)
 app.permanent_session_lifetime = timedelta(days=14)
 app.secret_key = SECRET_KEY
 
+# Getting directory of current file
 DIRNAME = os.path.dirname(__file__)
 
+# Setting up connection to the MySQL database
 db = mysql.connector.connect(
     host=os.getenv('HOST'),
     user=os.getenv('USERNAME'),
@@ -46,14 +64,16 @@ db = mysql.connector.connect(
 db.autocommit = True
 
 def configure():
+    # Function to load environment variables from .env file
     load_dotenv()
 
 def permission(user):
-    try:
-        crs = db.cursor(buffered=True)
-    except:
-        db.reconnect()
-        crs = db.cursor(buffered=True)
+    # Function to determine role of a user
+    crs = get_db_cursor(db)
+
+    if crs is None:
+        return "Error establishing database connection", 500
+
     crs.execute("""SELECT role
                 FROM user
                 WHERE _username=%s
@@ -69,6 +89,7 @@ def permission(user):
         return 'field'
 
 def login_check():
+    # Function to check if user is logged in
     if "user" in session:
         user = session["user"]
         return user
@@ -76,6 +97,7 @@ def login_check():
         return
 
 def credentials_to_dict(credentials):
+  # Function to convert credentials to dictionary
   return {'token': credentials.token,
           'refresh_token': credentials.refresh_token,
           'token_uri': credentials.token_uri,
@@ -159,14 +181,20 @@ def oauth2callback():
 
 @app.route('/sid_list/', methods=['POST'])
 def sid_list():
-    try:
-        crs = db.cursor(buffered=True)
-    except:
-        db.reconnect()
-        crs = db.cursor(buffered=True)
+    # Route to get list of _SID from database based on the batch id
+    crs = get_db_cursor(db)
+
+    if crs is None:
+        return "Error establishing database connection", 500
+
     req = request.json
     bid = req.get('bid_ca')
-    crs.execute("SELECT _SID FROM Cylinder WHERE batch_id=%s", [bid])
+
+    crs = execute_query(crs,"SELECT _SID FROM Cylinder WHERE batch_id=%s", [bid])
+
+    if crs is None:
+        return "Error executing database query", 500
+    
     sid = crs.fetchall()
     crs.close()
     return jsonify(sid)
@@ -189,14 +217,14 @@ def test():
             bid_dict[bid].append(sid)
 
     for bid in bid_dict:
-        try:
-            crs = db.cursor(buffered=True)
-        except:
-            db.reconnect()
-            crs = db.cursor(buffered=True)
+        crs = get_db_cursor(db)
+
+        if crs is None:
+            return "Error establishing database connection", 500
+
         sid = bid_dict[bid]
         format_strings = ','.join(['%s'] * len(sid))
-        crs.execute("""SELECT
+        crs = execute_query(crs, """SELECT
                     ticket._batch_id,
                     ticket.ticket_timestamp,
                     ticket.dropoff_timestamp,
@@ -239,10 +267,12 @@ def test():
                 JOIN Cylinder ON ticket._batch_id = Cylinder.batch_id
                     WHERE Cylinder._SID
                     IN (%s)"""  % format_strings, tuple(sid))
+        
+        if crs is None:
+            return "Error executing database query", 500
 
         test_res = crs.fetchall()
         crs.close()
-
 
         sid_dict = OrderedDict()
 
@@ -356,9 +386,6 @@ def test():
     dir_zip = os.path.join(DIRNAME, 'static/Reports', '')
     dir_dest = os.path.join(DIRNAME, f'static/Zip/{ user }', '')
 
-    # os.remove(dir_dest + 'reports.zip')
-    # os.rmdir(dir_dest)
-
     # Creates users folder in zip folder if it doesnt exist
     if not os.path.isdir(dir_dest):
         os.mkdir(dir_dest)
@@ -421,15 +448,19 @@ def f():
 @app.route("/login/", methods=["POST", "GET"])
 def login():
     if request.method == "POST":
-        try:
-            crs = db.cursor(buffered=True)
-        except:
-            db.reconnect()
-            crs = db.cursor(buffered=True)
+        crs = get_db_cursor(db)
+
+        if crs is None:
+            return "Error establishing database connection", 500
+
         session.permanent = True
         user = request.form["username"]
 
-        crs.execute("SELECT password FROM user WHERE _username=%s", [user])
+        crs = execute_query(crs, "SELECT password FROM user WHERE _username=%s", [user])
+
+        if crs is None:
+            return "Error executing database query", 500
+        
         hash_password = crs.fetchone()
         crs.close()
 
@@ -468,18 +499,21 @@ def register():
 
     if role == 'admin':
         if request.method == "POST":
-            try:
-                crs = db.cursor(buffered=True)
-            except:
-                db.reconnect()
-                crs = db.cursor(buffered=True)
+            crs = get_db_cursor(db)
+
+            if crs is None:
+                return "Error establishing database connection", 500
+            
             session.permanent = True
             user = request.form["newuser"]
             password = request.form["newpass"].encode('utf-8')
             hash_password = bcrypt.hashpw(password, bcrypt.gensalt())
             acc_type = request.form["acctype"]
 
-            crs.execute("SELECT * FROM user WHERE _username=%s", [user])
+            crs = execute_query(crs, "SELECT * FROM user WHERE _username=%s", [user])
+
+            if crs is None:
+                return "Error executing database query", 500
 
             if crs.rowcount == 0:
                 crs.execute(
@@ -510,19 +544,22 @@ def ticket():
         service = service_build()
 
     if request.method == "POST":
-        try:
-            crs = db.cursor(buffered=True)
-        except:
-            db.reconnect()
-            crs = db.cursor(buffered=True)
+        crs = get_db_cursor(db)
+
+        if crs is None:
+            return "Error establishing database connection", 500
+        
         cur_mo = datetime.date.today().strftime("%m")
         cur_year = datetime.date.today().strftime("%y")
 
-        crs.execute("""SELECT ticket_timestamp
+        crs = execute_query(crs, """SELECT ticket_timestamp
                     FROM ticket
                     GROUP by ticket_timestamp
                     ORDER BY ticket_timestamp DESC
                     LIMIT 1""")
+        
+        if crs is None:
+            return "Error executing database query", 500
 
         month_online = crs.fetchone()
         crs.close()
@@ -834,12 +871,16 @@ def ticket():
         return render_template('ticket_success.html', bid=bid, all_sid=all_sid)
 
     else:
-        try:
-            crs = db.cursor(buffered=True)
-        except:
-            db.reconnect()
-            crs = db.cursor(buffered=True)
-        crs.execute("SELECT * FROM client")
+        crs = get_db_cursor(db)
+
+        if crs is None:
+            return "Error establishing database connection", 500
+        
+        crs = execute_query(crs, "SELECT * FROM client")
+
+        if crs is None:
+            return "Error executing database query", 500
+        
         value = crs.fetchall()
         crs.close()
         return render_template('ticket.html', value=value)
@@ -856,18 +897,23 @@ def dropoff():
         service = service_build()
 
     if request.method == "POST":
-        try:
-            crs = db.cursor(buffered=True)
-        except:
-            db.reconnect()
-            crs = db.cursor(buffered=True)
+        crs = get_db_cursor(db)
+
+        if crs is None:
+            return "Error establishing database connection", 500
+
         drop_id = request.form["drop_id"]
         user = session["user"]
 
-        crs.execute("""UPDATE ticket  
-                    SET dropoff_timestamp = CURRENT_TIMESTAMP, dropoff_username = %s
-                    WHERE _batch_id = (%s)
-                    """, [user, drop_id])
+        crs = execute_query(crs, 
+            """UPDATE ticket  
+               SET dropoff_timestamp = CURRENT_TIMESTAMP, dropoff_username = %s
+               WHERE _batch_id = (%s)
+            """, [user, drop_id])
+
+        if crs is None:
+            return "Error executing database query", 500
+
         db.commit()
         crs.close()
 
@@ -883,13 +929,17 @@ def dropoff():
 
         return render_template('dropoff_success.html', bid=drop_id)
     else:
-        try:
-            crs = db.cursor(buffered=True)
-        except:
-            db.reconnect()
-            crs = db.cursor(buffered=True)
-        crs.execute(
+        crs = get_db_cursor(db)
+
+        if crs is None:
+            return "Error establishing database connection", 500
+        
+        crs = execute_query(crs,
             "SELECT _batch_id FROM ticket ORDER BY ticket_timestamp DESC")
+        
+        if crs is None:
+            return "Error executing database query", 500
+
         drop = crs.fetchall()
         crs.close()
         return render_template('drop-off.html', drop=drop)
@@ -904,35 +954,45 @@ def cyla():
 
     if role == 'admin' or role == 'lab':
         if request.method == "POST":
-            try:
-                crs = db.cursor(buffered=True)
-            except:
-                db.reconnect()
-                crs = db.cursor(buffered=True)
+            crs = get_db_cursor(db)
+
+            if crs is None:
+                return "Error establishing database connection", 500
+
             sid = request.form.get("sid_ca")
             weight = request.form.get("weight")
             height = request.form.get("height")
             dia = request.form.get("dia")
             user = session["user"]
 
-            crs.execute("""UPDATE Cylinder  
-                SET height = %s, weight = %s, dia = %s, analysis_username = %s
-                WHERE _SID = (%s)
+            crs = execute_query(crs,
+                """UPDATE Cylinder  
+                   SET height = %s, weight = %s, dia = %s, analysis_username = %s
+                   WHERE _SID = (%s)
                 """, [height, weight, dia, user, sid])
+
+            if crs is None:
+                return "Error executing database query", 500
+
             db.commit()
             crs.close()
 
             return render_template('cylinder-analysis.html')
         else:
-            try:
-                crs = db.cursor(buffered=True)
-            except:
-                db.reconnect()
-                crs = db.cursor(buffered=True)
-            crs.execute(
+            crs = get_db_cursor(db)
+
+            if crs is None:
+                return "Error establishing database connection", 500
+
+            crs = execute_query(crs,
                 "SELECT _batch_id FROM ticket ORDER BY ticket_timestamp DESC")
+
+            if crs is None:
+                return "Error executing database query", 500
+
             bid_cax = crs.fetchall()
             crs.close()
+
             return render_template('cylinder-analysis.html', bid_cax=bid_cax)
 
     else:
@@ -948,38 +1008,46 @@ def cylb():
 
     if role == 'admin' or role == 'lab':
         if request.method == "POST":
-            try:
-                crs = db.cursor(buffered=True)
-            except:
-                db.reconnect()
-                crs = db.cursor(buffered=True)
+            crs = get_db_cursor(db)
+
+            if crs is None:
+                return "Error establishing database connection", 500
 
             sid = request.form.get("sid_ca")
             comp_str = request.form.get("cstr")
             tof = request.form.get("tof")
             user = session["user"]
 
-            crs.execute("""UPDATE Cylinder  
-                SET comp_str = %s, frac_type = %s, breaking_username = %s
-                WHERE _SID = (%s)
+            crs = execute_query(crs,
+                """UPDATE Cylinder  
+                   SET comp_str = %s, frac_type = %s, breaking_username = %s
+                   WHERE _SID = (%s)
                 """, [comp_str, tof, user, sid])
+
+            if crs is None:
+                return "Error executing database query", 500
+
             db.commit()
             crs.close()
 
             return render_template('cylinder-breaking.html')
-
         else:
-            try:
-                crs = db.cursor(buffered=True)
-            except:
-                db.reconnect()
-                crs = db.cursor(buffered=True)
-            crs.execute(
+            crs = get_db_cursor(db)
+
+            if crs is None:
+                return "Error establishing database connection", 500
+
+            crs = execute_query(crs,
                 "SELECT _batch_id FROM ticket ORDER BY ticket_timestamp DESC")
+
+            if crs is None:
+                return "Error executing database query", 500
+
             bid_cax = crs.fetchall()
             crs.close()
 
             return render_template('cylinder-breaking.html', bid_cax=bid_cax)
+
     else:
         return "<h1>Error: Insufficient Permissions to Access Page</h1>"
 
@@ -1009,25 +1077,37 @@ def creport():
             os.remove(dir_dest + 'reports.zip')
             os.rmdir(dir_dest)
 
-        
-        try:
-            crs = db.cursor(buffered=True)
-        except:
-            db.reconnect()
-            crs = db.cursor(buffered=True)
-        crs.execute(
+        crs = get_db_cursor(db)
+
+        if crs is None:
+            return "Error establishing database connection", 500
+
+        crs = execute_query(crs,
             "SELECT _batch_id FROM ticket ORDER BY ticket_timestamp DESC")
+
+        if crs is None:
+            return "Error executing database query", 500
+
         bid_cax = crs.fetchall()
         crs.close()
 
-        crs = db.cursor(buffered=True)
-        crs.execute("""SELECT _batch_id, ticket_timestamp, client_name, site_add, subclient_cont 
-                    FROM ticket 
-                    ORDER BY ticket_timestamp DESC
-                    LIMIT 500""")
+        crs = get_db_cursor(db)
+
+        if crs is None:
+            return "Error establishing database connection", 500
+
+        crs = execute_query(crs,
+            """SELECT _batch_id, ticket_timestamp, client_name, site_add, subclient_cont 
+                FROM ticket 
+                ORDER BY ticket_timestamp DESC
+                LIMIT 500""")
+
+        if crs is None:
+            return "Error executing database query", 500
 
         result = crs.fetchall()
         crs.close()
+        
         fin = [['Batch ID', 'Date', 'Client', 'Site Address', 'Contractor']]
 
         for i in range(len(result)):
