@@ -22,11 +22,7 @@ This is the main Flask application file (`app.py`) for the project. It contains 
   - [Calendar Integration (`/calendar/`)](#calendar-integration)
   - [Ticket Creation Success (`/ticket_success/`)](#ticket-creation-success)
   - [Drop-off Success (`/dropoff_success/`)](#drop-off-success)
-  - [About Us (`/about-us/`)](#about-us)
-  - [Careers (`/careers/`)](#careers)
-  - [Contact Us (`/contact-us/`)](#contact-us)
-  - [Projects (`/projects/`)](#projects)
-  - [Services (`/services/`)](#services)
+  - [Client Specific Static Website Pages] (#Client-Specific-Static-Website-Pages)
 - [Dependencies](#dependencies)
 - [Contributing](#contributing)
 - [License](#license)
@@ -148,7 +144,9 @@ The application defines the following routes:
 - Displays a success page after successfully recording a drop-off.
 - Provides the batch ID and other relevant details of the drop-off.
 
-### Client Specific Static Website Pages. Renders the following html pages for site funtionality. Outside the scope of the cylinder analysis software.
+### Client Specific Static Website Pages
+
+Renders the following html pages for site funtionality. Outside the scope of the cylinder analysis software.
 
 - About Us (`/about-us/`)
 - Careers (`/careers/`)
